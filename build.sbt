@@ -10,5 +10,7 @@ libraryDependencies += jdbc
 libraryDependencies += cache
 libraryDependencies += ws
 libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1" % Test
+libraryDependencies += "org.webjars" % "jquery" % "3.1.1"
+libraryDependencies += "org.webjars" % "bootstrap" % "3.3.7-1"
 
 

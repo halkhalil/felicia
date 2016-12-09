@@ -4,12 +4,18 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>Felicia</title>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+		
+		<link rel="stylesheet" href='@routes.Assets.versioned("lib/bootstrap/css/bootstrap.css")' />
+		<link rel="stylesheet" href='@routes.Assets.versioned("lib/bootstrap/css/bootstrap-theme.css")' />
+		
+		<script src='@routes.Assets.versioned("lib/jquery/jquery.js")'></script>
+		<script src='@routes.Assets.versioned("lib/bootstrap/js/bootstrap.js")'></script>
+		
 		<!--[if IE]>
 			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
 	</head>
 	<body>
-		<script src="/assets/javascripts/felicia.js"></script>
+		<script src='@routes.Assets.versioned("javascripts/felicia.js")'></script>
 	</body>
 </html>
