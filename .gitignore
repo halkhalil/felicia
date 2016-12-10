@@ -30,6 +30,9 @@ dist
 /.project
 /RUNNING_PID
 /.settings
+/bin
+/.cache-main
+/.cache-tests
 
 # Project files:
 public/javascripts/felicia.js
