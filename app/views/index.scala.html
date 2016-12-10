@@ -1,4 +1,4 @@
-@(message: String)
+@(initialData: String)
 <!DOCTYPE html>
 <html>
 	<head>
@@ -17,5 +17,9 @@
 	</head>
 	<body>
 		<script src='@routes.Assets.versioned("javascripts/felicia.js")'></script>
+		
+		<script>
+			var initialData = @Html(initialData);
+		</script>
 	</body>
 </html>
