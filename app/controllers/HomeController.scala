@@ -16,7 +16,11 @@ class HomeController @Inject() (application:ApplicationService) extends Controll
 	* Renders page at "/".
 	*/
 	def index = Action {
-		Ok(views.html.index(Json.stringify(application.getInitialData)))
+		Ok(
+			views.html.index(
+				Json.stringify(application.getFrontendInitialData)
+			)
+		)
 	}
 
 }

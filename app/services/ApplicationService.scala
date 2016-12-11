@@ -6,7 +6,7 @@ import javax.inject.Singleton
 @Singleton
 class ApplicationService {
 	
-	def getInitialData:JsValue = {
+	def getFrontendInitialData:JsValue = {
 		Json.obj(
 			"Test_status" -> "OK",
 			"Boolean_val" -> true
