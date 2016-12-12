@@ -8,7 +8,7 @@ class ApplicationService {
 	
 	def getFrontendInitialData:JsValue = {
 		Json.obj(
-			"Test_status" -> "OK",
+			"Test_status done" -> "OK",
 			"Boolean_val" -> true
 		)
 	}

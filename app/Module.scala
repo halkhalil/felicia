@@ -2,6 +2,7 @@ import com.google.inject.AbstractModule
 import java.time.Clock
 
 import services.{ApplicationService}
+import services.application.SetupService
 
 /**
  * This class is a Guice module that tells Guice how to bind several
@@ -15,9 +16,9 @@ import services.{ApplicationService}
  */
 class Module extends AbstractModule {
 
-  override def configure() = {
-    // Ask Guice to create an instance of ApplicationService when the application starts.
-    bind(classOf[ApplicationService]).asEagerSingleton()
-  }
+	override def configure() = {
+		bind(classOf[ApplicationService]).asEagerSingleton()
+		bind(classOf[SetupService]).asEagerSingleton()
+	}
 
 }
