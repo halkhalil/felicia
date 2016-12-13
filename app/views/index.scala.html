@@ -16,10 +16,12 @@
 		<![endif]-->
 	</head>
 	<body>
-		<script src='@routes.Assets.versioned("javascripts/felicia.js")'></script>
-		
+		<div id="container"></div>
 		<script>
 			var initialData = @Html(initialData);
 		</script>
+		<script src='@routes.Assets.versioned("javascripts/felicia.js")'></script>
+		
+		
 	</body>
 </html>

@@ -7,6 +7,7 @@ import javax.validation.constraints._;
 import com.avaje.ebean.Model;
 import play.data.format._;
 import play.data.validation._;
+import models.user.UserSession
 
 @Entity
 class User extends Model {
@@ -21,6 +22,9 @@ class User extends Model {
 	
 	@ManyToOne()
 	var role:UserRole = _
+	
+	@OneToMany(mappedBy = "user")
+	var sessions:List[UserSession] = _
 }
 
 object User {

@@ -10,15 +10,15 @@ import play.api.libs.json.Json
  * Main controller.
  */
 @Singleton
-class HomeController @Inject() (application:ApplicationService) extends Controller {
+class HomeController @Inject() (application: ApplicationService) extends Controller {
 
 	/**
 	* Renders page at "/".
 	*/
-	def index = Action {
+	def index = Action { request =>
 		Ok(
 			views.html.index(
-				Json.stringify(application.getFrontendInitialData)
+				Json.stringify(application.getFrontendInitialData(request.session.get("userId")))
 			)
 		)
 	}
