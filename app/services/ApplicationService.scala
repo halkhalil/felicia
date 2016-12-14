@@ -9,8 +9,7 @@ class ApplicationService {
 	
 	def getFrontendInitialData(userId: Option[String]):JsValue = {
 		val data:JsObject = Json.obj(
-			"Test_status done" -> "OK",
-			"Boolean_val" -> true
+			"currentItem" -> "/"
 		)
 		
 		userId.map { userId =>

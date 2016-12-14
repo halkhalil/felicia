@@ -1,6 +1,6 @@
 import React from "react";
 
-export class LoginForm extends React.Component {
+class LoginForm extends React.Component {
 	constructor() {
 		super()
 		
@@ -36,9 +36,7 @@ export class LoginForm extends React.Component {
 			context: this
 		}).done(function(response) {
 			this.clearMessage()
-			if (typeof this.props.onAuthenticate !== 'undefined') {
-				this.props.onAuthenticate(response.user)
-			}
+			this.props.onAuthenticate(response.user)
 		}).fail(function(jqXHR, exception) {
 			try {
 				var response = JSON.parse(jqXHR.responseText);
@@ -112,3 +110,10 @@ export class LoginForm extends React.Component {
 		)
 	}
 }
+
+// property validators:
+LoginForm.propTypes = {
+	onAuthenticate: React.PropTypes.func.isRequired
+};
+
+export {LoginForm}

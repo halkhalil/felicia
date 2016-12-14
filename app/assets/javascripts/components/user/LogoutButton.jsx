@@ -1,6 +1,6 @@
 import React from "react";
 
-export class LogoutButton extends React.Component {
+class LogoutButton extends React.Component {
 	constructor() {
 		super()
 		
@@ -15,15 +15,20 @@ export class LogoutButton extends React.Component {
 			type: "POST",
 			context: this
 		}).done(function(response) {
-			if (typeof this.props.onLogout !== 'undefined') {
-				this.props.onLogout(response.user)
-			}
+			this.props.onLogout(response.user)
 		})
 	}
 	
 	render() {
 		return (
-			<button type="submit" onClick={this.handleLogout} className="btn btn-primary pull-right">Log out</button>
+			<a href="#" onClick={this.handleLogout}>Log out</a>
 		)
 	}
 }
+
+// property validators:
+LogoutButton.propTypes = {
+	onLogout: React.PropTypes.func.isRequired
+};
+
+export {LogoutButton}
