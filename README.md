@@ -8,27 +8,32 @@ Felicia is an accounting software. The major features include:
 
 ### Tech
    
-* [Scala] - lead language
-* [Play Framework] - for backend
-* [React] - frontend
-* [Twitter Bootstrap] - modern tyles
+* [Scala] - backend language
+* [Play Framework] - backend framework
+* [React] - frontend components framework
+* [Twitter Bootstrap] - styles definitions
 * [node.js] - frontend packages management
 * [jQuery]
 
-And of course Dillinger itself is open source with a [public repository][dill]
- on GitHub.
 
-### Installation
+### Installation - development version
 
-Development environment:
+Clone repository:
 
 ```sh
 $ git clone https://github.com/marcin-lawrowski/felicia.git
 $ cd felicia
+```
+
+Edit conf/application.conf file, go to `db` section and provide valid database connection properties: `default.driver`, `default.url`, `default.username` and `default.password`. Run the application:
+
+```sh
 $ npm install -d
 $ ./node_modules/.bin/webpack
 $ sbt run
 ```
+Open `http://localhost:9000/` address in web browser. Use the following credentials when you haven't created accounts yet: `admin`:`admin`.
+
 
 License
 ----
