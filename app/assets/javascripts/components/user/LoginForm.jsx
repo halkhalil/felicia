@@ -36,8 +36,8 @@ export class LoginForm extends React.Component {
 			context: this
 		}).done(function(response) {
 			this.clearMessage()
-			if (typeof this.props.onAuthenticated !== 'undefined') {
-				this.props.onAuthenticated(response.user)
+			if (typeof this.props.onAuthenticate !== 'undefined') {
+				this.props.onAuthenticate(response.user)
 			}
 		}).fail(function(jqXHR, exception) {
 			try {
