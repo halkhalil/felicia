@@ -6,7 +6,7 @@ import {Application} from "components/Application.jsx";
 // render application:
 ReactDOM.render(
 	<div>
-		<Application />
+		<Application configuration={initialData} />
 	</div>,
 	document.querySelector("#container")
 );

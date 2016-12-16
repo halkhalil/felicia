@@ -1,8 +1,9 @@
 import React from "react";
+import { Link } from 'react-router'
 
 import {LogoutButton} from "components/user/LogoutButton.jsx";
 
-class ApplicationMenu extends React.Component {
+class TopMenu extends React.Component {
 	constructor() {
 		super()
 		
@@ -18,11 +19,9 @@ class ApplicationMenu extends React.Component {
 	}
 	
 	handleMenuClick(event) {
-		event.preventDefault()
 		var item = jQuery(event.currentTarget).attr('href')
 		
 		this.setState({ selectedItem: item });
-		this.props.onMenuItemClick(item)
 	}
 	
 	getActiveClass(item) {
@@ -40,28 +39,32 @@ class ApplicationMenu extends React.Component {
 							<span className="icon-bar"></span>
 							<span className="icon-bar"></span>
 						</button>
-						<a className="navbar-brand" href="/">Felicia Accounting</a>
+						<Link className="navbar-brand" to="/">Felicia Accounting</Link>
 					</div>
 					<div id="navbar" className="navbar-collapse collapse">
 						<ul className="nav navbar-nav">
 							<li className={this.getActiveClass("/")}>
-								<a href="/" onClick={this.handleMenuClick}>Home</a>
+								<Link to="/" onClick={this.handleMenuClick}>Home</Link>
 							</li>
+							
 							<li className={this.getActiveClass("/customers")}>
-								<a href="/customers" onClick={this.handleMenuClick}>Customers</a>
+								<Link to="/customers" onClick={this.handleMenuClick}>Customers</Link>
 							</li>
 							<li className={this.getActiveClass("/invoices")}>
-								<a href="/invoices" onClick={this.handleMenuClick}>Invoices</a>
+								<Link to="/invoices" onClick={this.handleMenuClick}>Invoices</Link>
+							</li>
+							<li className={this.getActiveClass("/fake")}>
+								<Link to="/fake" onClick={this.handleMenuClick}>Fake</Link>
 							</li>
 							<li className="dropdown">
 								<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span className="caret"></span></a>
 								<ul className="dropdown-menu">
 									<li className="dropdown-header">Users</li>
 									<li className={this.getActiveClass("/admin/users/add")}>
-										<a href="/admin/users/add" onClick={this.handleMenuClick}>Add</a>
+										<Link to="/admin/users/add" onClick={this.handleMenuClick}>Add</Link>
 									</li>
 									<li className={this.getActiveClass("/admin/users")}>
-										<a href="/admin/users" onClick={this.handleMenuClick}>List</a>
+										<Link to="/admin/users" onClick={this.handleMenuClick}>List</Link>
 									</li>
 								</ul>
 							</li>
@@ -73,7 +76,6 @@ class ApplicationMenu extends React.Component {
 						</ul>
 						<p className="navbar-text pull-right">
 							<span className="label label-primary">User: {this.props.user.login}</span>
-							
 						</p>
 					</div>
 				</div>
@@ -83,9 +85,9 @@ class ApplicationMenu extends React.Component {
 }
 
 // property validators:
-ApplicationMenu.propTypes = {
-	onMenuItemClick: React.PropTypes.func.isRequired,
+TopMenu.propTypes = {
+	user: React.PropTypes.object.isRequired,
 	onLogout: React.PropTypes.func.isRequired
 };
 
-export {ApplicationMenu}
+export {TopMenu}

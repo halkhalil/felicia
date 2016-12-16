@@ -1,19 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 import {LoginForm} from "components/user/LoginForm.jsx";
 import {LogoutButton} from "components/user/LogoutButton.jsx";
-import {ApplicationMenu} from "components/common/ApplicationMenu.jsx";
-import {ApplicationContent} from "components/common/ApplicationContent.jsx";
+import {Core} from "components/common/Core.jsx";
+import {Start} from "components/common/Start.jsx";
+import {NotFound} from "components/common/NotFound.jsx";
+
+import {Customers} from "components/customers/Customers.jsx";
+import {Invoices} from "components/invoices/Invoices.jsx";
+import {Users} from "components/admin/users/Users.jsx";
+import {UserAdd} from "components/admin/users/UserAdd.jsx";
  
 export class Application extends React.Component {
-	constructor() {
-		super()
+	constructor(props) {
+		super(props)
 		
-		this.state = initialData
+		this.state = this.props.configuration;
 		this.handleAuthenticate = this.handleAuthenticate.bind(this)
 		this.handleLogout = this.handleLogout.bind(this)
-		this.handleMenuItemClick = this.handleMenuItemClick.bind(this)
 	}
 	
 	handleAuthenticate(user) {
@@ -24,32 +30,27 @@ export class Application extends React.Component {
 		this.setState({ user: undefined })
 	}
 	
-	handleMenuItemClick(item) {
-		this.setState({ currentItem: item })
-	}
-	
 	render() {
 		if (typeof this.state.user !== 'undefined') {
 			return (
-				<div>
-					<ApplicationMenu
-						user={this.state.user}
-						onLogout={this.handleLogout}
-						onMenuItemClick={this.handleMenuItemClick} />
-					
-					<div className="container">
-						<div className="jumbotron">
-							<ApplicationContent section={this.state.currentItem} />
-						</div>
-					</div>
-				</div>
+				<Router history={browserHistory}>
+					<Route path="/" user={this.state.user} onLogout={this.handleLogout} component={Core}>
+						<IndexRoute component={Start} />
+						<Route path="customers" component={Customers} />
+						<Route path="invoices" component={Invoices} />
+						<Route path="admin">
+							<Route path="users">
+								<IndexRoute component={Users} />
+								<Route path="add" component={UserAdd} />
+							</Route>
+						</Route>
+						
+						<Route path="*" component={NotFound} />
+					</Route>
+				</Router>
 			)
 		} else {
-			return (
-				<div>
-					<LoginForm onAuthenticate={this.handleAuthenticate} />
-				</div>
-			)
+			return <LoginForm onAuthenticate={this.handleAuthenticate} />
 		}
 	}
 }
