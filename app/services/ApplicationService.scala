@@ -15,13 +15,15 @@ class ApplicationService {
 		userId.map { userId =>
 			val userSession:UserSession = UserSession.finder.where().eq("sessionId", userId).findUnique()
 			
-			data + (
-				"user" -> Json.obj(
-					"login" -> JsString(userSession.user.login)
+			if (userSession != null) {
+				return data + (
+					"user" -> Json.obj(
+						"login" -> JsString(userSession.user.login)
+					)
 				)
-			)
-		}.getOrElse {
-			data
+			}
 		}
+		
+		data
 	}
 }

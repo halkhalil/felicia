@@ -32,4 +32,14 @@ class AuthenticationService @Inject() (configuration: Configuration) {
 		
 		sessionId
 	}
+	
+	def isLoggedInAndIsAdmin(userSessionId:Option[String]):Boolean = {
+		userSessionId.map { userSessionId => 
+			val userSession:UserSession = UserSession.finder.where().eq("sessionId", userSessionId).findUnique()
+			
+			return userSession != null && userSession.user != null && userSession.user.role.symbol == "admin"
+		}
+		
+		false
+	}
 }

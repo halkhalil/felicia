@@ -8,6 +8,8 @@ import com.avaje.ebean.Model;
 import play.data.format._;
 import play.data.validation._;
 import models.user.UserSession
+import play.api.libs.json.Json
+import play.api.libs.json._
 
 @Entity
 class User extends Model {
@@ -28,5 +30,22 @@ class User extends Model {
 }
 
 object User {
+	implicit object UserFormat extends Format[User] {
+
+        def writes(user: User): JsValue = {
+            val loginSeq = Seq(
+            	"id" -> JsNumber(user.id),
+					"login" -> JsString(user.login)
+            )
+            JsObject(loginSeq)
+        }
+        
+        def reads(json: JsValue): JsResult[User] = {
+            JsSuccess(new User())
+        }
+
+    }
+
+	
 	def finder:Model.Finder[Long, User] = new Model.Finder[Long, User](classOf[User]);
 }

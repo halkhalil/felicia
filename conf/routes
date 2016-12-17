@@ -11,3 +11,6 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 # API
 POST	/login						controllers.AuthenticateController.login
 POST	/logout						controllers.AuthenticateController.logout
+
+# Users API
+GET		/api/users					controllers.UsersController.index
