@@ -56,6 +56,9 @@ class TopMenu extends React.Component {
 							<li className={this.getActiveClass("/fake")}>
 								<Link to="/fake" onClick={this.handleMenuClick}>Fake</Link>
 							</li>
+							<li className={this.getActiveClass("/admin/users")}>
+								<Link to="/admin/users" onClick={this.handleMenuClick}>Users</Link>
+							</li>
 							<li className="dropdown">
 								<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span className="caret"></span></a>
 								<ul className="dropdown-menu">

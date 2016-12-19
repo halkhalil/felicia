@@ -14,3 +14,4 @@ libraryDependencies += "org.webjars" % "jquery" % "3.1.1"
 libraryDependencies += "org.webjars" % "bootstrap" % "3.3.7-1"
 libraryDependencies += "mysql" % "mysql-connector-java" % "6.0.5"
 
+excludeFilter in (Assets, JshintKeys.jshint) := "*.js"
