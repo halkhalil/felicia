@@ -6,3 +6,17 @@ export function fetchAll(data) {
 		users: data
 	}
 }
+
+export function listFetchError(error) {
+	return {
+		type: UsersActionTypes.LIST_FETCH_ERROR,
+		error: error
+	}
+}
+
+export function listFetching(isFetching) {
+	return {
+		type: UsersActionTypes.LIST_FETCHING,
+		isFetching: isFetching
+	}
+}
