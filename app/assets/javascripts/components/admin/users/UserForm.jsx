@@ -15,6 +15,8 @@ export class UserForm extends React.Component {
 				passwordRepeat: '',
 				validationError: false
 			})
+			
+			setTimeout(() => this.props.clearSaveError(), 2000)
 		}
 	}
 	
@@ -53,6 +55,10 @@ export class UserForm extends React.Component {
 	
 	passwordErrorClass(otherClasses) {
 		return (this.state.password !== this.state.passwordRepeat ? 'has-error ' : '') + otherClasses
+	}
+	
+	submitButtonClasses() {
+		return 'btn btn-primary' + (this.props.saving ? ' disabled' : '')
 	}
 	
 	render() {
@@ -101,12 +107,14 @@ export class UserForm extends React.Component {
 						</div>
 						<div className="form-group"> 
 							<div className="col-sm-offset-2 col-sm-10">
-								<button type="submit" className="btn btn-primary">Save</button>
+								<button type="submit" className={this.submitButtonClasses()}>Save</button>
 							</div>
 						</div>
 						<div className="form-group">
 							<div className="col-sm-offset-2 col-sm-10">
 								{this.state.validationError && <div className="alert alert-danger"><strong>Error: </strong> Please check the errors and fix them.</div>}
+								
+								{this.props.saveError && <div className="alert alert-danger"><strong>Error: </strong> User could not be saved.</div>}
 							</div>
 						</div>
 					</form>

@@ -23,14 +23,35 @@ export function listFetching(isFetching) {
 
 export function fetch(data) {
 	return {
-		type: UsersActionTypes.FETCH,
+		type: 'fetch',
 		user: data
 	}
 }
 
 export function fetchError(error) {
 	return {
-		type: UsersActionTypes.FETCH_ERROR,
+		type: 'fetch_error',
 		error: error
+	}
+}
+
+export function saveError(error) {
+	return {
+		type: 'saveError',
+		error: error
+	}
+}
+
+export function clearSaveError() {
+	return {
+		type: 'saveError',
+		error: undefined
+	}
+}
+
+export function saving(isSaving) {
+	return {
+		type: 'saving',
+		isSaving: isSaving
 	}
 }

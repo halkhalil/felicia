@@ -23,7 +23,7 @@ const mapDispatchToProps = (dispatch) => {
 		save: (id, data) => {
 			const ENDPOINT = '/api/user/' + id
 			
-			dispatch(UsersActions.fetchError(undefined))
+			dispatch(UsersActions.saveError(undefined))
 			
 			jQuery.ajax({
 				type: 'PUT',
@@ -31,10 +31,13 @@ const mapDispatchToProps = (dispatch) => {
 				dataType: 'json',
 				contentType: "application/json; charset=utf-8",
 				data: JSON.stringify(data),
-				success: (data) => {} //dispatch(UsersActions.fetch(data))
+				success: (data) => {}
 			}).fail(
-				() => {} //dispatch(UsersActions.fetchError('Error loading user.'))
+				() => dispatch(UsersActions.saveError('Error saving user.'))
 			)
+		},
+		clearSaveError: () => {
+			dispatch(UsersActions.clearSaveError())
 		}
 	}
 }
@@ -42,7 +45,9 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		user: state.users.user,
-		fetchError: state.users.userFetchError
+		fetchError: state.users.userFetchError,
+		saveError: state.users.saveError,
+		saving: state.users.saving
 	}
 }
 

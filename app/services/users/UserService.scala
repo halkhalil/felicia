@@ -21,7 +21,7 @@ class UserService {
 	
 	def validationError(userInput: UserInput):Option[String] = {
 		if (userInput.name.trim().length() == 0) return Some("Name cannot be empty")
-		
+
 		None
 	}
 	

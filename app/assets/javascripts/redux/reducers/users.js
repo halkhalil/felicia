@@ -7,7 +7,9 @@ const defaultState = {
 		fetching: false
 	},
 	user: undefined,
-	userFetchError: undefined
+	userFetchError: undefined,
+	saving: false,
+	saveError: undefined
 }
 
 export default function users(state = defaultState, action) {
@@ -26,10 +28,16 @@ export default function users(state = defaultState, action) {
 			return createState(state, {	
 				list: createState(state.list, { fetching: action.isFetching })
 			})
-		case UsersActionTypes.FETCH:
+			
+		case 'fetch':
 			return createState(state, { user: action.user })
-		case UsersActionTypes.FETCH_ERROR:
+		case 'fetch_error':
 			return createState(state, { userFetchError: action.error })
+		case 'saveError':
+			return createState(state, { saveError: action.error })
+		case 'saving':
+			return createState(state, { saving: action.isSaving })
+			
 		default:
 			return state
 	}
