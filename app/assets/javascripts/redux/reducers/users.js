@@ -5,7 +5,9 @@ const defaultState = {
 	list: {
 		fetchError: undefined,
 		fetching: false
-	}
+	},
+	user: undefined,
+	userFetchError: undefined
 }
 
 export default function users(state = defaultState, action) {
@@ -24,6 +26,10 @@ export default function users(state = defaultState, action) {
 			return createState(state, {	
 				list: createState(state.list, { fetching: action.isFetching })
 			})
+		case UsersActionTypes.FETCH:
+			return createState(state, { user: action.user })
+		case UsersActionTypes.FETCH_ERROR:
+			return createState(state, { userFetchError: action.error })
 		default:
 			return state
 	}

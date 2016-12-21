@@ -15,6 +15,7 @@ class UsersTable extends React.Component {
 					<thead>
 						<tr>
 							<th width="50">ID</th>
+							<th>Name</th>
 							<th>Login</th>
 							<th width="150"></th>
 						</tr>
@@ -23,7 +24,7 @@ class UsersTable extends React.Component {
 						{
 							this.props.fetching &&
 							<tr className="info">
-								<td colSpan="3">
+								<td colSpan="4">
 									Loading ...
 								</td>
 							</tr>
@@ -36,14 +37,17 @@ class UsersTable extends React.Component {
 											{user.id}
 										</td>
 										<td>
+											{user.name}
+										</td>
+										<td>
 											{user.login}
 										</td>
 										<td>
 											<div className="btn-group">
-												<Link to={'/admin/users/' + user.id} className="btn btn-primary btn-xs">
+												<Link to={'/admin/user/' + user.id} className="btn btn-primary btn-xs">
 													<span className="glyphicon glyphicon-pencil"></span> Edit
 												</Link>
-												<Link to={'/admin/users/' + user.id + '/delete'} className="btn btn-danger btn-xs">
+												<Link to={'/admin/user/' + user.id + '/delete'} className="btn btn-danger btn-xs">
 													<span className="glyphicon glyphicon-remove"></span> Delete
 												</Link>
 											</div>
@@ -55,7 +59,7 @@ class UsersTable extends React.Component {
 						{
 							this.props.users.length === 0 && this.props.fetchError === undefined && !this.props.fetching &&
 							<tr className="info">
-								<td colSpan="3">
+								<td colSpan="4">
 									No users found
 								</td>
 							</tr>
@@ -63,7 +67,7 @@ class UsersTable extends React.Component {
 						{
 							this.props.fetchError !== undefined && 
 							<tr className="danger">
-								<td colSpan="3">
+								<td colSpan="4">
 									{this.props.fetchError}
 								</td>
 							</tr>
@@ -81,6 +85,7 @@ UsersTable.propTypes = {
 	fetching: React.PropTypes.bool.isRequired,
 	users: React.PropTypes.arrayOf(React.PropTypes.shape({
 		login: React.PropTypes.string.isRequired,
+		name: React.PropTypes.string.isRequired,
 		id: React.PropTypes.number.isRequired
 	})).isRequired
 };

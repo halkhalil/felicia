@@ -8,26 +8,44 @@ import play.api.libs.json.Json
 import services.users.AuthenticationService
 import models.User
 import scala.collection.JavaConverters._
+import services.users.UserService
+import controllers.input.UserInput
+import play.api.libs.json.JsError
 
 @Singleton
-class UsersController @Inject() (authenticationService: AuthenticationService) extends Controller {
-	def index = Action { request =>
-		val userSessionId: Option[String] = request.session.get("userId")
-		
-		if (authenticationService.isLoggedInAndIsAdmin(userSessionId)) {
-			val users:List[User] = User.finder.all().asScala.toList
-			
-			Ok(Json.toJson(users)).as(JSON)
-		} else {
-			forbidden("Access denied")
+class UsersController @Inject() (authenticationService: AuthenticationService, usersService: UserService) extends BaseController(authenticationService, usersService) {
+	
+	def index = SecuredAction { request =>
+		ok(usersService.getAll())
+	}
+	
+	def get(id: Int) = SecuredAction { request =>
+		usersService.get(id).map { user =>
+			ok(user)
+		}.getOrElse {
+			notFound("User does not exists") 
 		}
 	}
 	
-	private def forbidden(error: String):Result = {
-		Forbidden(
-			Json.obj(
-				"error" -> error
-			)
-		).as(JSON)
+	def save(id: Int) = SecuredAction(BodyParsers.parse.json) { request =>
+		val userInputResult = request.body.validate[UserInput]
+		
+		userInputResult.fold(
+			errors => {
+				badRequest("JSON parsing error: " + JsError.toJson(errors))
+			},
+			userInput => {
+				usersService.validationError(userInput).map { error =>
+					badRequest(error)
+				}.getOrElse {
+					usersService.get(id).map { user =>
+						ok(usersService.update(user, userInput))
+					}.getOrElse {
+						notFound("User does not exists") 
+					}
+				}
+			}
+		)
 	}
+	
 }

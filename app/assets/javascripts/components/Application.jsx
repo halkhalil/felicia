@@ -12,6 +12,7 @@ import {Customers} from "components/customers/Customers.jsx";
 import {Invoices} from "components/invoices/Invoices.jsx";
 import {Users} from "components/admin/users/Users.jsx";
 import {UserAdd} from "components/admin/users/UserAdd.jsx";
+import {UserEdit} from "components/admin/users/UserEdit";
  
 export class Application extends React.Component {
 	constructor(props) {
@@ -43,6 +44,7 @@ export class Application extends React.Component {
 								<IndexRoute component={Users} />
 								<Route path="add" component={UserAdd} />
 							</Route>
+							<Route path="user/:id" component={UserEdit} />
 						</Route>
 						
 						<Route path="*" component={NotFound} />

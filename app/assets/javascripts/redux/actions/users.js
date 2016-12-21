@@ -20,3 +20,17 @@ export function listFetching(isFetching) {
 		isFetching: isFetching
 	}
 }
+
+export function fetch(data) {
+	return {
+		type: UsersActionTypes.FETCH,
+		user: data
+	}
+}
+
+export function fetchError(error) {
+	return {
+		type: UsersActionTypes.FETCH_ERROR,
+		error: error
+	}
+}

@@ -20,6 +20,9 @@ class User extends Model {
 	var login:String = _
 	
 	@NotNull
+	var name:String = _
+	
+	@NotNull
 	var password:String = _
 	
 	@ManyToOne()
@@ -35,7 +38,8 @@ object User {
         def writes(user: User): JsValue = {
             val loginSeq = Seq(
             	"id" -> JsNumber(user.id),
-					"login" -> JsString(user.login)
+					"login" -> JsString(user.login),
+					"name" -> JsString(user.name)
             )
             JsObject(loginSeq)
         }

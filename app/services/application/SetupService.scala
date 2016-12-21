@@ -8,6 +8,7 @@ import scala.collection.JavaConversions._
 @Singleton
 class SetupService {
 	private val ADMIN_LOGIN:String = "admin"
+	private val ADMIN_NAME:String = "Administrator"
 	private val ADMIN_PASSWORD:String = "admin"
 	private val ADMIN_ROLE_NAME:String = "Administrator"
 	private val ADMIN_ROLE_SYMBOL:String = "admin"
@@ -32,6 +33,7 @@ class SetupService {
 			val adminUserRole:UserRole = UserRole.finder.where().eq("symbol", ADMIN_LOGIN).findUnique()
 			val adminUser:User = new User()
 			adminUser.login = ADMIN_LOGIN
+			adminUser.name = ADMIN_NAME
 			adminUser.password = play.api.libs.Codecs.sha1(md.digest(ADMIN_PASSWORD.getBytes))
 			adminUser.role = adminUserRole
 			adminUser.save()

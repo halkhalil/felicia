@@ -6,6 +6,7 @@
 create table user (
   id                            integer auto_increment not null,
   login                         varchar(255) not null,
+  name                          varchar(255) not null,
   password                      varchar(255) not null,
   role_id                       integer,
   constraint pk_user primary key (id)

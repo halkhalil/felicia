@@ -14,3 +14,5 @@ POST	/logout						controllers.AuthenticateController.logout
 
 # Users API
 GET		/api/users					controllers.UsersController.index
+GET		/api/user/:id				controllers.UsersController.get(id: Int)
+PUT		/api/user/:id				controllers.UsersController.save(id: Int)
