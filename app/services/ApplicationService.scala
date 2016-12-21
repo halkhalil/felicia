@@ -7,18 +7,17 @@ import models.user.UserSession
 @Singleton
 class ApplicationService {
 	
-	def getFrontendInitialData(userId: Option[String]):JsValue = {
-		val data:JsObject = Json.obj(
-			"currentItem" -> "/"
-		)
+	def initialData(userSessionId: Option[String]):JsValue = {
+		val data:JsObject = Json.obj()
 		
-		userId.map { userId =>
-			val userSession:UserSession = UserSession.finder.where().eq("sessionId", userId).findUnique()
+		userSessionId.map { sessionId =>
+			val userSession:UserSession = UserSession.finder.where().eq("sessionId", sessionId).findUnique()
 			
-			if (userSession != null) {
+			if (userSession != null && userSession.user != null) {
 				return data + (
 					"user" -> Json.obj(
-						"login" -> JsString(userSession.user.login)
+						"login" -> JsString(userSession.user.login),
+						"name" -> JsString(userSession.user.name)
 					)
 				)
 			}

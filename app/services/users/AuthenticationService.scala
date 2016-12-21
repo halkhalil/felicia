@@ -7,21 +7,21 @@ import models.User
 import play.api.Configuration
 import java.util.Date
 import models.user.UserSession
+import utils.StringUtils
 
 @Singleton
 class AuthenticationService @Inject() (configuration: Configuration) {
-	private val md = MessageDigest.getInstance("SHA-1")
 	
 	def authenticate(login: String, password: String):Option[User] = {
 		val user: User = User.finder.where().eq("login", login).findUnique()
-		var passwordProposal: String = Codecs.sha1(md.digest(password.getBytes))
+		var passwordProposal: String = StringUtils.sha1(password)
 		
 		if (user != null && user.password == passwordProposal) Some(user) else None
 	}
 	
 	def storeLoggedInUser(user: User, ipAddress: String):String = {
 		val idComponents: String = user.id + configuration.underlying.getString("play.crypto.secret") + new Date().getTime().toString()
-		val sessionId: String = Codecs.sha1(md.digest((idComponents).getBytes))
+		val sessionId: String = StringUtils.sha1(idComponents)
 		
 		val userSession:UserSession = new UserSession()
 		userSession.user = user

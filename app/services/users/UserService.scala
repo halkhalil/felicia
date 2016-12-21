@@ -4,6 +4,7 @@ import javax.inject._
 import models.User
 import scala.collection.JavaConverters._
 import controllers.input.UserInput
+import utils.StringUtils
 
 @Singleton
 class UserService {
@@ -26,6 +27,7 @@ class UserService {
 	
 	def update(user:User, userInput: UserInput):User = {
 		user.name = userInput.name
+		if (userInput.password.length() > 0) user.password = StringUtils.sha1(userInput.password)
 		
 		user.save()
 		

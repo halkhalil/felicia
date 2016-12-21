@@ -4,6 +4,7 @@ import java.util.List
 import models._
 import javax.inject.Singleton
 import scala.collection.JavaConversions._
+import utils.StringUtils
 
 @Singleton
 class SetupService {
@@ -16,7 +17,6 @@ class SetupService {
 	dataInitialize()
 	
 	def dataInitialize() = {
-		val md = java.security.MessageDigest.getInstance("SHA-1")
 		val roles:List[UserRole] = UserRole.finder.all()
 		val users:List[User] = User.finder.all()
 		
@@ -34,7 +34,7 @@ class SetupService {
 			val adminUser:User = new User()
 			adminUser.login = ADMIN_LOGIN
 			adminUser.name = ADMIN_NAME
-			adminUser.password = play.api.libs.Codecs.sha1(md.digest(ADMIN_PASSWORD.getBytes))
+			adminUser.password = StringUtils.sha1(ADMIN_PASSWORD)
 			adminUser.role = adminUserRole
 			adminUser.save()
 		}

@@ -18,7 +18,7 @@ class HomeController @Inject() (application: ApplicationService) extends Control
 	def index = Action { request =>
 		Ok(
 			views.html.index(
-				Json.stringify(application.getFrontendInitialData(request.session.get("userId")))
+				Json.stringify(application.initialData(request.session.get("userId")))
 			)
 		)
 	}
