@@ -1,6 +1,6 @@
 import React from "react";
 
-export class UserForm extends React.Component {
+export class UserEditForm extends React.Component {
 	
 	componentDidMount() {
 		this.props.fetch(this.props.params.id)
@@ -107,7 +107,9 @@ export class UserForm extends React.Component {
 						</div>
 						<div className="form-group"> 
 							<div className="col-sm-offset-2 col-sm-10">
-								<button type="submit" className={this.submitButtonClasses()}>Save</button>
+								<button type="submit" className={this.submitButtonClasses()}><span className="glyphicon glyphicon-ok"></span> Save</button>
+								<span>&nbsp;</span>
+								<button type="button" className="btn btn-default" onClick={this.props.cancel}>Cancel</button>
 							</div>
 						</div>
 						<div className="form-group">

@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from 'react-redux'
+import { browserHistory } from 'react-router';
 
 import * as UsersActions from "redux/actions/users";
-import {UserForm} from "./UserForm";
+import {UserEditForm} from "./UserEditForm";
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetch: (id) => {
+		fetch(id) {
 			const ENDPOINT = '/api/user/' + id
 			
 			dispatch(UsersActions.fetchError(undefined))
@@ -20,7 +21,8 @@ const mapDispatchToProps = (dispatch) => {
 				() => dispatch(UsersActions.fetchError('Error loading user.'))
 			)
 		},
-		save: (id, data) => {
+		
+		save(id, data) {
 			const ENDPOINT = '/api/user/' + id
 			
 			dispatch(UsersActions.saveError(undefined))
@@ -36,8 +38,13 @@ const mapDispatchToProps = (dispatch) => {
 				() => dispatch(UsersActions.saveError('Error saving user.'))
 			)
 		},
-		clearSaveError: () => {
+		
+		clearSaveError() {
 			dispatch(UsersActions.clearSaveError())
+		},
+		
+		cancel() {
+			browserHistory.push('/admin/users');
 		}
 	}
 }
@@ -54,6 +61,6 @@ const mapStateToProps = (state) => {
 const UserEdit = connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(UserForm)
+)(UserEditForm)
 
 export {UserEdit}

@@ -11,6 +11,7 @@ import scala.collection.JavaConverters._
 import services.users.UserService
 import controllers.input.UserInput
 import play.api.libs.json.JsError
+import controllers.input.UserCreateInput
 
 @Singleton
 class UsersController @Inject() (authenticationService: AuthenticationService, usersService: UserService) extends BaseController(authenticationService, usersService) {
@@ -43,6 +44,23 @@ class UsersController @Inject() (authenticationService: AuthenticationService, u
 					}.getOrElse {
 						notFound("User does not exists") 
 					}
+				}
+			}
+		)
+	}
+	
+	def create = SecuredAction(BodyParsers.parse.json) { request =>
+		val userInputResult = request.body.validate[UserCreateInput]
+		
+		userInputResult.fold(
+			errors => {
+				badRequest("JSON parsing error: " + JsError.toJson(errors))
+			},
+			userCreateInput => {
+				usersService.validationErrorOnCreate(userCreateInput).map { error =>
+					badRequest(error)
+				}.getOrElse {
+					ok(usersService.create(userCreateInput))
 				}
 			}
 		)
