@@ -6,6 +6,8 @@ import scala.collection.JavaConverters._
 import controllers.input.UserUpdateInput
 import utils.StringUtils
 import controllers.input.UserCreateInput
+import models.user.UserSession
+import models.UserRole
 
 @Singleton
 class UserService {
@@ -28,6 +30,10 @@ class UserService {
 		// check for existing login:
 		val userExisting:User = User.finder.where().eq("login", userCreateInput.login).findUnique()
 		if (userExisting != null) return Some("Login is already occupied ")
+		
+		// check the role:
+		val userRole:UserRole = UserRole.finder.where().eq("symbol", userCreateInput.role).findUnique()
+		if (userRole == null) return Some("Role is invalid")
 
 		None
 	}
@@ -38,6 +44,7 @@ class UserService {
 		user.login = userCreateInput.login
 		user.name = userCreateInput.name
 		user.password = StringUtils.sha1(userCreateInput.password)
+		user.role = UserRole.finder.where().eq("symbol", userCreateInput.role).findUnique()
 		
 		user.save()
 		
@@ -46,13 +53,19 @@ class UserService {
 	
 	def validationErrorOnUpdate(userUpdateInput: UserUpdateInput):Option[String] = {
 		if (userUpdateInput.name.trim().length() == 0) return Some("Name cannot be empty")
+		if (userUpdateInput.role.trim().length() == 0) return Some("Role cannot be empty")
 
+		val userRole:UserRole = UserRole.finder.where().eq("symbol", userUpdateInput.role).findUnique()
+		if (userRole == null) return Some("Role is invalid")
+		
 		None
 	}
 	
 	def update(user:User, userUpdateInput: UserUpdateInput):User = {
 		user.name = userUpdateInput.name
 		if (userUpdateInput.password.length() > 0) user.password = StringUtils.sha1(userUpdateInput.password)
+
+		user.role = UserRole.finder.where().eq("symbol", userUpdateInput.role).findUnique()
 		
 		user.save()
 		
@@ -60,6 +73,10 @@ class UserService {
 	}
 	
 	def delete(user:User):User = {
+		UserSession.finder.where().eq("user", user).findList().asScala.toList.foreach  { session =>
+			session.delete()
+		}
+		
 		user.delete()
 		
 		user

@@ -37,6 +37,7 @@ const mapDispatchToProps = (dispatch) => {
 				data: JSON.stringify(data),
 				success: (data) => {
 					dispatch(AlertsActions.addSuccess('User data has been saved.'))
+					dispatch(UsersActions.fetch(data))
 				}
 			}).fail(
 				() => dispatch(AlertsActions.addDanger('Error while saving user.'))

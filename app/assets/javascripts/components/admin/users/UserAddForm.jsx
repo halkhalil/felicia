@@ -8,6 +8,7 @@ export class UserAddForm extends React.Component {
 		this.state = {
 			login: '',
 			name: '',
+			role: 'regular',
 			password: '',
 			passwordRepeat: '',
 			validationError: false
@@ -24,6 +25,7 @@ export class UserAddForm extends React.Component {
 			this.props.save({
 				login: this.state.login,
 				name: this.state.name,
+				role: this.state.role,
 				password: this.state.password
 			})
 		}
@@ -40,6 +42,9 @@ export class UserAddForm extends React.Component {
 			return false
 		}
 		if (this.state.password !== this.state.passwordRepeat) {
+			return false
+		}
+		if (this.state.role.length === 0) {
 			return false
 		}
 		
@@ -94,6 +99,17 @@ export class UserAddForm extends React.Component {
 								this.state.password !== this.state.passwordRepeat &&
 								<span className="help-block">Password repetition does not match the password</span>
 							}
+						</div>
+					</div>
+					<div className={this.nonEmptyErrorClass('role', 'form-group')}>
+						<label className="control-label col-sm-2">Role:</label>
+						<div className="col-sm-10">
+							<label className="radio-inline">
+								<input type="radio" name="role" value="regular" checked={this.state.role == 'regular'} onChange={(event) => this.handleChange('role', event.target.value)} /> Regular
+							</label>
+							<label className="radio-inline">
+								<input type="radio" name="role" value="admin" checked={this.state.role == 'admin'}  onChange={(event) => this.handleChange('role', event.target.value)} /> Administrator
+							</label>
 						</div>
 					</div>
 					<div className="form-group"> 

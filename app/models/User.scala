@@ -39,7 +39,8 @@ object User {
             val loginSeq = Seq(
             	"id" -> JsNumber(user.id),
 					"login" -> JsString(user.login),
-					"name" -> JsString(user.name)
+					"name" -> JsString(user.name),
+					"role" -> JsString(if (user.role != null) user.role.symbol else "")
             )
             JsObject(loginSeq)
         }

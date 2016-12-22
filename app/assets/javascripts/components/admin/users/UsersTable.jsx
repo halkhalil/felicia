@@ -19,6 +19,7 @@ class UsersTable extends React.Component {
 							<th width="50">ID</th>
 							<th>Name</th>
 							<th>Login</th>
+							<th>Role</th>
 							<th width="150"></th>
 						</tr>
 					</thead>
@@ -26,7 +27,7 @@ class UsersTable extends React.Component {
 						{
 							this.props.fetching &&
 							<tr className="info">
-								<td colSpan="4">
+								<td colSpan="5">
 									Loading ...
 								</td>
 							</tr>
@@ -43,6 +44,9 @@ class UsersTable extends React.Component {
 										</td>
 										<td>
 											{user.login}
+										</td>
+										<td>
+											{user.role}
 										</td>
 										<td>
 											<div className="btn-group">
@@ -62,7 +66,7 @@ class UsersTable extends React.Component {
 						{
 							this.props.users.length === 0 && this.props.fetchError === undefined && !this.props.fetching &&
 							<tr className="info">
-								<td colSpan="4">
+								<td colSpan="5">
 									No users found
 								</td>
 							</tr>
@@ -70,7 +74,7 @@ class UsersTable extends React.Component {
 						{
 							this.props.fetchError !== undefined && 
 							<tr className="danger">
-								<td colSpan="4">
+								<td colSpan="5">
 									{this.props.fetchError}
 								</td>
 							</tr>

@@ -13,6 +13,8 @@ class SetupService {
 	private val ADMIN_PASSWORD:String = "admin"
 	private val ADMIN_ROLE_NAME:String = "Administrator"
 	private val ADMIN_ROLE_SYMBOL:String = "admin"
+	private val REGULAR_ROLE_NAME:String = "Regular"
+	private val REGULAR_ROLE_SYMBOL:String = "regular"
 	
 	dataInitialize()
 	
@@ -26,6 +28,11 @@ class SetupService {
 			adminUserRole.name = ADMIN_ROLE_NAME
 			adminUserRole.symbol = ADMIN_ROLE_SYMBOL
 			adminUserRole.save()
+			
+			val regularUserRole:UserRole = new UserRole()
+			regularUserRole.name = REGULAR_ROLE_NAME
+			regularUserRole.symbol = REGULAR_ROLE_SYMBOL
+			regularUserRole.save()
 		}
 		
 		// create admin user:
