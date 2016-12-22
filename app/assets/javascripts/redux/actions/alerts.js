@@ -32,3 +32,15 @@ export function clean(timeout) {
 		timeout: timeout
 	}
 }
+
+export function processingOn() {
+	return {
+		type: 'processingOn'
+	}
+}
+
+export function processingOff() {
+	return {
+		type: 'processingOff'
+	}
+}

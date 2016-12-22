@@ -3,12 +3,10 @@ import * as UsersActionTypes from '../actions/types/users'
 const defaultState = {
 	users: [],
 	list: {
-		fetchError: undefined,
-		fetching: false
+		fetchError: undefined
 	},
 	user: undefined,
-	userFetchError: undefined,
-	saving: false
+	userFetchError: undefined
 }
 
 export default function users(state = defaultState, action) {
@@ -23,17 +21,11 @@ export default function users(state = defaultState, action) {
 			return createState(state, {
 				list: createState(state.list, { fetchError: action.error })
 			})
-		case UsersActionTypes.LIST_FETCHING:
-			return createState(state, {	
-				list: createState(state.list, { fetching: action.isFetching })
-			})
 			
 		case 'fetch':
 			return createState(state, { user: action.user })
 		case 'fetch_error':
 			return createState(state, { userFetchError: action.error })
-		case 'saving':
-			return createState(state, { saving: action.isSaving })
 			
 		default:
 			return state

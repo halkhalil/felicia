@@ -112,7 +112,7 @@ export class UserEditForm extends React.Component {
 						</div>
 						<div className="form-group">
 							<div className="col-sm-offset-2 col-sm-10">
-								{this.state.validationError && <div className="alert alert-danger"><strong>Error: </strong> Please check the errors and fix them.</div>}
+								{this.state.validationError && !this.props.saving && <div className="alert alert-danger"><strong>Error: </strong> Please check the errors and fix them.</div>}
 							</div>
 						</div>
 					</form>

@@ -10,6 +10,7 @@ const mapDispatchToProps = (dispatch) => {
 		save: (data) => {
 			const ENDPOINT = '/api/user'
 			
+			dispatch(AlertsActions.processingOn())
 			jQuery.ajax({
 				type: 'POST',
 				url: ENDPOINT,
@@ -32,6 +33,8 @@ const mapDispatchToProps = (dispatch) => {
 						dispatch(AlertsActions.addDanger('Error creating user.'))
 					}
 				}
+			).always(
+				() => dispatch(AlertsActions.processingOff())
 			)
 		},
 		
@@ -43,7 +46,7 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
 	return {
-		saving: state.users.saving
+		saving: state.alerts.processing
 	}
 }
 

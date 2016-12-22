@@ -27,7 +27,7 @@ class UserService {
 		
 		// check for existing login:
 		val userExisting:User = User.finder.where().eq("login", userCreateInput.login).findUnique()
-		if (userExisting != null) return Some("This login is already occupied")
+		if (userExisting != null) return Some("Login is already occupied ")
 
 		None
 	}

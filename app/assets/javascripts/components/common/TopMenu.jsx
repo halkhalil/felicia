@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from 'react-router'
 
 import {LogoutButton} from "components/user/LogoutButton.jsx";
+import {Spinner} from "components/common/spinner/Spinner";
 
 class TopMenu extends React.Component {
 	constructor() {
@@ -79,6 +80,9 @@ class TopMenu extends React.Component {
 						</ul>
 						<p className="navbar-text pull-right">
 							<span className="label label-primary">User: {this.props.user.login}</span>
+						</p>
+						<p className="navbar-text pull-right">
+							<Spinner />
 						</p>
 					</div>
 				</div>

@@ -14,13 +14,6 @@ export function listFetchError(error) {
 	}
 }
 
-export function listFetching(isFetching) {
-	return {
-		type: UsersActionTypes.LIST_FETCHING,
-		isFetching: isFetching
-	}
-}
-
 export function fetch(data) {
 	return {
 		type: 'fetch',
@@ -32,12 +25,5 @@ export function fetchError(error) {
 	return {
 		type: 'fetch_error',
 		error: error
-	}
-}
-
-export function saving(isSaving) {
-	return {
-		type: 'saving',
-		isSaving: isSaving
 	}
 }

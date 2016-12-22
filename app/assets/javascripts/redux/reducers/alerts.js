@@ -1,5 +1,6 @@
 const defaultState = {
-	list: []
+	list: [],
+	processing: false
 }
 
 export default function alerts(state = defaultState, action) {
@@ -19,6 +20,10 @@ export default function alerts(state = defaultState, action) {
 			let filtered = state.list.filter((item) => (Date.now() / 1000) - item.time < action.timeout )
 				
 			return createState(state, { list: [...filtered ] })
+		case 'processingOn':
+			return createState(state, { processing: true })
+		case 'processingOff':
+			return createState(state, { processing: false })
 		default:
 			return state
 	}
