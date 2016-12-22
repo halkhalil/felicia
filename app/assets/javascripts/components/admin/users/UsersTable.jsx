@@ -74,6 +74,8 @@ class UsersTable extends React.Component {
 						}
 					</tbody>
 				</table>
+				
+				<Link to="/admin/users/add" className="btn btn-primary btn-sm"><span className="glyphicon glyphicon-plus"></span> Add User</Link>
 			</div>
 		)
 	}
