@@ -58,4 +58,10 @@ class UserService {
 		
 		user
 	}
+	
+	def delete(user:User):User = {
+		user.delete()
+		
+		user
+	}
 }

@@ -66,4 +66,12 @@ class UsersController @Inject() (authenticationService: AuthenticationService, u
 		)
 	}
 	
+	def delete(id: Int) = SecuredAction { request =>
+		usersService.get(id).map { user =>
+			ok(usersService.delete(user))
+		}.getOrElse {
+			notFound("User does not exists") 
+		}
+	}
+	
 }

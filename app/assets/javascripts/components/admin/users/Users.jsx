@@ -22,6 +22,25 @@ const mapDispatchToProps = (dispatch) => {
 			).always(
 				() => dispatch(AlertsActions.processingOff())
 			)
+		},
+		
+		delete(id) {
+			const ENDPOINT = '/api/user/' + id
+			
+			dispatch(AlertsActions.processingOn())
+			jQuery.ajax({ 
+				type: 'DELETE',
+				url: ENDPOINT,
+				dataType: 'json',
+				success: (data) => dispatch(AlertsActions.addSuccess('User has been deleted.'))
+			}).fail(
+				() => dispatch(AlertsActions.addDanger('Error while deleting user.'))
+			).always(
+				() => {
+					dispatch(AlertsActions.processingOff())
+					this.fetchAll()
+				}
+			)
 		}
 	}
 }

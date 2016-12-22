@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from 'react-router'
 
+import {Confirm} from "components/common/dialogs/Confirm";
+
 class UsersTable extends React.Component {
 	
 	componentDidMount() {
@@ -47,9 +49,10 @@ class UsersTable extends React.Component {
 												<Link to={'/admin/user/' + user.id} className="btn btn-primary btn-xs">
 													<span className="glyphicon glyphicon-pencil"></span> Edit
 												</Link>
-												<Link to={'/admin/user/' + user.id + '/delete'} className="btn btn-danger btn-xs">
+												<a className="btn btn-danger btn-xs" data-toggle="modal" data-target={`#deleteDialog${user.id}`} href="#">
 													<span className="glyphicon glyphicon-remove"></span> Delete
-												</Link>
+												</a>
+												<Confirm id={`deleteDialog${user.id}`} text="Are you sure you want to delete this user?" onConfirmed={() => this.props.delete(user.id)} />
 											</div>
 										</td>
 									</tr>
@@ -84,6 +87,7 @@ class UsersTable extends React.Component {
 // property validators:
 UsersTable.propTypes = {
 	fetchAll: React.PropTypes.func.isRequired,
+	delete: React.PropTypes.func.isRequired,
 	fetching: React.PropTypes.bool.isRequired,
 	users: React.PropTypes.arrayOf(React.PropTypes.shape({
 		login: React.PropTypes.string.isRequired,
