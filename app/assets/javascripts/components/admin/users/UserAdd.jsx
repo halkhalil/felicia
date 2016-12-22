@@ -25,7 +25,13 @@ const mapDispatchToProps = (dispatch) => {
 					}
 				}
 			}).fail(
-				() => dispatch(AlertsActions.addDanger('Error creating user.'))
+				(error) => {
+					if (error.responseJSON instanceof Object) {
+						dispatch(AlertsActions.addDanger('Error creating user: ' + error.responseJSON.error))
+					} else {
+						dispatch(AlertsActions.addDanger('Error creating user.'))
+					}
+				}
 			)
 		},
 		
