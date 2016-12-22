@@ -3,7 +3,7 @@ package services.users
 import javax.inject._
 import models.User
 import scala.collection.JavaConverters._
-import controllers.input.UserInput
+import controllers.input.UserUpdateInput
 import utils.StringUtils
 import controllers.input.UserCreateInput
 
@@ -44,15 +44,15 @@ class UserService {
 		user
 	}
 	
-	def validationError(userInput: UserInput):Option[String] = {
-		if (userInput.name.trim().length() == 0) return Some("Name cannot be empty")
+	def validationErrorOnUpdate(userUpdateInput: UserUpdateInput):Option[String] = {
+		if (userUpdateInput.name.trim().length() == 0) return Some("Name cannot be empty")
 
 		None
 	}
 	
-	def update(user:User, userInput: UserInput):User = {
-		user.name = userInput.name
-		if (userInput.password.length() > 0) user.password = StringUtils.sha1(userInput.password)
+	def update(user:User, userUpdateInput: UserUpdateInput):User = {
+		user.name = userUpdateInput.name
+		if (userUpdateInput.password.length() > 0) user.password = StringUtils.sha1(userUpdateInput.password)
 		
 		user.save()
 		

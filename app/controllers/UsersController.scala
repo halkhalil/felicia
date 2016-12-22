@@ -9,7 +9,7 @@ import services.users.AuthenticationService
 import models.User
 import scala.collection.JavaConverters._
 import services.users.UserService
-import controllers.input.UserInput
+import controllers.input.UserUpdateInput
 import play.api.libs.json.JsError
 import controllers.input.UserCreateInput
 
@@ -29,18 +29,18 @@ class UsersController @Inject() (authenticationService: AuthenticationService, u
 	}
 	
 	def save(id: Int) = SecuredAction(BodyParsers.parse.json) { request =>
-		val userInputResult = request.body.validate[UserInput]
+		val userUpdateInputResult = request.body.validate[UserUpdateInput]
 		
-		userInputResult.fold(
+		userUpdateInputResult.fold(
 			errors => {
 				badRequest("JSON parsing error: " + JsError.toJson(errors))
 			},
-			userInput => {
-				usersService.validationError(userInput).map { error =>
+			userUpdateInput => {
+				usersService.validationErrorOnUpdate(userUpdateInput).map { error =>
 					badRequest(error)
 				}.getOrElse {
 					usersService.get(id).map { user =>
-						ok(usersService.update(user, userInput))
+						ok(usersService.update(user, userUpdateInput))
 					}.getOrElse {
 						notFound("User does not exists") 
 					}
