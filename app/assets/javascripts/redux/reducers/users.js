@@ -8,8 +8,7 @@ const defaultState = {
 	},
 	user: undefined,
 	userFetchError: undefined,
-	saving: false,
-	saveError: undefined
+	saving: false
 }
 
 export default function users(state = defaultState, action) {
@@ -33,8 +32,6 @@ export default function users(state = defaultState, action) {
 			return createState(state, { user: action.user })
 		case 'fetch_error':
 			return createState(state, { userFetchError: action.error })
-		case 'saveError':
-			return createState(state, { saveError: action.error })
 		case 'saving':
 			return createState(state, { saving: action.isSaving })
 			

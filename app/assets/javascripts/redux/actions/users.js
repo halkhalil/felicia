@@ -35,20 +35,6 @@ export function fetchError(error) {
 	}
 }
 
-export function saveError(error) {
-	return {
-		type: 'saveError',
-		error: error
-	}
-}
-
-export function clearSaveError() {
-	return {
-		type: 'saveError',
-		error: undefined
-	}
-}
-
 export function saving(isSaving) {
 	return {
 		type: 'saving',

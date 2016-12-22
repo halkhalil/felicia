@@ -15,8 +15,6 @@ export class UserEditForm extends React.Component {
 				passwordRepeat: '',
 				validationError: false
 			})
-			
-			setTimeout(() => this.props.clearSaveError(), 2000)
 		}
 	}
 	
@@ -115,8 +113,6 @@ export class UserEditForm extends React.Component {
 						<div className="form-group">
 							<div className="col-sm-offset-2 col-sm-10">
 								{this.state.validationError && <div className="alert alert-danger"><strong>Error: </strong> Please check the errors and fix them.</div>}
-								
-								{this.props.saveError && <div className="alert alert-danger"><strong>Error: </strong> User could not be saved.</div>}
 							</div>
 						</div>
 					</form>

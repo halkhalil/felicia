@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import { browserHistory } from 'react-router';
 
 import * as UsersActions from "redux/actions/users";
+import * as AlertsActions from "redux/actions/alerts";
 import {UserEditForm} from "./UserEditForm";
 
 const mapDispatchToProps = (dispatch) => {
@@ -12,7 +13,7 @@ const mapDispatchToProps = (dispatch) => {
 			
 			dispatch(UsersActions.fetchError(undefined))
 			
-			jQuery.ajax({ 
+			jQuery.ajax({
 				type: 'GET',
 				url: ENDPOINT,
 				dataType: 'json',
@@ -25,22 +26,18 @@ const mapDispatchToProps = (dispatch) => {
 		save(id, data) {
 			const ENDPOINT = '/api/user/' + id
 			
-			dispatch(UsersActions.saveError(undefined))
-			
 			jQuery.ajax({
 				type: 'PUT',
 				url: ENDPOINT,
 				dataType: 'json',
 				contentType: "application/json; charset=utf-8",
 				data: JSON.stringify(data),
-				success: (data) => {}
+				success: (data) => {
+					dispatch(AlertsActions.addSuccess('User data has been saved.'))
+				}
 			}).fail(
-				() => dispatch(UsersActions.saveError('Error saving user.'))
+				() => dispatch(AlertsActions.addDanger('Error while saving user.'))
 			)
-		},
-		
-		clearSaveError() {
-			dispatch(UsersActions.clearSaveError())
 		},
 		
 		cancel() {
@@ -53,7 +50,6 @@ const mapStateToProps = (state) => {
 	return {
 		user: state.users.user,
 		fetchError: state.users.userFetchError,
-		saveError: state.users.saveError,
 		saving: state.users.saving
 	}
 }

@@ -1,9 +1,10 @@
 import { combineReducers } from 'redux'
 
 import users from './users'
+import alerts from './alerts'
 
 const mainReducers = combineReducers({
-	users
+	users, alerts
 })
 
 export default mainReducers

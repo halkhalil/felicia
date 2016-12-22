@@ -2,15 +2,13 @@ import React from "react";
 import { connect } from 'react-redux'
 import { browserHistory } from 'react-router';
 
-import * as UsersActions from "redux/actions/users";
+import * as AlertsActions from "redux/actions/alerts";
 import {UserAddForm} from "./UserAddForm";
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		save: (data) => {
 			const ENDPOINT = '/api/user'
-			
-			dispatch(UsersActions.saveError(undefined))
 			
 			jQuery.ajax({
 				type: 'POST',
@@ -19,15 +17,16 @@ const mapDispatchToProps = (dispatch) => {
 				contentType: "application/json; charset=utf-8",
 				data: JSON.stringify(data),
 				success: (data) => {
-					if (data.id !== undefined)
-						browserHistory.push('/admin/user/' + data.id);
+					if (data.id !== undefined) {
+						browserHistory.push('/admin/user/' + data.id)
+						dispatch(AlertsActions.addSuccess('User has been created.'))
+					} else {
+						dispatch(AlertsActions.addDanger('User was not created.'))
+					}
 				}
 			}).fail(
-				() => dispatch(UsersActions.saveError('Error creating user.'))
+				() => dispatch(AlertsActions.addDanger('Error creating user.'))
 			)
-		},
-		clearSaveError: () => {
-			dispatch(UsersActions.clearSaveError())
 		},
 		
 		cancel() {
@@ -38,7 +37,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
 	return {
-		saveError: state.users.saveError,
 		saving: state.users.saving
 	}
 }
