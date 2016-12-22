@@ -36,6 +36,9 @@ export class UserAddForm extends React.Component {
 		if (this.state.name.length === 0) {
 			return false
 		}
+		if (this.state.password.length === 0) {
+			return false
+		}
 		if (this.state.password !== this.state.passwordRepeat) {
 			return false
 		}
@@ -48,11 +51,11 @@ export class UserAddForm extends React.Component {
 	}
 	
 	nonEmptyErrorClass(field, otherClasses) {
-		return (this.state[field].length === 0 ? 'has-error ' : '') + otherClasses
+		return (this.state.validationError && this.state[field].length === 0 ? 'has-error ' : '') + otherClasses
 	}
 	
 	passwordErrorClass(otherClasses) {
-		return (this.state.password.length === 0 || this.state.password !== this.state.passwordRepeat ? 'has-error ' : '') + otherClasses
+		return (this.state.validationError && (this.state.password.length === 0 || this.state.password !== this.state.passwordRepeat) ? 'has-error ' : '') + otherClasses
 	}
 	
 	submitButtonClasses() {
