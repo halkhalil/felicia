@@ -15,9 +15,11 @@ import play.api.libs.json.Writes
 
 class BaseController @Inject() (authenticationService: AuthenticationService, usersService: UserService) extends Controller {
 
+	val SESSION_USER_KEY: String = "userId"	
+	
 	object SecuredAction extends ActionBuilder[Request] {
 		def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]) = {
-			val userSessionId: Option[String] = request.session.get("userId")
+			val userSessionId: Option[String] = request.session.get(SESSION_USER_KEY)
 			
 			if (authenticationService.isLoggedInAndIsAdmin(userSessionId)) {
 				block(request)
@@ -29,8 +31,12 @@ class BaseController @Inject() (authenticationService: AuthenticationService, us
 		}
 	}
 	
-	def ok[Z](obj: Z)(implicit tjs: Writes[Z]) = {
+	def ok[Z](obj: Z)(implicit tjs: Writes[Z]):Result = {
 		Ok(Json.toJson(obj)).as(JSON)
+	}
+	
+	def okEmpty:Result = {
+		Ok("")
 	}
 		
 	def forbidden(error: String):Result = {

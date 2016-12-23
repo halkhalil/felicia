@@ -7,7 +7,7 @@ import models.user.UserSession
 @Singleton
 class ApplicationService {
 	
-	def initialData(userSessionId: Option[String]):JsValue = {
+	def frontEndConfiguration(userSessionId: Option[String]):JsValue = {
 		val data:JsObject = Json.obj()
 		
 		userSessionId.map { sessionId =>
@@ -15,10 +15,7 @@ class ApplicationService {
 			
 			if (userSession != null && userSession.user != null) {
 				return data + (
-					"user" -> Json.obj(
-						"login" -> JsString(userSession.user.login),
-						"name" -> JsString(userSession.user.name)
-					)
+					"user" -> Json.toJson(userSession.user)
 				)
 			}
 		}

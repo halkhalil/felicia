@@ -5,12 +5,11 @@ import play.api._
 import play.api.mvc._
 import services.ApplicationService
 import play.api.libs.json.Json
+import services.users.AuthenticationService
+import services.users.UserService
 
-/**
- * Main controller.
- */
 @Singleton
-class HomeController @Inject() (application: ApplicationService) extends Controller {
+class HomeController @Inject() (application: ApplicationService, authenticationService: AuthenticationService, usersService: UserService) extends BaseController(authenticationService, usersService) {
 
 	/**
 	* Renders page at "/".
@@ -18,7 +17,9 @@ class HomeController @Inject() (application: ApplicationService) extends Control
 	def index = Action { request =>
 		Ok(
 			views.html.index(
-				Json.stringify(application.initialData(request.session.get("userId")))
+				Json.stringify(
+					application.frontEndConfiguration(request.session.get(SESSION_USER_KEY))
+				)
 			)
 		)
 	}
