@@ -22,22 +22,17 @@ class ApplicationComponent extends React.Component {
 		super(props)
 		
 		this.handleAuthenticate = this.handleAuthenticate.bind(this)
-		this.handleLogout = this.handleLogout.bind(this)
 	}
 	
 	handleAuthenticate(user) {
 		this.props.setUser(user)
 	}
 	
-	handleLogout() {
-		this.props.clearConfiguration()
-	}
-	
 	render() {
 		if (typeof this.props.user !== 'undefined') {
 			return (
 				<Router history={browserHistory}>
-					<Route path="/" user={this.props.user} onLogout={this.handleLogout} component={Core}>
+					<Route path="/" component={Core}>
 						<IndexRoute component={Start} />
 						<Route path="customers" component={Customers} />
 						<Route path="invoices" component={Invoices} />
@@ -63,10 +58,6 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		setUser: (user) => {
 			dispatch(ConfigurationActions.setUser(user))
-		},
-		
-		clearConfiguration: () => {
-			dispatch(ConfigurationActions.clear())
 		}
 	}
 }

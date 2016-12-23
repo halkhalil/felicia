@@ -1,10 +1,12 @@
 import React from "react";
 import { Link } from 'react-router'
+import { connect } from 'react-redux'
 
-import {LogoutButton} from "components/user/LogoutButton.jsx";
+import * as ConfigurationActions from "redux/actions/configuration";
+import {LogoutButton} from "components/user/LogoutButton";
 import {Spinner} from "components/common/spinner/Spinner";
 
-class TopMenu extends React.Component {
+class TopMenuComponent extends React.Component {
 	constructor() {
 		super()
 		
@@ -16,7 +18,7 @@ class TopMenu extends React.Component {
 	}
 	
 	handleLogout() {
-		this.props.onLogout()
+		this.props.clearConfiguration()
 	}
 	
 	handleMenuClick(event) {
@@ -30,6 +32,8 @@ class TopMenu extends React.Component {
 	}
 	
 	render() {
+		let isAdmin = this.props.user.role === 'admin'
+		
 		return (
 			<nav className="navbar navbar-default navbar-fixed-top">
 				<div className="container">
@@ -54,24 +58,21 @@ class TopMenu extends React.Component {
 							<li className={this.getActiveClass("/invoices")}>
 								<Link to="/invoices" onClick={this.handleMenuClick}>Invoices</Link>
 							</li>
-							<li className={this.getActiveClass("/fake")}>
-								<Link to="/fake" onClick={this.handleMenuClick}>Fake</Link>
-							</li>
-							<li className={this.getActiveClass("/admin/users")}>
-								<Link to="/admin/users" onClick={this.handleMenuClick}>Users</Link>
-							</li>
-							<li className="dropdown">
-								<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span className="caret"></span></a>
-								<ul className="dropdown-menu">
-									<li className="dropdown-header">Users</li>
-									<li className={this.getActiveClass("/admin/users/add")}>
-										<Link to="/admin/users/add" onClick={this.handleMenuClick}>Add</Link>
-									</li>
-									<li className={this.getActiveClass("/admin/users")}>
-										<Link to="/admin/users" onClick={this.handleMenuClick}>List</Link>
-									</li>
-								</ul>
-							</li>
+							{
+								isAdmin &&
+								<li className="dropdown">
+									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span className="caret"></span></a>
+									<ul className="dropdown-menu">
+										<li className="dropdown-header">Users</li>
+										<li className={this.getActiveClass("/admin/users/add")}>
+											<Link to="/admin/users/add" onClick={this.handleMenuClick}>Add</Link>
+										</li>
+										<li className={this.getActiveClass("/admin/users")}>
+											<Link to="/admin/users" onClick={this.handleMenuClick}>List</Link>
+										</li>
+									</ul>
+								</li>
+							}
 						</ul>
 						<ul className="nav navbar-nav navbar-right">
 							<li>
@@ -92,9 +93,28 @@ class TopMenu extends React.Component {
 }
 
 // property validators:
-TopMenu.propTypes = {
+TopMenuComponent.propTypes = {
 	user: React.PropTypes.object.isRequired,
-	onLogout: React.PropTypes.func.isRequired
+	clearConfiguration: React.PropTypes.func.isRequired
 };
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		clearConfiguration: () => {
+			dispatch(ConfigurationActions.clear())
+		}
+	}
+}
+
+const mapStateToProps = (state) => {
+	return {
+		user: state.configuration.user
+	}
+}
+
+const TopMenu = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(TopMenuComponent)
 
 export {TopMenu}
