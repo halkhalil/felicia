@@ -1,6 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { connect } from 'react-redux'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+
+import * as ConfigurationActions from "redux/actions/configuration";
 
 import {LoginForm} from "components/user/LoginForm.jsx";
 import {LogoutButton} from "components/user/LogoutButton.jsx";
@@ -14,28 +17,27 @@ import {Users} from "components/admin/users/Users.jsx";
 import {UserAdd} from "components/admin/users/UserAdd.jsx";
 import {UserEdit} from "components/admin/users/UserEdit";
  
-export class Application extends React.Component {
+class ApplicationComponent extends React.Component {
 	constructor(props) {
 		super(props)
 		
-		this.state = this.props.configuration;
 		this.handleAuthenticate = this.handleAuthenticate.bind(this)
 		this.handleLogout = this.handleLogout.bind(this)
 	}
 	
 	handleAuthenticate(user) {
-		this.setState({ user: user })
+		this.props.setUser(user)
 	}
 	
 	handleLogout() {
-		this.setState({ user: undefined })
+		this.props.clearConfiguration()
 	}
 	
 	render() {
-		if (typeof this.state.user !== 'undefined') {
+		if (typeof this.props.user !== 'undefined') {
 			return (
 				<Router history={browserHistory}>
-					<Route path="/" user={this.state.user} onLogout={this.handleLogout} component={Core}>
+					<Route path="/" user={this.props.user} onLogout={this.handleLogout} component={Core}>
 						<IndexRoute component={Start} />
 						<Route path="customers" component={Customers} />
 						<Route path="invoices" component={Invoices} />
@@ -56,3 +58,28 @@ export class Application extends React.Component {
 		}
 	}
 }
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		setUser: (user) => {
+			dispatch(ConfigurationActions.setUser(user))
+		},
+		
+		clearConfiguration: () => {
+			dispatch(ConfigurationActions.clear())
+		}
+	}
+}
+
+const mapStateToProps = (state) => {
+	return {
+		user: state.configuration.user
+	}
+}
+
+const Application = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(ApplicationComponent)
+
+export {Application}

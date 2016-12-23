@@ -15,7 +15,7 @@ class LogoutButton extends React.Component {
 			type: "POST",
 			context: this
 		}).done(function(response) {
-			this.props.onLogout(response.user)
+			this.props.onLogout()
 		})
 	}
 	
