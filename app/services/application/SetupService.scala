@@ -49,6 +49,13 @@ class SetupService {
 	
 	def initConfiguration() = {
 		val entries = List(
+			List("Company", "Name", "company.name", "text", "", "Sample Company"),
+			List("Company", "Address", "company.address", "text", "", "Sample address"),
+			List("Company", "Zip code", "company.zip", "text", "", "99999"),
+			List("Company", "City", "company.city", "text", "", "New York"),
+			List("Company", "Country", "company.country", "text", "", "USA"),
+			List("Company", "Tax ID", "company.tax.id", "text", "", "US9999999"),
+				
 			List("SMTP Configuration", "E-mail", "smtp.email", "text", "", ""),
 			List("SMTP Configuration", "Sender name", "smtp.sender", "text", "", ""),
 			List("SMTP Configuration", "Login", "smtp.login", "text", "", ""),
