@@ -63,6 +63,9 @@ class TopMenuComponent extends React.Component {
 								<li className="dropdown">
 									<a href="#" className="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administration <span className="caret"></span></a>
 									<ul className="dropdown-menu">
+										<li className={this.getActiveClass("/admin/configuration")}>
+											<Link to="/admin/configuration" onClick={this.handleMenuClick}>Configuration</Link>
+										</li>
 										<li className="dropdown-header">Users</li>
 										<li className={this.getActiveClass("/admin/users/add")}>
 											<Link to="/admin/users/add" onClick={this.handleMenuClick}>Add</Link>

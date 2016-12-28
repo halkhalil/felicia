@@ -3,6 +3,17 @@
 
 # --- !Ups
 
+create table configuration_entry (
+  id                            integer auto_increment not null,
+  section_name                  varchar(255) not null,
+  name                          varchar(255) not null,
+  symbol                        varchar(255) not null,
+  type_id                       varchar(255) not null,
+  type_configuration            TEXT,
+  value                         TEXT,
+  constraint pk_configuration_entry primary key (id)
+);
+
 create table user (
   id                            integer auto_increment not null,
   login                         varchar(255) not null,
@@ -42,6 +53,8 @@ drop index ix_user_role_id on user;
 
 alter table user_session drop foreign key fk_user_session_user_id;
 drop index ix_user_session_user_id on user_session;
+
+drop table if exists configuration_entry;
 
 drop table if exists user;
 

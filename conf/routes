@@ -18,3 +18,7 @@ GET    /api/user/:id  controllers.UsersController.get(id: Int)
 PUT    /api/user/:id  controllers.UsersController.save(id: Int)
 POST   /api/user      controllers.UsersController.create
 DELETE /api/user/:id  controllers.UsersController.delete(id: Int)
+
+# Configuration API
+GET /api/configuration/entries controllers.ConfigurationController.index
+PUT /api/configuration/entries controllers.ConfigurationController.save
