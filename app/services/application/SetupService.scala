@@ -17,6 +17,7 @@ class SetupService {
 	
 	dataInitialize()
 	initConfiguration()
+	initPaymentMethods()
 	
 	def dataInitialize() = {
 		val roles:java.util.List[UserRole] = UserRole.finder.all()
@@ -76,6 +77,15 @@ class SetupService {
 				configEntry.value = entry(5)
 				configEntry.save()
 			}
+		}
+	}
+	
+	def initPaymentMethods() = {
+		if (PaymentMethod.finder.all().size == 0) {
+			val paymentMethod: PaymentMethod = new PaymentMethod()
+			paymentMethod.name = "Bank Transfer"
+			paymentMethod.symbol = "bankTransfer"
+			paymentMethod.save()
 		}
 	}
 }

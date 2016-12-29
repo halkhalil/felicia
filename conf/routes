@@ -22,3 +22,10 @@ DELETE /api/user/:id  controllers.UsersController.delete(id: Int)
 # Configuration API
 GET /api/configuration/entries controllers.ConfigurationController.index
 PUT /api/configuration/entries controllers.ConfigurationController.save
+
+# Payment Methods API
+GET    /api/payment-methods     controllers.PaymentMethodsController.index
+DELETE /api/payment-method/:id  controllers.PaymentMethodsController.delete(id: Int)
+GET    /api/payment-method/:id  controllers.PaymentMethodsController.get(id: Int)
+PUT    /api/payment-method/:id  controllers.PaymentMethodsController.save(id: Int)
+POST   /api/payment-method      controllers.PaymentMethodsController.create

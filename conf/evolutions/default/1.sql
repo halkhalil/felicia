@@ -14,6 +14,13 @@ create table configuration_entry (
   constraint pk_configuration_entry primary key (id)
 );
 
+create table payment_method (
+  id                            integer auto_increment not null,
+  name                          varchar(255) not null,
+  symbol                        varchar(255) not null,
+  constraint pk_payment_method primary key (id)
+);
+
 create table user (
   id                            integer auto_increment not null,
   login                         varchar(255) not null,
@@ -55,6 +62,8 @@ alter table user_session drop foreign key fk_user_session_user_id;
 drop index ix_user_session_user_id on user_session;
 
 drop table if exists configuration_entry;
+
+drop table if exists payment_method;
 
 drop table if exists user;
 

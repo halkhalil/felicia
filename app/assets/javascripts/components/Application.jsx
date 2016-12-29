@@ -17,6 +17,9 @@ import {Users} from "components/admin/users/Users.jsx";
 import {UserAdd} from "components/admin/users/UserAdd.jsx";
 import {UserEdit} from "components/admin/users/UserEdit";
 import {ConfigurationEdit} from "components/admin/configuration/ConfigurationEdit";
+import {PaymentMethods} from "components/admin/payment-methods/PaymentMethods";
+import {PaymentMethodEdit} from "components/admin/payment-methods/PaymentMethodEdit";
+import {PaymentMethodAdd} from "components/admin/payment-methods/PaymentMethodAdd";
  
 class ApplicationComponent extends React.Component {
 	constructor(props) {
@@ -44,6 +47,11 @@ class ApplicationComponent extends React.Component {
 							</Route>
 							<Route path="user/:id" component={UserEdit} />
 							<Route path="configuration" component={ConfigurationEdit} />
+							<Route path="payment-methods">
+								<IndexRoute component={PaymentMethods} />
+								<Route path="add" component={PaymentMethodAdd} />
+							</Route>
+							<Route path="payment-method/:id" component={PaymentMethodEdit} />
 						</Route>
 						
 						<Route path="*" component={NotFound} />
