@@ -23,3 +23,13 @@ class ConfigurationService {
 		getAll()
 	}
 }
+
+object ConfigurationService {
+	
+	def getTextNonEmpty(entrySymbol: String): Option[String] = {
+		val entry: ConfigurationEntry = ConfigurationEntry.finder.where().eq("symbol", entrySymbol).findUnique()
+		
+		if (entry != null && entry.value.length() > 0) Some(entry.value) else None 
+	}
+	
+}

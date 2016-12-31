@@ -13,6 +13,7 @@ import {NotFound} from "components/common/NotFound.jsx";
 
 import {Customers} from "components/customers/Customers.jsx";
 import {Invoices} from "components/invoices/Invoices.jsx";
+import {InvoiceAdd} from "components/invoices/InvoiceAdd.jsx";
 import {Users} from "components/admin/users/Users.jsx";
 import {UserAdd} from "components/admin/users/UserAdd.jsx";
 import {UserEdit} from "components/admin/users/UserEdit";
@@ -39,7 +40,12 @@ class ApplicationComponent extends React.Component {
 					<Route path="/" component={Core}>
 						<IndexRoute component={Start} />
 						<Route path="customers" component={Customers} />
-						<Route path="invoices" component={Invoices} />
+						
+						<Route path="invoices">
+							<IndexRoute component={Invoices} />
+							<Route path="add" component={InvoiceAdd} />
+						</Route>
+						
 						<Route path="admin">
 							<Route path="users">
 								<IndexRoute component={Users} />

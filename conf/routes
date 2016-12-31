@@ -29,3 +29,6 @@ DELETE /api/payment-method/:id  controllers.PaymentMethodsController.delete(id: 
 GET    /api/payment-method/:id  controllers.PaymentMethodsController.get(id: Int)
 PUT    /api/payment-method/:id  controllers.PaymentMethodsController.save(id: Int)
 POST   /api/payment-method      controllers.PaymentMethodsController.create
+
+# Invoice Methods API
+POST   /api/invoice      controllers.InvoicesController.create

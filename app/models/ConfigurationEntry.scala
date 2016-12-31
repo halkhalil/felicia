@@ -56,5 +56,5 @@ object ConfigurationEntry {
    	}
 	}
 	
-	def finder:Model.Finder[Long, ConfigurationEntry] = new Model.Finder[Long, ConfigurationEntry](classOf[ConfigurationEntry]);
+	def finder:Model.Finder[Long, ConfigurationEntry] = new Model.Finder[Long, ConfigurationEntry](classOf[ConfigurationEntry])
 }

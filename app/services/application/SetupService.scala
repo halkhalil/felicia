@@ -56,6 +56,9 @@ class SetupService {
 			List("Company", "City", "company.city", "text", "", "New York"),
 			List("Company", "Country", "company.country", "text", "", "USA"),
 			List("Company", "Tax ID", "company.tax.id", "text", "", "US9999999"),
+			
+			List("Invoices", "Place of issue", "invoices.place", "text", "", "New York"),
+			List("Invoices", "Currency", "invoices.currency", "text", "", "USD"),
 				
 			List("SMTP Configuration", "E-mail", "smtp.email", "text", "", ""),
 			List("SMTP Configuration", "Sender name", "smtp.sender", "text", "", ""),
