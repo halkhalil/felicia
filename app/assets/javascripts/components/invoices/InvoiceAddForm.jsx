@@ -1,5 +1,5 @@
 import React from "react";
-
+import moment from "moment";
 import 'react-input-calendar/style/index.css'
 import Calendar from 'react-input-calendar';
 
@@ -16,8 +16,9 @@ export class InvoiceAddForm extends React.Component {
 			buyerCity: '',
 			buyerCountry: '',
 			buyerTaxId: '',
-			issueDate: null,
-			orderDate: '',
+			issueDate: moment().format('YYYY-MM-DD'),
+			orderDate: moment().format('YYYY-MM-DD'),
+			dueDate: moment().add(10, 'days').format('YYYY-MM-DD'),
 			validationError: false
 		}
 	}
@@ -38,13 +39,14 @@ export class InvoiceAddForm extends React.Component {
 				buyerCountry: this.state.buyerCountry,
 				buyerTaxId: this.state.buyerTaxId,
 				issueDate: this.state.issueDate,
-				orderDate: this.state.orderDate
+				orderDate: this.state.orderDate,
+				dueDate: this.state.dueDate
 			})
 		}
 	}
 	
 	isFormValid() {
-		let validateEmpty = ['buyerName', 'buyerAddress', 'buyerZip', 'buyerCity', 'buyerCountry', 'issueDate', 'orderDate']
+		let validateEmpty = ['buyerName', 'buyerAddress', 'buyerZip', 'buyerCity', 'buyerCountry', 'issueDate', 'orderDate', 'dueDate']
 		let valid = true
 		
 		validateEmpty.forEach((field) => {
@@ -127,14 +129,38 @@ export class InvoiceAddForm extends React.Component {
 					Other details:
 					<div className={this.nonEmptyErrorClass('issueDate', 'form-group')}>
 						<label className="control-label col-sm-2">Issue Date:</label>
-						<div className="col-sm-10">
-							<Calendar format='DD/MM/YYYY' date='4-12-2014' />
+						<div className="col-sm-10 form-inline">
+							<Calendar 
+								format="YYYY-MM-DD"
+								closeOnSelect={true}
+								hideOnBlur={true}
+								computableFormat="YYYY-MM-DD"
+								date={this.state.issueDate} onChange={(date) => this.handleChange('issueDate', date)}
+								inputFieldClass="form-control" />
 						</div>
 					</div>
 					<div className={this.nonEmptyErrorClass('orderDate', 'form-group')}>
 						<label className="control-label col-sm-2">Order Date:</label>
-						<div className="col-sm-10">
-							<input type="text" className="form-control" onChange={(event) => this.handleChange('orderDate', event.target.value)} value={this.state.orderDate} />
+						<div className="col-sm-10 form-inline">
+							<Calendar
+								format="YYYY-MM-DD"
+								closeOnSelect={true}
+								hideOnBlur={true}
+								computableFormat="YYYY-MM-DD"
+								date={this.state.orderDate} onChange={(date) => this.handleChange('orderDate', date)}
+								inputFieldClass="form-control" />
+						</div>
+					</div>
+					<div className={this.nonEmptyErrorClass('dueDate', 'form-group')}>
+						<label className="control-label col-sm-2">Due Date:</label>
+						<div className="col-sm-10 form-inline">
+							<Calendar
+								format="YYYY-MM-DD"
+								closeOnSelect={true}
+								hideOnBlur={true}
+								computableFormat="YYYY-MM-DD"
+								date={this.state.dueDate} onChange={(date) => this.handleChange('dueDate', date)}
+								inputFieldClass="form-control" />
 						</div>
 					</div>
 					

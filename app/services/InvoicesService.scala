@@ -59,6 +59,7 @@ class InvoicesService {
 		invoice.placeOfIssue = ConfigurationService.getTextNonEmpty("invoices.place").get
 		invoice.issueDate = invoiceInput.issueDate
 		invoice.orderDate = invoiceInput.orderDate
+		invoice.dueDate = invoiceInput.dueDate
 		
 		
 		invoice.save()

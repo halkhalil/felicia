@@ -16,7 +16,8 @@ case class InvoiceInput(
 	buyerCountry: String,
 	buyerTaxId: String,
 	issueDate: Date,
-	orderDate: Date
+	orderDate: Date,
+	dueDate: Date 
 )
 
 object InvoiceInput {
@@ -30,8 +31,8 @@ object InvoiceInput {
 				"buyerCountry" -> JsString(invoiceInput.buyerCountry),
 				"buyerTaxId" -> JsString(invoiceInput.buyerTaxId),
 				"issueDate" -> JsString(invoiceInput.issueDate.toString()),
-				"orderDate" -> JsString(invoiceInput.orderDate.toString())
-				
+				"orderDate" -> JsString(invoiceInput.orderDate.toString()),
+				"dueDate" -> JsString(invoiceInput.dueDate.toString())
 				
 			))
 		}
@@ -45,7 +46,8 @@ object InvoiceInput {
 				(json \ "buyerCountry").as[String],
 				(json \ "buyerTaxId").as[String],
 				(json \ "issueDate").as[Date],
-				(json \ "orderDate").as[Date]
+				(json \ "orderDate").as[Date],
+				(json \ "dueDate").as[Date]
 			))
 		}
     }
