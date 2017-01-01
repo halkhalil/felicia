@@ -12,6 +12,7 @@ import play.api.libs.json.Json
 import play.api.libs.json._
 import models.PaymentMethod
 import play.api.data.format.Formats
+import models.User
 
 @Entity
 class Invoice extends Model {
@@ -90,6 +91,10 @@ class Invoice extends Model {
 	
 	@Column(columnDefinition = "TEXT")
 	var additionalDetails: String = _
+	
+	@NotNull
+	@ManyToOne()
+	var creator: User = _
 }
 
 object Invoice {
@@ -97,6 +102,7 @@ object Invoice {
 		def writes(invoice: Invoice): JsValue = {
 			val invoiceSeq = Seq(
 				"id" -> JsNumber(invoice.id),
+				"publicId" -> JsString(invoice.publicId),
 				"buyerName" -> JsString(invoice.buyerName),
 				"buyerAddress" -> JsString(invoice.buyerAddress)
 			)

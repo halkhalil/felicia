@@ -29,7 +29,7 @@ class InvoicesController @Inject() (authenticationService: AuthenticationService
 				invoicesService.validationErrorOnCreate(invoiceInput).map { error =>
 					badRequest(error)
 				}.getOrElse {
-					ok(invoicesService.create(invoiceInput))
+					ok(invoicesService.create(invoiceInput, request.user.get))
 				}
 			}
 		)

@@ -9,6 +9,7 @@ import java.util.Calendar
 import java.util.Date
 import models.ConfigurationEntry
 import services.application.ConfigurationService
+import models.User
 
 @Singleton
 class InvoicesService {
@@ -37,7 +38,7 @@ class InvoicesService {
 		None
 	}
 	
-	def create(invoiceInput: InvoiceInput): Invoice = {
+	def create(invoiceInput: InvoiceInput, creator: User): Invoice = {
 		val invoice: Invoice = new Invoice()
 		
 		invoice.publicId = newPublicId
@@ -62,6 +63,8 @@ class InvoicesService {
 		invoice.orderDate = invoiceInput.orderDate
 		invoice.dueDate = invoiceInput.dueDate
 		invoice.paymentMethod = invoiceInput.paymentMethod
+		
+		invoice.creator = creator
 		
 		invoice.save()
 		

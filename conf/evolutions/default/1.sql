@@ -38,6 +38,7 @@ create table invoice (
   order_date                    date not null,
   due_date                      date not null,
   additional_details            TEXT,
+  creator_id                    integer not null,
   constraint uq_invoice_public_id unique (public_id),
   constraint pk_invoice primary key (id)
 );
@@ -88,6 +89,9 @@ create table user_session (
 alter table invoice add constraint fk_invoice_payment_method_id foreign key (payment_method_id) references payment_method (id) on delete restrict on update restrict;
 create index ix_invoice_payment_method_id on invoice (payment_method_id);
 
+alter table invoice add constraint fk_invoice_creator_id foreign key (creator_id) references user (id) on delete restrict on update restrict;
+create index ix_invoice_creator_id on invoice (creator_id);
+
 alter table invoice_part add constraint fk_invoice_part_invoice_id foreign key (invoice_id) references invoice (id) on delete restrict on update restrict;
 create index ix_invoice_part_invoice_id on invoice_part (invoice_id);
 
@@ -102,6 +106,9 @@ create index ix_user_session_user_id on user_session (user_id);
 
 alter table invoice drop foreign key fk_invoice_payment_method_id;
 drop index ix_invoice_payment_method_id on invoice;
+
+alter table invoice drop foreign key fk_invoice_creator_id;
+drop index ix_invoice_creator_id on invoice;
 
 alter table invoice_part drop foreign key fk_invoice_part_invoice_id;
 drop index ix_invoice_part_invoice_id on invoice_part;
