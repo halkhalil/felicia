@@ -3,6 +3,7 @@ import React from "react";
 import {TextField} from "./fields/TextField";
 import {NumberField} from "./fields/NumberField";
 import {BooleanField} from "./fields/BooleanField";
+import {CurrencyField} from "./fields/CurrencyField";
 
 export class ConfigurationEditForm extends React.Component {
 	
@@ -41,6 +42,10 @@ export class ConfigurationEditForm extends React.Component {
 									{
 										entry.typeId === 'number' &&
 										<NumberField className="form-control" onChange={(value) => this.props.onFieldChange(entry.symbol, value)} value={this.fieldValue(entry.symbol)} />
+									}
+									{
+										entry.typeId === 'currency' &&
+										<CurrencyField className="form-control" onChange={(value) => this.props.onFieldChange(entry.symbol, value)} value={this.fieldValue(entry.symbol)} />
 									}
 									{
 										entry.typeId === 'text' &&
