@@ -20,9 +20,8 @@ class InvoicesService {
 		if (invoiceInput.buyerCity.trim().length() == 0) return Some("Buyer city cannot be empty")
 		if (invoiceInput.buyerZip.trim().length() == 0) return Some("Buyer zip code cannot be empty")
 		if (invoiceInput.buyerCountry.trim().length() == 0) return Some("Buyer country cannot be empty")
-		//if (invoiceInput.issueDate) return Some("Issue date cannot be empty")
 		
-		// TODO: validate dates
+		if (!checkIssueDate(invoiceInput.issueDate)) return Some("Issue date is incorrect because there are invoices that have greater issue date")
 		
 		if (invoiceInput.paymentMethod == null) return Some("Payment method is unknown")
 		
@@ -41,7 +40,7 @@ class InvoicesService {
 	def create(invoiceInput: InvoiceInput, creator: User): Invoice = {
 		val invoice: Invoice = new Invoice()
 		
-		invoice.publicId = newPublicId
+		invoice.publicId = newPublicId(invoiceInput.issueDate)
 		invoice.currency = ConfigurationService.getTextNonEmpty("invoices.currency").get
 		invoice.buyerIsCompany = invoiceInput.buyerIsCompany
 		invoice.buyerName = invoiceInput.buyerName
@@ -71,9 +70,12 @@ class InvoicesService {
 		invoice
 	}
 	
-	private def newPublicId: String = {
-		val year: Int = Calendar.getInstance().get(Calendar.YEAR);
-		val month: Int = Calendar.getInstance().get(Calendar.MONTH) + 1
+	private def newPublicId(issueDate: Date): String = {
+		val calendar: Calendar = Calendar.getInstance()
+		calendar.setTime(issueDate)
+		
+		val year: Int = calendar.get(Calendar.YEAR);
+		val month: Int = calendar.get(Calendar.MONTH) + 1
 		
 		val calendarStart: Calendar = Calendar.getInstance()
 		calendarStart.set(Calendar.YEAR, year)
@@ -93,5 +95,26 @@ class InvoicesService {
 		totalInCurrentYear += 1
 		
 		totalInCurrentYear + "/" + month + "/" + year
+	}
+	
+	private def checkIssueDate(issueDate: Date): Boolean = {
+		val calendar: Calendar = Calendar.getInstance()
+		calendar.setTime(issueDate)
+		
+		val issueDateMonth = calendar.get(Calendar.MONTH) + 1
+		
+		calendar.add(Calendar.MONTH, 1)
+		calendar.set(Calendar.DAY_OF_MONTH, 1)
+		calendar.set(Calendar.HOUR_OF_DAY, 0)
+		calendar.set(Calendar.MINUTE, 0)
+		calendar.set(Calendar.SECOND, 0)
+		calendar.set(Calendar.MILLISECOND, 0)
+		val firstDay: Date = calendar.getTime()
+		
+		calendar.set(Calendar.MONTH, 0)
+		calendar.add(Calendar.YEAR, 1)
+		val lastDay: Date = calendar.getTime()
+		
+		issueDateMonth == 12 || Invoice.finder.where().ge("issueDate", firstDay).lt("issueDate", lastDay).findRowCount() == 0
 	}
 }
