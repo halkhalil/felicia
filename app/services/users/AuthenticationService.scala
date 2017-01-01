@@ -42,4 +42,15 @@ class AuthenticationService @Inject() (configuration: Configuration) {
 		
 		false
 	}
+	
+	def loggedInUser(userSessionId: Option[String]): Option[User] = {
+		userSessionId.map { userSessionId => 
+			val userSession: UserSession = UserSession.finder.where().eq("sessionId", userSessionId).findUnique()
+			
+			if (userSession != null && userSession.user != null) Some(userSession.user) else None
+		}.getOrElse {
+			None
+		}
+	}
+	
 }

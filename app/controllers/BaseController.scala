@@ -12,6 +12,10 @@ import play.api.libs.json.Json
 import play.api.mvc.AnyContent
 import play.api.mvc.ActionBuilder
 import play.api.libs.json.Writes
+import models.User
+import play.api.mvc.WrappedRequest
+import play.api.mvc.ActionTransformer
+import play.api.mvc.ActionFilter
 
 class BaseController @Inject() (authenticationService: AuthenticationService, usersService: UserService) extends Controller {
 
@@ -30,6 +34,25 @@ class BaseController @Inject() (authenticationService: AuthenticationService, us
 			}
 		}
 	}
+	
+	object UserAction extends ActionBuilder[UserRequest] with ActionTransformer[Request, UserRequest] {
+		def transform[A](request: Request[A]) = Future.successful {
+			val userSessionId: Option[String] = request.session.get(SESSION_USER_KEY)
+			
+			new UserRequest(authenticationService.loggedInUser(userSessionId), request)
+		}
+	}
+	
+	object AuthorizationCheckAction extends ActionFilter[UserRequest] {
+		def filter[A](input: UserRequest[A]) = Future.successful {
+			if (!input.user.nonEmpty)
+				Some(forbidden("Not authorized"))
+			else
+				None
+		}
+	}
+	
+	class UserRequest[A](val user: Option[User], request: Request[A]) extends WrappedRequest[A](request)
 	
 	def ok[Z](obj: Z)(implicit tjs: Writes[Z]):Result = {
 		Ok(Json.toJson(obj)).as(JSON)

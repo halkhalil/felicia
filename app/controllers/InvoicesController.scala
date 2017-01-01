@@ -11,12 +11,14 @@ import services.users.UserService
 import play.api.libs.json.JsError
 import services.InvoicesService
 import controllers.input.InvoiceInput
+import play.api.libs.json.JsValue
+import models.User
 
 @Singleton
 class InvoicesController @Inject() (authenticationService: AuthenticationService, usersService: UserService, invoicesService: InvoicesService) 
 	extends BaseController(authenticationService, usersService) {
 
-	def create = SecuredAction(BodyParsers.parse.json) { request =>
+	def create = (UserAction andThen AuthorizationCheckAction)(BodyParsers.parse.json) { request =>
 		val invoiceInputResult = request.body.validate[InvoiceInput]
 		
 		invoiceInputResult.fold(
