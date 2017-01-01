@@ -48,3 +48,12 @@
 .input-calendar-wrapper {
 	z-index: 100;
 }
+
+/* React-select validation error indicator */
+.has-error .Select-control {
+	border-color: #a94442;
+}
+
+.has-error .Select-placeholder {
+	color: #a94442;
+}

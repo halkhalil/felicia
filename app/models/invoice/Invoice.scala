@@ -11,6 +11,7 @@ import models.user.UserSession
 import play.api.libs.json.Json
 import play.api.libs.json._
 import models.PaymentMethod
+import play.api.data.format.Formats
 
 @Entity
 class Invoice extends Model {
@@ -73,12 +74,15 @@ class Invoice extends Model {
 	var placeOfIssue: String = _
 	
 	@NotNull
+	@Column(columnDefinition = "DATE")
 	var issueDate: Date = _
 	
 	@NotNull
+	@Column(columnDefinition = "DATE")
 	var orderDate: Date = _
 	
 	@NotNull
+	@Column(columnDefinition = "DATE")
 	var dueDate: Date = _
 
 	@OneToMany(mappedBy = "invoice")

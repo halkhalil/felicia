@@ -1,7 +1,9 @@
 import React from "react";
 import moment from "moment";
-import 'react-input-calendar/style/index.css'
 import Calendar from 'react-input-calendar';
+import 'react-input-calendar/style/index.css'
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
 
 export class InvoiceAddForm extends React.Component {
 	
@@ -19,6 +21,7 @@ export class InvoiceAddForm extends React.Component {
 			issueDate: moment().format('YYYY-MM-DD'),
 			orderDate: moment().format('YYYY-MM-DD'),
 			dueDate: moment().add(10, 'days').format('YYYY-MM-DD'),
+			paymentMethod: 0,
 			validationError: false
 		}
 	}
@@ -40,13 +43,15 @@ export class InvoiceAddForm extends React.Component {
 				buyerTaxId: this.state.buyerTaxId,
 				issueDate: this.state.issueDate,
 				orderDate: this.state.orderDate,
-				dueDate: this.state.dueDate
+				dueDate: this.state.dueDate,
+				paymentMethod: this.state.paymentMethod
 			})
 		}
 	}
 	
 	isFormValid() {
 		let validateEmpty = ['buyerName', 'buyerAddress', 'buyerZip', 'buyerCity', 'buyerCountry', 'issueDate', 'orderDate', 'dueDate']
+		let validateNonZero = ['paymentMethod']
 		let valid = true
 		
 		validateEmpty.forEach((field) => {
@@ -54,7 +59,12 @@ export class InvoiceAddForm extends React.Component {
 				valid = false
 			}
 		})
-		
+		validateNonZero.forEach((field) => {
+			let intParsed = parseInt(this.state[field])
+			if (isNaN(intParsed) || intParsed === 0) {
+				valid = false
+			}
+		})
 		
 		return valid
 	}
@@ -67,11 +77,20 @@ export class InvoiceAddForm extends React.Component {
 		return (this.state.validationError && this.state[field].length === 0 ? 'has-error ' : '') + otherClasses
 	}
 	
+	nonZeroErrorClass(field, otherClasses) {
+		return (this.state.validationError && parseInt(this.state[field]) === 0 ? 'has-error ' : '') + otherClasses
+	}
+	
 	submitButtonClasses() {
 		return 'btn btn-primary' + (this.props.saving ? ' disabled' : '')
 	}
 	
 	render() {
+		let paymentMethods = this.props.paymentMethods.map((method) => {
+			return { value: method.id, label: method.name }
+		})
+		paymentMethods.unshift({ value: 0, label: '-- not selected --' })
+		
 		return (
 			<div>
 				<h3>Add Invoice</h3>
@@ -136,7 +155,8 @@ export class InvoiceAddForm extends React.Component {
 								hideOnBlur={true}
 								computableFormat="YYYY-MM-DD"
 								date={this.state.issueDate} onChange={(date) => this.handleChange('issueDate', date)}
-								inputFieldClass="form-control" />
+								inputFieldClass="form-control"
+							/>
 						</div>
 					</div>
 					<div className={this.nonEmptyErrorClass('orderDate', 'form-group')}>
@@ -148,7 +168,8 @@ export class InvoiceAddForm extends React.Component {
 								hideOnBlur={true}
 								computableFormat="YYYY-MM-DD"
 								date={this.state.orderDate} onChange={(date) => this.handleChange('orderDate', date)}
-								inputFieldClass="form-control" />
+								inputFieldClass="form-control"
+							/>
 						</div>
 					</div>
 					<div className={this.nonEmptyErrorClass('dueDate', 'form-group')}>
@@ -160,7 +181,22 @@ export class InvoiceAddForm extends React.Component {
 								hideOnBlur={true}
 								computableFormat="YYYY-MM-DD"
 								date={this.state.dueDate} onChange={(date) => this.handleChange('dueDate', date)}
-								inputFieldClass="form-control" />
+								inputFieldClass="form-control"
+							/>
+						</div>
+					</div>
+					<div className={this.nonZeroErrorClass('paymentMethod', 'form-group')}>
+						<label className="control-label col-sm-2">Payment method:</label>
+						<div className="col-sm-4 form-inline">
+							<Select
+								clearable={false}
+								searchable={false}
+								value={this.state.paymentMethod}
+								options={this.props.paymentMethods}
+								labelKey="name"
+								valueKey="id"
+								onChange={(selection) => this.handleChange('paymentMethod', selection.id)}
+							/>
 						</div>
 					</div>
 					

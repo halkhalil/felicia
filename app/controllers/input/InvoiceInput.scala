@@ -4,9 +4,11 @@ import play.api.libs.json.Format
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsValue
 import play.api.libs.json.JsString
+import play.api.libs.json.JsNull
 import play.api.libs.json.JsSuccess
 import play.api.libs.json.JsResult
 import java.util.Date
+import models.PaymentMethod
 
 case class InvoiceInput(
 	buyerName: String,
@@ -17,12 +19,15 @@ case class InvoiceInput(
 	buyerTaxId: String,
 	issueDate: Date,
 	orderDate: Date,
-	dueDate: Date 
+	dueDate: Date,
+	paymentMethod: PaymentMethod
 )
 
 object InvoiceInput {
 	implicit object PaymentMethodInputFormat extends Format[InvoiceInput] {
 		def writes(invoiceInput: InvoiceInput): JsValue = {
+			val paymentMethod: JsValue = if (invoiceInput.paymentMethod != null) JsString(invoiceInput.paymentMethod.id.toString()) else JsNull
+			
 			JsObject(Seq(
 				"buyerName" -> JsString(invoiceInput.buyerName),
 				"buyerAddress" -> JsString(invoiceInput.buyerAddress),
@@ -32,8 +37,8 @@ object InvoiceInput {
 				"buyerTaxId" -> JsString(invoiceInput.buyerTaxId),
 				"issueDate" -> JsString(invoiceInput.issueDate.toString()),
 				"orderDate" -> JsString(invoiceInput.orderDate.toString()),
-				"dueDate" -> JsString(invoiceInput.dueDate.toString())
-				
+				"dueDate" -> JsString(invoiceInput.dueDate.toString()),
+				"paymentMethod" -> paymentMethod
 			))
 		}
 		
@@ -47,7 +52,8 @@ object InvoiceInput {
 				(json \ "buyerTaxId").as[String],
 				(json \ "issueDate").as[Date],
 				(json \ "orderDate").as[Date],
-				(json \ "dueDate").as[Date]
+				(json \ "dueDate").as[Date],
+				PaymentMethod.finder.where().eq("id", (json \ "paymentMethod").as[Int]).findUnique()
 			))
 		}
     }

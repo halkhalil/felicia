@@ -89,6 +89,12 @@ class SetupService {
 			paymentMethod.name = "Bank Transfer"
 			paymentMethod.symbol = "bankTransfer"
 			paymentMethod.save()
+			
+			val paymentMethod2: PaymentMethod = new PaymentMethod()
+			paymentMethod2.name = "PayPal"
+			paymentMethod2.symbol = "payPal"
+			paymentMethod2.save()
+			
 		}
 	}
 }

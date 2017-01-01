@@ -23,6 +23,8 @@ class InvoicesService {
 		
 		// TODO: validate dates
 		
+		if (invoiceInput.paymentMethod == null) return Some("Payment method is unknown")
+		
 		if (ConfigurationService.getTextNonEmpty("invoices.currency").isEmpty) return Some("Main currency was not defined")
 		if (ConfigurationService.getTextNonEmpty("invoices.place").isEmpty) return Some("Place of issue was not defined")
 		
@@ -32,7 +34,6 @@ class InvoicesService {
 		if (ConfigurationService.getTextNonEmpty("company.city").isEmpty) return Some("Seller city was not defined")
 		if (ConfigurationService.getTextNonEmpty("company.country").isEmpty) return Some("Seller country was not defined")
 		if (ConfigurationService.getTextNonEmpty("company.tax.id").isEmpty) return Some("Seller tax ID was not defined")
-			
 		
 		None
 	}
@@ -60,7 +61,7 @@ class InvoicesService {
 		invoice.issueDate = invoiceInput.issueDate
 		invoice.orderDate = invoiceInput.orderDate
 		invoice.dueDate = invoiceInput.dueDate
-		
+		invoice.paymentMethod = invoiceInput.paymentMethod
 		
 		invoice.save()
 		

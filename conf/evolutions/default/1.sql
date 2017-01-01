@@ -34,9 +34,9 @@ create table invoice (
   buyer_tax_id                  varchar(255),
   payment_method_id             integer not null,
   place_of_issue                varchar(255) not null,
-  issue_date                    datetime(6) not null,
-  order_date                    datetime(6) not null,
-  due_date                      datetime(6) not null,
+  issue_date                    date not null,
+  order_date                    date not null,
+  due_date                      date not null,
   additional_details            TEXT,
   constraint uq_invoice_public_id unique (public_id),
   constraint pk_invoice primary key (id)
