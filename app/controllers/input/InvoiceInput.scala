@@ -9,8 +9,10 @@ import play.api.libs.json.JsSuccess
 import play.api.libs.json.JsResult
 import java.util.Date
 import models.PaymentMethod
+import play.api.libs.json.JsBoolean
 
 case class InvoiceInput(
+	buyerIsCompany: Boolean,
 	buyerName: String,
 	buyerAddress: String,
 	buyerZip: String,
@@ -29,6 +31,7 @@ object InvoiceInput {
 			val paymentMethod: JsValue = if (invoiceInput.paymentMethod != null) JsString(invoiceInput.paymentMethod.id.toString()) else JsNull
 			
 			JsObject(Seq(
+				"buyerIsCompany" -> JsBoolean(invoiceInput.buyerIsCompany),
 				"buyerName" -> JsString(invoiceInput.buyerName),
 				"buyerAddress" -> JsString(invoiceInput.buyerAddress),
 				"buyerZip" -> JsString(invoiceInput.buyerZip),
@@ -44,6 +47,7 @@ object InvoiceInput {
 		
 		def reads(json: JsValue): JsResult[InvoiceInput] = {
 			JsSuccess(new InvoiceInput(
+				(json \ "buyerIsCompany").as[Boolean],
 				(json \ "buyerName").as[String],
 				(json \ "buyerAddress").as[String],
 				(json \ "buyerZip").as[String],

@@ -26,8 +26,7 @@ class InvoicesService {
 		if (invoiceInput.paymentMethod == null) return Some("Payment method is unknown")
 		
 		if (ConfigurationService.getTextNonEmpty("invoices.currency").isEmpty) return Some("Main currency was not defined")
-		if (ConfigurationService.getTextNonEmpty("invoices.place").isEmpty) return Some("Place of issue was not defined")
-		
+		if (ConfigurationService.getTextNonEmpty("invoices.place").isEmpty) return Some("Place of issue was not defined")	
 		if (ConfigurationService.getTextNonEmpty("company.name").isEmpty) return Some("Seller name was not defined")
 		if (ConfigurationService.getTextNonEmpty("company.address").isEmpty) return Some("Seller address was not defined")
 		if (ConfigurationService.getTextNonEmpty("company.zip").isEmpty) return Some("Seller zip code was not defined")
@@ -43,6 +42,7 @@ class InvoicesService {
 		
 		invoice.publicId = newPublicId
 		invoice.currency = ConfigurationService.getTextNonEmpty("invoices.currency").get
+		invoice.buyerIsCompany = invoiceInput.buyerIsCompany
 		invoice.buyerName = invoiceInput.buyerName
 		invoice.buyerAddress = invoiceInput.buyerAddress
 		invoice.buyerZip = invoiceInput.buyerZip
