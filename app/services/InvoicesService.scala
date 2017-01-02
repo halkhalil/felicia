@@ -10,6 +10,10 @@ import java.util.Date
 import models.ConfigurationEntry
 import services.application.ConfigurationService
 import models.User
+import scala.collection.mutable.ListBuffer
+import scala.collection.JavaConverters._
+import models.invoice.InvoicePart
+import models.invoice.InvoicePart
 
 @Singleton
 class InvoicesService {
@@ -33,6 +37,8 @@ class InvoicesService {
 		if (ConfigurationService.getTextNonEmpty("company.city").isEmpty) return Some("Seller city was not defined")
 		if (ConfigurationService.getTextNonEmpty("company.country").isEmpty) return Some("Seller country was not defined")
 		if (ConfigurationService.getTextNonEmpty("company.tax.id").isEmpty) return Some("Seller tax ID was not defined")
+		
+		if (invoiceInput.parts.length == 0) return Some("Invoice parts array cannot be empty")
 		
 		None
 	}
@@ -63,9 +69,28 @@ class InvoicesService {
 		invoice.dueDate = invoiceInput.dueDate
 		invoice.paymentMethod = invoiceInput.paymentMethod
 		
+		var totalInvoice: Int = 0
+		val parts: ListBuffer[InvoicePart] = new ListBuffer[InvoicePart]()
+		invoiceInput.parts.foreach { invoicePartInput => 
+			val invoicePart: InvoicePart = new InvoicePart()
+			invoicePart.name = invoicePartInput.name
+			invoicePart.quantity = invoicePartInput.quantity
+			invoicePart.unit = invoicePartInput.unit
+			invoicePart.total = invoicePartInput.total
+			invoicePart.unitPrice = invoicePartInput.unitPrice
+			invoicePart.invoice = invoice
+			
+			parts += invoicePart
+			totalInvoice += invoicePartInput.total
+		}
+		invoice.total = totalInvoice
 		invoice.creator = creator
-		
 		invoice.save()
+		
+		// save invoice parts:
+		parts.foreach { invoicePart =>
+			invoicePart.save()	
+		}
 		
 		invoice
 	}

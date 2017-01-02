@@ -10,6 +10,7 @@ import play.api.libs.json.JsResult
 import java.util.Date
 import models.PaymentMethod
 import play.api.libs.json.JsBoolean
+import play.api.libs.json.JsArray
 
 case class InvoiceInput(
 	buyerIsCompany: Boolean,
@@ -22,11 +23,12 @@ case class InvoiceInput(
 	issueDate: Date,
 	orderDate: Date,
 	dueDate: Date,
-	paymentMethod: PaymentMethod
+	paymentMethod: PaymentMethod,
+	parts: List[InvoicePartInput]
 )
 
 object InvoiceInput {
-	implicit object PaymentMethodInputFormat extends Format[InvoiceInput] {
+	implicit object InvoiceInputFormat extends Format[InvoiceInput] {
 		def writes(invoiceInput: InvoiceInput): JsValue = {
 			val paymentMethod: JsValue = if (invoiceInput.paymentMethod != null) JsString(invoiceInput.paymentMethod.id.toString()) else JsNull
 			
@@ -57,7 +59,8 @@ object InvoiceInput {
 				(json \ "issueDate").as[Date],
 				(json \ "orderDate").as[Date],
 				(json \ "dueDate").as[Date],
-				PaymentMethod.finder.where().eq("id", (json \ "paymentMethod").as[Int]).findUnique()
+				PaymentMethod.finder.where().eq("id", (json \ "paymentMethod").as[Int]).findUnique(),
+				(json \ "parts").as[List[InvoicePartInput]]
 			))
 		}
     }
