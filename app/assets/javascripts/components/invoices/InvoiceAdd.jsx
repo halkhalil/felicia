@@ -47,6 +47,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
 	return {
 		paymentMethods: state.configuration.paymentMethods,
+		units: state.configuration.units,
 		saving: state.alerts.processing
 	}
 }

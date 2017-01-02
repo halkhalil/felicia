@@ -7,14 +7,15 @@ import models.user.UserSession
 @Singleton
 class ApplicationService @Inject() (paymentMethodsService: PaymentMethodsService)  {
 	
-	def frontEndConfiguration(userSessionId: Option[String]):JsValue = {
-		val data:JsObject = Json.obj(
+	def frontEndConfiguration(userSessionId: Option[String]): JsValue = {
+		val data: JsObject = Json.obj(
 			"paymentMethods" -> paymentMethodsService.getAll(),
-			"currencies" -> currencies
+			"currencies" -> currencies,
+			"units" -> units
 		)
 		
 		userSessionId.map { sessionId =>
-			val userSession:UserSession = UserSession.finder.where().eq("sessionId", sessionId).findUnique()
+			val userSession: UserSession = UserSession.finder.where().eq("sessionId", sessionId).findUnique()
 			
 			if (userSession != null && userSession.user != null) {
 				return data + (
@@ -42,5 +43,9 @@ class ApplicationService @Inject() (paymentMethodsService: PaymentMethodsService
 		"THB", "TJS", "TMT", "TND", "TOP", "TRY", "TTD", "TWD", "TZS", "UAH", "UGX", 
 		"USD", "UYU", "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XCD", "XDR", "XOF", 
 		"XPF", "YER", "ZAR", "ZMK", "ZWL"
+	)
+	
+	val units: List[String] = List(
+		"item", "hour", "month", "year"
 	)
 }

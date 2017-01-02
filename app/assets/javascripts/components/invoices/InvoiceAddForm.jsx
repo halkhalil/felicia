@@ -4,6 +4,7 @@ import Calendar from 'react-input-calendar';
 import 'react-input-calendar/style/index.css'
 import Select from 'react-select';
 import 'react-select/dist/react-select.css';
+import InvoicePartsForm from './InvoicePartsForm'
 
 export class InvoiceAddForm extends React.Component {
 	
@@ -22,6 +23,7 @@ export class InvoiceAddForm extends React.Component {
 			orderDate: moment().format('YYYY-MM-DD'),
 			dueDate: moment().add(10, 'days').format('YYYY-MM-DD'),
 			paymentMethod: 0,
+			parts: [],
 			validationError: false
 		}
 	}
@@ -33,6 +35,16 @@ export class InvoiceAddForm extends React.Component {
 		if (!this.isFormValid()) {
 			this.setState({ validationError: true })
 		} else {
+			let partsTransformed = this.state.parts.map((part) => {
+				let partTransformed =  Object.assign({}, part, {
+					quantity: parseFloat(part.quantity.replace(/,/, '.')),
+					unitPrice: Math.round(parseFloat(part.unitPrice.replace(/,/, '.')) * 100),
+					total: Math.round(parseFloat(part.total) * 100)
+				})
+				
+				return partTransformed
+			})
+			
 			this.props.save({
 				buyerIsCompany: this.state.buyerIsCompany,
 				buyerName: this.state.buyerName,
@@ -44,7 +56,8 @@ export class InvoiceAddForm extends React.Component {
 				issueDate: this.state.issueDate,
 				orderDate: this.state.orderDate,
 				dueDate: this.state.dueDate,
-				paymentMethod: this.state.paymentMethod
+				paymentMethod: this.state.paymentMethod,
+				parts: partsTransformed
 			})
 		}
 	}
@@ -66,11 +79,46 @@ export class InvoiceAddForm extends React.Component {
 			}
 		})
 		
+		this.state.parts.forEach((part) => {
+			if (part.name.length === 0) {
+				valid = false
+			}
+			if (part.unit.length === 0) {
+				valid = false
+			}
+			
+			let total = parseFloat(part.total)
+			if (isNaN(total) || total <= 0) {
+				valid = false
+			}
+		})
+		if (this.state.parts.length === 0) {
+			valid = false
+		}
+		
 		return valid
 	}
 	
 	handleChange(field, value) {
 		this.setState({ [field]: value })
+	}
+	
+	handlePartChange(partIndex, part) {
+		this.setState({ parts: this.state.parts.map((item, index) => index === partIndex ? part : item) })
+	}
+	
+	handlePartAdd(part) {
+		let parts = [...this.state.parts]
+		parts.push(part)
+		
+		this.setState({ parts: parts })
+	}
+	
+	handlePartDelete(partIndex) {
+		let parts = [...this.state.parts]
+		parts.splice(partIndex, 1)
+		
+		this.setState({ parts: parts })
 	}
 	
 	nonEmptyErrorClass(field, otherClasses) {
@@ -86,10 +134,9 @@ export class InvoiceAddForm extends React.Component {
 	}
 	
 	render() {
-		let paymentMethods = this.props.paymentMethods.map((method) => {
-			return { value: method.id, label: method.name }
+		let units = this.props.units.map((unit) => {
+			return { value: unit, label: unit }
 		})
-		paymentMethods.unshift({ value: 0, label: '-- not selected --' })
 		
 		return (
 			<div>
@@ -200,6 +247,16 @@ export class InvoiceAddForm extends React.Component {
 						</div>
 					</div>
 					
+					Parts:
+					<InvoicePartsForm
+						parts={this.state.parts}
+						units={this.props.units}
+						showValidationErrors={this.state.validationError}
+						onPartAdd={(part) => this.handlePartAdd(part)}
+						onPartDelete={(partIndex) => this.handlePartDelete(partIndex)}
+						onPartChange={(partIndex, part) => this.handlePartChange(partIndex, part)}
+					/>
+					
 					<div className="form-group"> 
 						<div className="col-sm-offset-2 col-sm-10">
 							<button type="submit" className={this.submitButtonClasses()}><span className="glyphicon glyphicon-ok"></span> Save</button>
@@ -212,8 +269,6 @@ export class InvoiceAddForm extends React.Component {
 							{this.state.validationError && !this.props.saving && <div className="alert alert-danger"><strong>Error: </strong> Please fill all fields.</div>}
 						</div>
 					</div>
-					
-					
 				</form>
 			</div>
 		)

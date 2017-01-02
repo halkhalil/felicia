@@ -34,4 +34,4 @@ Confirm.propTypes = {
 	onConfirmed: React.PropTypes.func.isRequired
 };
 
-export {Confirm}
+export default Confirm

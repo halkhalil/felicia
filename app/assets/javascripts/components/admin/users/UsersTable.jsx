@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from 'react-router'
 
-import {Confirm} from "components/common/dialogs/Confirm";
+import Confirm from "components/common/dialogs/Confirm";
 
 class UsersTable extends React.Component {
 	

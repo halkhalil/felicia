@@ -25,7 +25,7 @@ class InvoicePart extends Model {
 	var unit: String = _
 	
 	@NotNull
-	var quntity: Int = _
+	var quantity: Float = _
 	
 	@NotNull
 	var unitPrice: Int = _

@@ -47,7 +47,7 @@ create table invoice_part (
   id                            integer auto_increment not null,
   name                          TEXT not null,
   unit                          varchar(255) not null,
-  quntity                       integer not null,
+  quantity                      float not null,
   unit_price                    integer not null,
   total                         integer not null,
   invoice_id                    integer,
