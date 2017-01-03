@@ -104,7 +104,11 @@ object Invoice {
 				"id" -> JsNumber(invoice.id),
 				"publicId" -> JsString(invoice.publicId),
 				"buyerName" -> JsString(invoice.buyerName),
-				"buyerAddress" -> JsString(invoice.buyerAddress)
+				"buyerCity" -> JsString(invoice.buyerCity),
+				"buyerCountry" -> JsString(invoice.buyerCountry),
+				"buyerAddress" -> JsString(invoice.buyerAddress),
+				"total" -> JsNumber(invoice.total),
+				"currency" -> JsString(invoice.currency)
 			)
 			
 			JsObject(invoiceSeq)

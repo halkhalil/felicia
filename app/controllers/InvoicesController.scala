@@ -17,6 +17,10 @@ import models.User
 @Singleton
 class InvoicesController @Inject() (authenticationService: AuthenticationService, usersService: UserService, invoicesService: InvoicesService) 
 	extends BaseController(authenticationService, usersService) {
+	
+	def index(year: Int, month: Int) = (UserAction andThen AuthorizationCheckAction) { request =>
+		ok(invoicesService.getAll(year, month))
+	}
 
 	def create = (UserAction andThen AuthorizationCheckAction)(BodyParsers.parse.json) { request =>
 		val invoiceInputResult = request.body.validate[InvoiceInput]

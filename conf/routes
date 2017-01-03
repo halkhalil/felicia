@@ -31,4 +31,5 @@ PUT    /api/payment-method/:id  controllers.PaymentMethodsController.save(id: In
 POST   /api/payment-method      controllers.PaymentMethodsController.create
 
 # Invoice Methods API
-POST   /api/invoice      controllers.InvoicesController.create
+GET  /api/invoices/:year/:month controllers.InvoicesController.index(year: Int, month: Int)
+POST /api/invoice               controllers.InvoicesController.create

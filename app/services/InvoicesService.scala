@@ -17,6 +17,10 @@ import models.invoice.InvoicePart
 
 @Singleton
 class InvoicesService {
+	
+	def getAll(year: Int, month: Int): List[Invoice] = {
+		Invoice.finder.where().ge("issueDate", monthLowerDate(year, month)).lt("issueDate", monthUpperDate(year, month)).findList().asScala.toList
+	}
 
 	def validationErrorOnCreate(invoiceInput: InvoiceInput): Option[String] = {
 		if (invoiceInput.buyerName.trim().length() == 0) return Some("Buyer name cannot be empty")
@@ -142,4 +146,26 @@ class InvoicesService {
 		
 		issueDateMonth == 12 || Invoice.finder.where().ge("issueDate", firstDay).lt("issueDate", lastDay).findRowCount() == 0
 	}
+	
+	private def monthLowerDate(year: Int, month: Int): Date = {
+		val calendar: Calendar = Calendar.getInstance()
+		calendar.set(Calendar.YEAR, year)
+		calendar.set(Calendar.MONTH, month - 1)
+		calendar.set(Calendar.DAY_OF_MONTH, 1)
+		calendar.set(Calendar.HOUR_OF_DAY, 0)
+		calendar.set(Calendar.MINUTE, 0)
+		calendar.set(Calendar.SECOND, 0)
+		calendar.set(Calendar.MILLISECOND, 0)
+		
+		calendar.getTime()
+	}
+	
+	private def monthUpperDate(year: Int, month: Int): Date = {
+		val calendar: Calendar = Calendar.getInstance()
+		calendar.setTime(monthLowerDate(year, month))
+		calendar.add(Calendar.MONTH, 1)
+		
+		calendar.getTime()
+	}
+	
 }

@@ -57,3 +57,8 @@
 .has-error .Select-placeholder {
 	color: #a94442;
 }
+
+/* Bootstrap adjustments */
+.pagination {
+	margin: 5px 0;
+}

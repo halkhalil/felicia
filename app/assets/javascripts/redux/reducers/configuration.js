@@ -1,5 +1,12 @@
 const defaultState = {
-
+	user: undefined,
+	paymentMethods: [],
+	currencies: [],
+	units: [],
+	invoices: {
+		minYear: 2016,
+		maxYear: 2017
+	}
 }
 
 export default function configuration(state = defaultState, action) {

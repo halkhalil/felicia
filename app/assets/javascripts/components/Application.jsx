@@ -12,7 +12,7 @@ import {Start} from "components/common/Start.jsx";
 import {NotFound} from "components/common/NotFound.jsx";
 
 import {Customers} from "components/customers/Customers.jsx";
-import {Invoices} from "components/invoices/Invoices.jsx";
+import Invoices from "components/invoices/browser/Invoices.jsx";
 import {InvoiceAdd} from "components/invoices/InvoiceAdd.jsx";
 import {Users} from "components/admin/users/Users.jsx";
 import {UserAdd} from "components/admin/users/UserAdd.jsx";
@@ -45,6 +45,7 @@ class ApplicationComponent extends React.Component {
 							<IndexRoute component={Invoices} />
 							<Route path="add" component={InvoiceAdd} />
 						</Route>
+						<Route path="invoices/:year/:month" component={Invoices} />
 						
 						<Route path="admin">
 							<Route path="users">

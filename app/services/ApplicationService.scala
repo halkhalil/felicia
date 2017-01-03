@@ -11,7 +11,8 @@ class ApplicationService @Inject() (paymentMethodsService: PaymentMethodsService
 		val data: JsObject = Json.obj(
 			"paymentMethods" -> paymentMethodsService.getAll(),
 			"currencies" -> currencies,
-			"units" -> units
+			"units" -> units,
+			"invoices" -> invoices
 		)
 		
 		userSessionId.map { sessionId =>
@@ -48,4 +49,11 @@ class ApplicationService @Inject() (paymentMethodsService: PaymentMethodsService
 	val units: List[String] = List(
 		"item", "hour", "month", "year"
 	)
+	
+	val invoices: JsObject = {
+		Json.obj(
+			"minYear" -> 2016,
+			"maxYear" -> 2017
+		)
+	}
 }
