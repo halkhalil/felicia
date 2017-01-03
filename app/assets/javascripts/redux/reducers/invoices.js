@@ -9,11 +9,11 @@ export default function invoices(state = defaultState, action) {
 	}
 
 	switch (action.type) {
-		case 'fetchAll':
+		case 'invoices.fetchAll':
 			return update(state, { invoices: action.invoices })
-		case 'fetch':
+		case 'invoices.fetch':
 			return update(state, { invoice: action.invoice })
-		case 'alterField':
+		case 'invoices.alterField':
 			let invoice = update(state.invoice, { [action.field]: action.value })
 			
 			return update(state, { invoice: invoice })

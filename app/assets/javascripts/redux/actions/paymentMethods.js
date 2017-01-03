@@ -1,20 +1,20 @@
 export function fetchAll(data) {
 	return {
-		type: 'fetchAll',
+		type: 'paymentMethods.fetchAll',
 		methods: data
 	}
 }
 
 export function fetch(data) {
 	return {
-		type: 'fetch',
+		type: 'paymentMethods.fetch',
 		method: data
 	}
 }
 
 export function alterPaymentMethodField(field, value) {
 	return {
-		type: 'alterPaymentMethodField',
+		type: 'paymentMethods.alterField',
 		field: field,
 		value: value
 	}

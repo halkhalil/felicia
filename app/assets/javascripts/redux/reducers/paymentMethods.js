@@ -9,11 +9,11 @@ export default function paymentMethods(state = defaultState, action) {
 	}
 
 	switch (action.type) {
-		case 'fetchAll':
+		case 'paymentMethods.fetchAll':
 			return update(state, { methods: action.methods })
-		case 'fetch':
+		case 'paymentMethods.fetch':
 			return update(state, { method: action.method })
-		case 'alterPaymentMethodField':
+		case 'paymentMethods.alterField':
 			let method = update(state.method, { [action.field]: action.value })
 			
 			return update(state, { method: method })

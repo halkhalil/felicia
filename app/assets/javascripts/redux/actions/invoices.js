@@ -1,20 +1,20 @@
 export function fetchAll(data) {
 	return {
-		type: 'fetchAll',
+		type: 'invoices.fetchAll',
 		invoices: data
 	}
 }
 
 export function fetch(data) {
 	return {
-		type: 'fetch',
+		type: 'invoices.fetch',
 		invoice: data
 	}
 }
 
 export function alterField(field, value) {
 	return {
-		type: 'alterField',
+		type: 'invoices.alterField',
 		field: field,
 		value: value
 	}
