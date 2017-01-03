@@ -13,6 +13,7 @@ import play.api.libs.json._
 import models.PaymentMethod
 import play.api.data.format.Formats
 import models.User
+import java.text.SimpleDateFormat
 
 @Entity
 class Invoice extends Model {
@@ -99,6 +100,8 @@ class Invoice extends Model {
 
 object Invoice {
 	implicit object InvoiceFormat extends Format[Invoice] {
+		val format: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd")
+		
 		def writes(invoice: Invoice): JsValue = {
 			val invoiceSeq = Seq(
 				"id" -> JsNumber(invoice.id),
@@ -108,7 +111,8 @@ object Invoice {
 				"buyerCountry" -> JsString(invoice.buyerCountry),
 				"buyerAddress" -> JsString(invoice.buyerAddress),
 				"total" -> JsNumber(invoice.total),
-				"currency" -> JsString(invoice.currency)
+				"currency" -> JsString(invoice.currency),
+				"issueDate" -> JsString(format.format(invoice.issueDate))
 			)
 			
 			JsObject(invoiceSeq)

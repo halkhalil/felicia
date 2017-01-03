@@ -3,6 +3,8 @@ package services
 import play.api.libs.json._
 import javax.inject._
 import models.user.UserSession
+import models.invoice.Invoice
+import java.util.Calendar
 
 @Singleton
 class ApplicationService @Inject() (paymentMethodsService: PaymentMethodsService)  {
@@ -51,9 +53,26 @@ class ApplicationService @Inject() (paymentMethodsService: PaymentMethodsService
 	)
 	
 	val invoices: JsObject = {
+		val firstInvoice: Invoice = Invoice.finder.orderBy("issueDate asc").setMaxRows(1).findUnique()
+		val lastInvoice: Invoice = Invoice.finder.orderBy("issueDate desc").setMaxRows(1).findUnique()
+		val calendar: Calendar = Calendar.getInstance()
+		
+		var minYear: Int = calendar.get(Calendar.YEAR)
+		var maxYear: Int = calendar.get(Calendar.YEAR)
+		
+		if (firstInvoice != null) {
+			calendar.setTime(firstInvoice.issueDate)
+			minYear = calendar.get(Calendar.YEAR)
+		}
+		
+		if (lastInvoice != null) {
+			calendar.setTime(lastInvoice.issueDate)
+			maxYear = calendar.get(Calendar.YEAR)
+		}
+		
 		Json.obj(
-			"minYear" -> 2016,
-			"maxYear" -> 2017
+			"minYear" -> minYear,
+			"maxYear" -> maxYear
 		)
 	}
 }

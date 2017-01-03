@@ -19,7 +19,11 @@ import models.invoice.InvoicePart
 class InvoicesService {
 	
 	def getAll(year: Int, month: Int): List[Invoice] = {
-		Invoice.finder.where().ge("issueDate", monthLowerDate(year, month)).lt("issueDate", monthUpperDate(year, month)).findList().asScala.toList
+		Invoice.finder.where()
+			.ge("issueDate", monthLowerDate(year, month))
+			.lt("issueDate", monthUpperDate(year, month))
+			.orderBy("issueDate asc")
+			.findList().asScala.toList
 	}
 
 	def validationErrorOnCreate(invoiceInput: InvoiceInput): Option[String] = {

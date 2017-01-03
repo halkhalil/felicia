@@ -41,16 +41,22 @@ class InvoicesBrowser extends React.Component {
 				<h3>Invoices</h3>
 				
 				<nav aria-label="Page navigation">
-					<ul className="pagination">
-					{
-						years.map((year) => 
-							<li key={year} className={this.getYear() == year ? 'active' : ''}>
-								<Link to={this.browseUrl(year, this.getMonth())} onClick={() => this.handleFilterClick(year, this.getMonth())}>{year}</Link>
-							</li>
-						)
-					}
-					</ul>
-					<br />
+					<div className="row">
+						<div className="col-sm-10">
+							<ul className="pagination">
+							{
+								years.map((year) => 
+									<li key={year} className={this.getYear() == year ? 'active' : ''}>
+										<Link to={this.browseUrl(year, this.getMonth())} onClick={() => this.handleFilterClick(year, this.getMonth())}>{year}</Link>
+									</li>
+								)
+							}
+							</ul>
+						</div>
+						<div className="col-sm-2 text-right">
+							<Link to="/invoices/add" className="btn btn-primary"><span className="glyphicon glyphicon-plus"></span> Add Invoice</Link>
+						</div>
+					</div>
 					<ul className="pagination">
 					{
 						months.map((month, index) =>
@@ -62,7 +68,7 @@ class InvoicesBrowser extends React.Component {
 					</ul>
 				</nav>
 				
-				<Link to="/invoices/add" className="btn btn-primary btn-sm"><span className="glyphicon glyphicon-plus"></span> Add Invoice</Link>
+				
 				
 				<table className="table table-striped table-bordered">
 					<thead>
@@ -71,6 +77,7 @@ class InvoicesBrowser extends React.Component {
 							<th className="text-center">Buyer</th>
 							<th className="text-center">City</th>
 							<th className="text-center">Country</th>
+							<th className="text-center">Issued</th>
 							<th width="140" className="text-center">Value</th>
 							<th width="150"></th>
 						</tr>
@@ -79,7 +86,7 @@ class InvoicesBrowser extends React.Component {
 						{
 							this.props.fetching &&
 							<tr className="info">
-								<td colSpan="7">
+								<td colSpan="8">
 									Loading ...
 								</td>
 							</tr>
@@ -99,6 +106,9 @@ class InvoicesBrowser extends React.Component {
 										</td>
 										<td className="text-center">
 											{invoice.buyerCountry}
+										</td>
+										<td className="text-center">
+											{invoice.issueDate}
 										</td>
 										<td className="text-right">
 											{numeral(invoice.total / 100).format('0,0[.]00')} {invoice.currency}
@@ -121,7 +131,7 @@ class InvoicesBrowser extends React.Component {
 						{
 							this.props.invoices.length === 0 && !this.props.fetching &&
 							<tr className="info">
-								<td colSpan="7">
+								<td colSpan="8">
 									No invoices found
 								</td>
 							</tr>
