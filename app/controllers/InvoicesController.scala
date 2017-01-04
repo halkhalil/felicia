@@ -21,6 +21,14 @@ class InvoicesController @Inject() (authenticationService: AuthenticationService
 	def index(year: Int, month: Int) = (UserAction andThen AuthorizationCheckAction) { request =>
 		ok(invoicesService.getAll(year, month))
 	}
+	
+	def deleteLast(year: Int) = (UserAction andThen AuthorizationCheckAction) { request =>
+		invoicesService.getLast(year).map { invoice =>
+			ok(invoicesService.delete(invoice))
+		}.getOrElse {
+			notFound("There are no invoices")
+		}
+	}
 
 	def create = (UserAction andThen AuthorizationCheckAction)(BodyParsers.parse.json) { request =>
 		val invoiceInputResult = request.body.validate[InvoiceInput]

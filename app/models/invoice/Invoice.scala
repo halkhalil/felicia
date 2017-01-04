@@ -25,6 +25,9 @@ class Invoice extends Model {
 	var publicId: String = _
 	
 	@NotNull
+	var publicIdNumber: Int = _
+	
+	@NotNull
 	var currency: String = _
 	
 	@NotNull

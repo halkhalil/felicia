@@ -36,3 +36,7 @@ class InvoicePart extends Model {
 	@ManyToOne()
 	var invoice: Invoice = _
 }
+
+object InvoicePart {
+	def finder: Model.Finder[Long, InvoicePart] = new Model.Finder[Long, InvoicePart](classOf[InvoicePart]);
+}

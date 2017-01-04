@@ -118,10 +118,7 @@ class InvoicesBrowser extends React.Component {
 												<Link to={'/invoice/' + invoice.id} className="btn btn-primary btn-xs">
 													<span className="glyphicon glyphicon-pencil"></span> Edit
 												</Link>
-												<a className="btn btn-danger btn-xs" data-toggle="modal" data-target={`#deleteInvoiceDialog${invoice.id}`} href="#">
-													<span className="glyphicon glyphicon-remove"></span> Delete
-												</a>
-												<Confirm id={`deleteInvoiceDialog${invoice.id}`} text="Are you sure you want to delete this invoice?" onConfirmed={() => this.props.delete(invoice.id)} />
+												
 											</div>
 										</td>
 									</tr>
@@ -138,6 +135,19 @@ class InvoicesBrowser extends React.Component {
 						}
 					</tbody>
 				</table>
+				
+				<div className="row">
+					<div className="col-sm-offset-10 col-sm-2 text-right">
+						<a className="btn btn-danger" data-toggle="modal" data-target="#deleteInvoiceDialog" href="#">
+							<span className="glyphicon glyphicon-remove"></span> Delete Last
+						</a>
+					</div>
+				</div>
+				<Confirm 
+					id="deleteInvoiceDialog"
+					text={"Warning!\n\nAre you sure you want to delete the very last invoice in " + this.getYear() + "?\n\nThis cannot be undone."}
+					onConfirmed={() => this.props.deleteLast(this.getYear())}
+					/>
 			</div>
 		)
 	}

@@ -17,6 +17,7 @@ create table configuration_entry (
 create table invoice (
   id                            integer auto_increment not null,
   public_id                     varchar(255) not null,
+  public_id_number              integer not null,
   currency                      varchar(255) not null,
   total                         integer not null,
   seller_name                   varchar(255) not null,

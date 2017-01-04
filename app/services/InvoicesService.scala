@@ -14,16 +14,47 @@ import scala.collection.mutable.ListBuffer
 import scala.collection.JavaConverters._
 import models.invoice.InvoicePart
 import models.invoice.InvoicePart
+import models.invoice.InvoicePart
+import javax.inject.Inject
+import services.supporting.DatesService
 
 @Singleton
-class InvoicesService {
+class InvoicesService @Inject() (datesService: DatesService) {
 	
 	def getAll(year: Int, month: Int): List[Invoice] = {
 		Invoice.finder.where()
-			.ge("issueDate", monthLowerDate(year, month))
-			.lt("issueDate", monthUpperDate(year, month))
-			.orderBy("issueDate asc")
+			.ge("issueDate", datesService.firstDayOfTheMonth(year, month))
+			.lt("issueDate", datesService.firstDayOfTheNextMonth(year, month))
+			.orderBy("publicIdNumber asc")
 			.findList().asScala.toList
+	}
+	
+	def get(id: Int): Option[Invoice] = {
+		val invoice: Invoice = Invoice.finder.where().eq("id", id).findUnique()
+		
+		if (invoice != null) Some(invoice) else None
+	}
+	
+	def getLast(year: Int): Option[Invoice] = {
+		val invoice: Invoice = Invoice.finder.where()
+			.ge("issueDate", datesService.firstDayOfYear(year))
+			.lt("issueDate", datesService.firstDayOfYear(year + 1))
+			.orderBy("publicIdNumber desc")
+			.setMaxRows(1).findUnique()
+		
+		if (invoice != null) Some(invoice) else None
+	}
+	
+	def getParts(invoice: Invoice): List[InvoicePart] = {
+		InvoicePart.finder.where().eq("invoice", invoice).findList().asScala.toList
+	}
+	
+	def delete(invoice: Invoice): Invoice = {
+		getParts(invoice).foreach { invoicePart => invoicePart.delete() }
+		
+		invoice.delete()
+		
+		invoice
 	}
 
 	def validationErrorOnCreate(invoiceInput: InvoiceInput): Option[String] = {
@@ -54,7 +85,8 @@ class InvoicesService {
 	def create(invoiceInput: InvoiceInput, creator: User): Invoice = {
 		val invoice: Invoice = new Invoice()
 		
-		invoice.publicId = newPublicId(invoiceInput.issueDate)
+		invoice.publicIdNumber = newPublicIdNumber(invoiceInput.issueDate)
+		invoice.publicId = newPublicId(invoice.publicIdNumber, invoiceInput.issueDate)
 		invoice.currency = ConfigurationService.getTextNonEmpty("invoices.currency").get
 		invoice.buyerIsCompany = invoiceInput.buyerIsCompany
 		invoice.buyerName = invoiceInput.buyerName
@@ -103,73 +135,37 @@ class InvoicesService {
 		invoice
 	}
 	
-	private def newPublicId(issueDate: Date): String = {
+	private def newPublicId(newPublicIdNumber: Int, issueDate: Date): String = {
 		val calendar: Calendar = Calendar.getInstance()
 		calendar.setTime(issueDate)
-		
 		val year: Int = calendar.get(Calendar.YEAR);
 		val month: Int = calendar.get(Calendar.MONTH) + 1
+
+		newPublicIdNumber + "/" + month + "/" + year
+	}
+	
+	private def newPublicIdNumber(issueDate: Date): Int = {
+		val calendar: Calendar = Calendar.getInstance()
+		calendar.setTime(issueDate)
+		val year: Int = calendar.get(Calendar.YEAR);
 		
-		val calendarStart: Calendar = Calendar.getInstance()
-		calendarStart.set(Calendar.YEAR, year)
-		calendarStart.set(Calendar.MONTH, 0)
-		calendarStart.set(Calendar.DAY_OF_MONTH, 1)
-		calendarStart.set(Calendar.HOUR_OF_DAY, 0)
-		calendarStart.set(Calendar.MINUTE, 0)
-		calendarStart.set(Calendar.SECOND, 0)
-		calendarStart.set(Calendar.MILLISECOND, 0)
-		
-		val firstDay: Date = calendarStart.getTime()
-		
-		calendarStart.set(Calendar.YEAR, year + 1)
-		val lastDay: Date = calendarStart.getTime()
-		var totalInCurrentYear: Int = Invoice.finder.where().ge("issueDate", firstDay).lt("issueDate", lastDay).findRowCount()
-		
-		totalInCurrentYear += 1
-		
-		totalInCurrentYear + "/" + month + "/" + year
+		Invoice.finder.where()
+			.ge("issueDate", datesService.firstDayOfYear(year))
+			.lt("issueDate", datesService.firstDayOfYear(year + 1))
+			.findRowCount() + 1
 	}
 	
 	private def checkIssueDate(issueDate: Date): Boolean = {
 		val calendar: Calendar = Calendar.getInstance()
 		calendar.setTime(issueDate)
+		val year: Int = calendar.get(Calendar.YEAR);
+		val month: Int = calendar.get(Calendar.MONTH) + 1
 		
-		val issueDateMonth = calendar.get(Calendar.MONTH) + 1
-		
-		calendar.add(Calendar.MONTH, 1)
-		calendar.set(Calendar.DAY_OF_MONTH, 1)
-		calendar.set(Calendar.HOUR_OF_DAY, 0)
-		calendar.set(Calendar.MINUTE, 0)
-		calendar.set(Calendar.SECOND, 0)
-		calendar.set(Calendar.MILLISECOND, 0)
-		val firstDay: Date = calendar.getTime()
-		
-		calendar.set(Calendar.MONTH, 0)
-		calendar.add(Calendar.YEAR, 1)
-		val lastDay: Date = calendar.getTime()
-		
-		issueDateMonth == 12 || Invoice.finder.where().ge("issueDate", firstDay).lt("issueDate", lastDay).findRowCount() == 0
+		month == 12 || 
+			Invoice.finder.where()
+				.ge("issueDate", datesService.firstDayOfTheNextMonth(issueDate))
+				.lt("issueDate", datesService.firstDayOfYear(year + 1))
+				.findRowCount() == 0
 	}
-	
-	private def monthLowerDate(year: Int, month: Int): Date = {
-		val calendar: Calendar = Calendar.getInstance()
-		calendar.set(Calendar.YEAR, year)
-		calendar.set(Calendar.MONTH, month - 1)
-		calendar.set(Calendar.DAY_OF_MONTH, 1)
-		calendar.set(Calendar.HOUR_OF_DAY, 0)
-		calendar.set(Calendar.MINUTE, 0)
-		calendar.set(Calendar.SECOND, 0)
-		calendar.set(Calendar.MILLISECOND, 0)
-		
-		calendar.getTime()
-	}
-	
-	private def monthUpperDate(year: Int, month: Int): Date = {
-		val calendar: Calendar = Calendar.getInstance()
-		calendar.setTime(monthLowerDate(year, month))
-		calendar.add(Calendar.MONTH, 1)
-		
-		calendar.getTime()
-	}
-	
+
 }
