@@ -89,118 +89,120 @@ class InvoiceEditForm extends React.Component {
 					<form className="form-horizontal" onSubmit={(event) => this.handleSubmit(event)}>
 						<div className="row">
 							<div className="col-sm-3">
-								Seller:
-								<address>
-									<strong>{invoice.sellerName}</strong><br />
-									{invoice.sellerAddress}<br />
-									{invoice.sellerCity}, {invoice.sellerZip}<br />
-									{invoice.sellerCountry}<br />
-									<abbr title="Tax ID">Tax:</abbr> {invoice.sellerTaxId}
-								</address>
+								<div className="well">
+									<h4>Seller:</h4>
+									<address>
+										<strong>{invoice.sellerName}</strong><br />
+										{invoice.sellerAddress}<br />
+										{invoice.sellerCity}, {invoice.sellerZip}<br />
+										{invoice.sellerCountry}<br />
+										<abbr title="Tax ID">Tax:</abbr> {invoice.sellerTaxId}
+									</address>
+								</div>
 							</div>
 							<div className="col-sm-9">
-								Buyer:
-								<div className="form-group">
-									<label className="control-label col-sm-2">Is a company:</label>
-									<div className="col-sm-10">
-										<label className="radio-inline">
-											<input type="radio" name="buyerIsCompany" value="0" checked={invoice.buyerIsCompany === false} onChange={(event) => this.handleChange('buyerIsCompany', event.target.value === '1')} /> No
-										</label>
-										<label className="radio-inline">
-											<input type="radio" name="buyerIsCompany" value="1" checked={invoice.buyerIsCompany === true}  onChange={(event) => this.handleChange('buyerIsCompany', event.target.value === '1')} /> Yes
-										</label>
+								<div className="well">
+									<h4>Buyer:</h4>
+									<div className="form-group">
+										<label className="control-label col-sm-3">Is a company:</label>
+										<div className="col-sm-9">
+											<label className="radio-inline">
+												<input type="radio" name="buyerIsCompany" value="0" checked={invoice.buyerIsCompany === false} onChange={(event) => this.handleChange('buyerIsCompany', event.target.value === '1')} /> No
+											</label>
+											<label className="radio-inline">
+												<input type="radio" name="buyerIsCompany" value="1" checked={invoice.buyerIsCompany === true}  onChange={(event) => this.handleChange('buyerIsCompany', event.target.value === '1')} /> Yes
+											</label>
+										</div>
 									</div>
-								</div>
-								<div className={this.nonEmptyErrorClass('buyerName', 'form-group')}>
-									<label className="control-label col-sm-2">Name:</label>
-									<div className="col-sm-10">
-										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerName', event.target.value)} value={invoice.buyerName} />
+									<div className={this.nonEmptyErrorClass('buyerName', 'form-group')}>
+										<label className="control-label col-sm-3">Name:</label>
+										<div className="col-sm-9">
+											<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerName', event.target.value)} value={invoice.buyerName} />
+										</div>
 									</div>
-								</div>
-								<div className={this.nonEmptyErrorClass('buyerAddress', 'form-group')}>
-									<label className="control-label col-sm-2">Address:</label>
-									<div className="col-sm-10">
-										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerAddress', event.target.value)} value={invoice.buyerAddress} />
+									<div className={this.nonEmptyErrorClass('buyerAddress', 'form-group')}>
+										<label className="control-label col-sm-3">Address:</label>
+										<div className="col-sm-9">
+											<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerAddress', event.target.value)} value={invoice.buyerAddress} />
+										</div>
 									</div>
-								</div>
-								<div className={this.nonEmptyErrorClass('buyerZip', 'form-group')}>
-									<label className="control-label col-sm-2">Zip code:</label>
-									<div className="col-sm-10">
-										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerZip', event.target.value)} value={invoice.buyerZip} />
+									<div className={this.nonEmptyErrorClass('buyerZip', 'form-group')}>
+										<label className="control-label col-sm-3">Zip code:</label>
+										<div className="col-sm-9">
+											<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerZip', event.target.value)} value={invoice.buyerZip} />
+										</div>
 									</div>
-								</div>
-								<div className={this.nonEmptyErrorClass('buyerCity', 'form-group')}>
-									<label className="control-label col-sm-2">City:</label>
-									<div className="col-sm-10">
-										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerCity', event.target.value)} value={invoice.buyerCity} />
+									<div className={this.nonEmptyErrorClass('buyerCity', 'form-group')}>
+										<label className="control-label col-sm-3">City:</label>
+										<div className="col-sm-9">
+											<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerCity', event.target.value)} value={invoice.buyerCity} />
+										</div>
 									</div>
-								</div>
-								<div className={this.nonEmptyErrorClass('buyerCountry', 'form-group')}>
-									<label className="control-label col-sm-2">Country:</label>
-									<div className="col-sm-10">
-										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerCountry', event.target.value)} value={invoice.buyerCountry} />
+									<div className={this.nonEmptyErrorClass('buyerCountry', 'form-group')}>
+										<label className="control-label col-sm-3">Country:</label>
+										<div className="col-sm-9">
+											<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerCountry', event.target.value)} value={invoice.buyerCountry} />
+										</div>
 									</div>
-								</div>
-								<div className="form-group">
-									<label className="control-label col-sm-2">Tax ID:</label>
-									<div className="col-sm-10">
-										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerTaxId', event.target.value)} value={invoice.buyerTaxId} />
+									<div className="form-group">
+										<label className="control-label col-sm-3">Tax ID:</label>
+										<div className="col-sm-9">
+											<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerTaxId', event.target.value)} value={invoice.buyerTaxId} />
+										</div>
 									</div>
-								</div>
-								<div className="form-group">
-									<label className="control-label col-sm-2">E-mail:</label>
-									<div className="col-sm-10">
-										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerEmail', event.target.value)} value={invoice.buyerEmail} />
+									<div className="form-group">
+										<label className="control-label col-sm-3">E-mail:</label>
+										<div className="col-sm-9">
+											<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerEmail', event.target.value)} value={invoice.buyerEmail} />
+										</div>
 									</div>
-								</div>
-								<div className="form-group">
-									<label className="control-label col-sm-2">Phone:</label>
-									<div className="col-sm-10">
-										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerPhone', event.target.value)} value={invoice.buyerPhone} />
+									<div className="form-group">
+										<label className="control-label col-sm-3">Phone:</label>
+										<div className="col-sm-9">
+											<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerPhone', event.target.value)} value={invoice.buyerPhone} />
+										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						Other:
-						<div className="form-group">
-							<label className="control-label col-sm-2">Issue Date:</label>
-							<div className="col-sm-10 form-control-static">
-								{invoice.issueDate}
+						<div className="well">
+							<h4>Details:</h4>
+							<div className="form-group">
+								<label className="control-label col-sm-2">Issue Date:</label>
+								<div className="col-sm-2 form-control-static">
+									{invoice.issueDate}
+								</div>
+								<label className="control-label col-sm-2">Order Date:</label>
+								<div className="col-sm-2 form-control-static">
+									{invoice.orderDate}
+								</div>
+							</div>
+							
+							<div className="form-group">
+								<label className="control-label col-sm-2">Due Date:</label>
+								<div className="col-sm-2 form-control-static">
+									{invoice.dueDate}
+								</div>
+								<label className="control-label col-sm-2">Place Of Issue:</label>
+								<div className="col-sm-2 form-control-static">
+									{invoice.placeOfIssue}
+								</div>
+							</div>
+							<div className={this.nonZeroErrorClass('paymentMethod', 'form-group')}>
+								<label className="control-label col-sm-2">Payment method:</label>
+								<div className="col-sm-4 form-inline">
+									<Select
+										clearable={false}
+										searchable={false}
+										value={invoice.paymentMethod}
+										options={this.props.paymentMethods}
+										labelKey="name"
+										valueKey="id"
+										onChange={(selection) => this.handleChange('paymentMethod', selection.id)}
+									/>
+								</div>
 							</div>
 						</div>
-						<div className="form-group">
-							<label className="control-label col-sm-2">Order Date:</label>
-							<div className="col-sm-10 form-control-static">
-								{invoice.orderDate}
-							</div>
-						</div>
-						<div className="form-group">
-							<label className="control-label col-sm-2">Due Date:</label>
-							<div className="col-sm-10 form-control-static">
-								{invoice.dueDate}
-							</div>
-						</div>
-						<div className="form-group">
-							<label className="control-label col-sm-2">Place Of Issue:</label>
-							<div className="col-sm-10 form-control-static">
-								{invoice.placeOfIssue}
-							</div>
-						</div>
-						<div className={this.nonZeroErrorClass('paymentMethod', 'form-group')}>
-							<label className="control-label col-sm-2">Payment method:</label>
-							<div className="col-sm-4 form-inline">
-								<Select
-									clearable={false}
-									searchable={false}
-									value={invoice.paymentMethod}
-									options={this.props.paymentMethods}
-									labelKey="name"
-									valueKey="id"
-									onChange={(selection) => this.handleChange('paymentMethod', selection.id)}
-								/>
-							</div>
-						</div>
-						
 						
 						<table className="table table-striped table-bordered">
 							<thead>
