@@ -33,6 +33,8 @@ class InvoiceEditForm extends React.Component {
 				buyerCity: this.props.invoice.buyerCity,
 				buyerCountry: this.props.invoice.buyerCountry,
 				buyerTaxId: this.props.invoice.buyerTaxId,
+				buyerEmail: this.props.invoice.buyerEmail,
+				buyerPhone: this.props.invoice.buyerPhone,
 				paymentMethod: this.props.invoice.paymentMethod
 			})
 		}
@@ -86,7 +88,7 @@ class InvoiceEditForm extends React.Component {
 					
 					<form className="form-horizontal" onSubmit={(event) => this.handleSubmit(event)}>
 						<div className="row">
-							<div className="col-sm-4">
+							<div className="col-sm-3">
 								Seller:
 								<address>
 									<strong>{invoice.sellerName}</strong><br />
@@ -96,7 +98,7 @@ class InvoiceEditForm extends React.Component {
 									<abbr title="Tax ID">Tax:</abbr> {invoice.sellerTaxId}
 								</address>
 							</div>
-							<div className="col-sm-8">
+							<div className="col-sm-9">
 								Buyer:
 								<div className="form-group">
 									<label className="control-label col-sm-2">Is a company:</label>
@@ -143,6 +145,18 @@ class InvoiceEditForm extends React.Component {
 									<label className="control-label col-sm-2">Tax ID:</label>
 									<div className="col-sm-10">
 										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerTaxId', event.target.value)} value={invoice.buyerTaxId} />
+									</div>
+								</div>
+								<div className="form-group">
+									<label className="control-label col-sm-2">E-mail:</label>
+									<div className="col-sm-10">
+										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerEmail', event.target.value)} value={invoice.buyerEmail} />
+									</div>
+								</div>
+								<div className="form-group">
+									<label className="control-label col-sm-2">Phone:</label>
+									<div className="col-sm-10">
+										<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerPhone', event.target.value)} value={invoice.buyerPhone} />
 									</div>
 								</div>
 							</div>

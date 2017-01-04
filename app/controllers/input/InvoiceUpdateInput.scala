@@ -20,6 +20,8 @@ case class InvoiceUpdateInput(
 	buyerCity: String,
 	buyerCountry: String,
 	buyerTaxId: String,
+	buyerEmail: String,
+	buyerPhone: String,
 	paymentMethod: PaymentMethod
 )
 
@@ -36,6 +38,8 @@ object InvoiceUpdateInput {
 				"buyerCity" -> JsString(invoiceInput.buyerCity),
 				"buyerCountry" -> JsString(invoiceInput.buyerCountry),
 				"buyerTaxId" -> JsString(invoiceInput.buyerTaxId),
+				"buyerEmail" -> JsString(invoiceInput.buyerEmail),
+				"buyerPhone" -> JsString(invoiceInput.buyerPhone),
 				"paymentMethod" -> paymentMethod
 			))
 		}
@@ -49,6 +53,8 @@ object InvoiceUpdateInput {
 				(json \ "buyerCity").as[String],
 				(json \ "buyerCountry").as[String],
 				(json \ "buyerTaxId").as[String],
+				(json \ "buyerEmail").as[String],
+				(json \ "buyerPhone").as[String],
 				PaymentMethod.finder.where().eq("id", (json \ "paymentMethod").as[Int]).findUnique()
 			))
 		}

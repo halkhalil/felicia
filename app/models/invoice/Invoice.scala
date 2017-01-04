@@ -72,6 +72,10 @@ class Invoice extends Model {
 	
 	var buyerTaxId: String = _
 	
+	var buyerEmail: String = _
+	
+	var buyerPhone: String = _
+	
 	@NotNull
 	@ManyToOne()
 	var paymentMethod: PaymentMethod = _
@@ -119,6 +123,8 @@ object Invoice {
 				"buyerCountry" -> JsString(invoice.buyerCountry),
 				"buyerAddress" -> JsString(invoice.buyerAddress),
 				"buyerZip" -> JsString(invoice.buyerZip),
+				"buyerEmail" -> JsString(invoice.buyerEmail),
+				"buyerPhone" -> JsString(invoice.buyerPhone),
 				"total" -> JsNumber(invoice.total),
 				"currency" -> JsString(invoice.currency),
 				"issueDate" -> JsString(format.format(invoice.issueDate)),
@@ -146,5 +152,5 @@ object Invoice {
 		}
 	}
 
-	def finder:Model.Finder[Long, Invoice] = new Model.Finder[Long, Invoice](classOf[Invoice]);
+	def finder: Model.Finder[Long, Invoice] = new Model.Finder[Long, Invoice](classOf[Invoice]);
 }

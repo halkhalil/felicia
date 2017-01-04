@@ -53,6 +53,8 @@ export class InvoiceAddForm extends React.Component {
 				buyerCity: this.state.buyerCity,
 				buyerCountry: this.state.buyerCountry,
 				buyerTaxId: this.state.buyerTaxId,
+				buyerEmail: this.state.buyerEmail,
+				buyerPhone: this.state.buyerPhone,
 				issueDate: this.state.issueDate,
 				orderDate: this.state.orderDate,
 				dueDate: this.state.dueDate,
@@ -189,6 +191,18 @@ export class InvoiceAddForm extends React.Component {
 						<label className="control-label col-sm-2">Tax ID:</label>
 						<div className="col-sm-10">
 							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerTaxId', event.target.value)} value={this.state.buyerTaxId} />
+						</div>
+					</div>
+					<div className="form-group">
+						<label className="control-label col-sm-2">E-mail:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerEmail', event.target.value)} value={this.state.buyerEmail} />
+						</div>
+					</div>
+					<div className="form-group">
+						<label className="control-label col-sm-2">Phone:</label>
+						<div className="col-sm-10">
+							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerPhone', event.target.value)} value={this.state.buyerPhone} />
 						</div>
 					</div>
 					

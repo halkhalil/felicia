@@ -96,6 +96,8 @@ class InvoicesService @Inject() (datesService: DatesService) {
 		invoice.buyerCity = invoiceInput.buyerCity
 		invoice.buyerCountry = invoiceInput.buyerCountry
 		invoice.buyerTaxId = invoiceInput.buyerTaxId
+		invoice.buyerEmail = invoiceInput.buyerEmail
+		invoice.buyerPhone = invoiceInput.buyerPhone
 		
 		invoice.sellerName = ConfigurationService.getTextNonEmpty("company.name").get
 		invoice.sellerAddress = ConfigurationService.getTextNonEmpty("company.address").get
@@ -156,6 +158,8 @@ class InvoicesService @Inject() (datesService: DatesService) {
 		invoice.buyerCity = invoiceUpdateInput.buyerCity
 		invoice.buyerCountry = invoiceUpdateInput.buyerCountry
 		invoice.buyerTaxId = invoiceUpdateInput.buyerTaxId
+		invoice.buyerEmail = invoiceUpdateInput.buyerEmail
+		invoice.buyerPhone = invoiceUpdateInput.buyerPhone
 		invoice.paymentMethod = invoiceUpdateInput.paymentMethod
 		invoice.save()
 		

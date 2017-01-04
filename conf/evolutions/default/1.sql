@@ -33,6 +33,8 @@ create table invoice (
   buyer_city                    varchar(255) not null,
   buyer_country                 varchar(255) not null,
   buyer_tax_id                  varchar(255),
+  buyer_email                   varchar(255),
+  buyer_phone                   varchar(255),
   payment_method_id             integer not null,
   place_of_issue                varchar(255) not null,
   issue_date                    date not null,
