@@ -145,7 +145,8 @@ class InvoicesBrowser extends React.Component {
 				</div>
 				<Confirm 
 					id="deleteInvoiceDialog"
-					text={"Warning!\n\nAre you sure you want to delete the very last invoice in " + this.getYear() + "?\n\nThis cannot be undone."}
+					title="Warning!"
+					text={"Are you sure you want to delete the very last invoice in " + this.getYear() + "?\n\nThis cannot be undone."}
 					onConfirmed={() => this.props.deleteLast(this.getYear())}
 					/>
 			</div>

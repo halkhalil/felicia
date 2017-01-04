@@ -10,11 +10,13 @@ class Confirm extends React.Component {
 						<div className="modal-header">
 							<button type="button" className="close" data-dismiss="modal">&times;</button>
 							<h4 className="modal-title">
-								Confirmation
+								{this.props.title}
 							</h4>
 						</div>
 						<div className="modal-body">
-							<p>{this.props.text}</p>
+							{
+								this.props.text.split("\n").map((line, index) => <p key={index}>{line}</p>)
+							}
 						</div>
 						<div className="modal-footer">
 							<a href="#" className="btn btn-primary" data-dismiss="modal" onClick={this.props.onConfirmed}><span className="glyphicon glyphicon-ok"></span> Yes</a>
@@ -32,6 +34,10 @@ Confirm.propTypes = {
 	id: React.PropTypes.string.isRequired,
 	text: React.PropTypes.string.isRequired,
 	onConfirmed: React.PropTypes.func.isRequired
+};
+
+Confirm.defaultProps = {
+	title: 'Confirmation'
 };
 
 export default Confirm
