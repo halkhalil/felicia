@@ -38,5 +38,25 @@ class InvoicePart extends Model {
 }
 
 object InvoicePart {
+	
+	implicit object InvoicePartFormat extends Format[InvoicePart] {
+		def writes(invoicePart: InvoicePart): JsValue = {
+			val invoiceSeq = Seq(
+				"id" -> JsNumber(invoicePart.id),
+				"name" -> JsString(invoicePart.name),
+				"unit" -> JsString(invoicePart.unit),
+				"quantity" -> JsNumber(invoicePart.quantity),
+				"unitPrice" -> JsNumber(invoicePart.unitPrice),
+				"total" -> JsNumber(invoicePart.total)
+			)
+			
+			JsObject(invoiceSeq)
+		}
+        
+		def reads(json: JsValue): JsResult[InvoicePart] = {
+			JsSuccess(new InvoicePart())
+		}
+	}
+	
 	def finder: Model.Finder[Long, InvoicePart] = new Model.Finder[Long, InvoicePart](classOf[InvoicePart]);
 }

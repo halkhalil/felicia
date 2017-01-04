@@ -13,6 +13,7 @@ import {NotFound} from "components/common/NotFound.jsx";
 
 import {Customers} from "components/customers/Customers.jsx";
 import Invoices from "components/invoices/browser/Invoices.jsx";
+import InvoiceEdit from "components/invoices/edit/InvoiceEdit.jsx";
 import {InvoiceAdd} from "components/invoices/InvoiceAdd.jsx";
 import {Users} from "components/admin/users/Users.jsx";
 import {UserAdd} from "components/admin/users/UserAdd.jsx";
@@ -46,6 +47,7 @@ class ApplicationComponent extends React.Component {
 							<Route path="add" component={InvoiceAdd} />
 						</Route>
 						<Route path="invoices/:year/:month" component={Invoices} />
+						<Route path="invoice/:id" component={InvoiceEdit} />
 						
 						<Route path="admin">
 							<Route path="users">

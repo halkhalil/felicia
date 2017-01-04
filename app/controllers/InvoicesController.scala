@@ -22,6 +22,14 @@ class InvoicesController @Inject() (authenticationService: AuthenticationService
 		ok(invoicesService.getAll(year, month))
 	}
 	
+	def get(id: Int) = (UserAction andThen AuthorizationCheckAction) { request =>
+		invoicesService.get(id).map { invoice =>
+			ok(invoice)
+		}.getOrElse { 
+			notFound("Invoice does not exist") 
+		}
+	}
+	
 	def deleteLast(year: Int) = (UserAction andThen AuthorizationCheckAction) { request =>
 		invoicesService.getLast(year).map { invoice =>
 			ok(invoicesService.delete(invoice))

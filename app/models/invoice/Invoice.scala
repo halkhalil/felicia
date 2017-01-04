@@ -3,6 +3,7 @@ package models.invoice
 import java.util._;
 import javax.persistence._;
 import javax.validation.constraints._;
+import scala.collection.JavaConverters._
 
 import com.avaje.ebean.Model;
 import play.data.format._;
@@ -106,16 +107,35 @@ object Invoice {
 		val format: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd")
 		
 		def writes(invoice: Invoice): JsValue = {
+			val paymentMethod: Int = if (invoice.paymentMethod != null) invoice.paymentMethod.id else 0
+			
 			val invoiceSeq = Seq(
 				"id" -> JsNumber(invoice.id),
 				"publicId" -> JsString(invoice.publicId),
+				"buyerIsCompany" -> JsBoolean(invoice.buyerIsCompany),
 				"buyerName" -> JsString(invoice.buyerName),
+				"buyerTaxId" -> JsString(invoice.buyerTaxId),
 				"buyerCity" -> JsString(invoice.buyerCity),
 				"buyerCountry" -> JsString(invoice.buyerCountry),
 				"buyerAddress" -> JsString(invoice.buyerAddress),
+				"buyerZip" -> JsString(invoice.buyerZip),
 				"total" -> JsNumber(invoice.total),
 				"currency" -> JsString(invoice.currency),
-				"issueDate" -> JsString(format.format(invoice.issueDate))
+				"issueDate" -> JsString(format.format(invoice.issueDate)),
+				"orderDate" -> JsString(format.format(invoice.orderDate)),
+				"dueDate" -> JsString(format.format(invoice.dueDate)),
+				"currency" -> JsString(invoice.currency),
+				"placeOfIssue" -> JsString(invoice.placeOfIssue),
+				"total" -> JsNumber(invoice.total),
+				"paymentMethod" -> JsNumber(paymentMethod),
+				"currency" -> JsString(invoice.currency),
+				"sellerName" -> JsString(invoice.sellerName),
+				"sellerAddress" -> JsString(invoice.sellerAddress),
+				"sellerZip" -> JsString(invoice.sellerZip),
+				"sellerCity" -> JsString(invoice.sellerCity),
+				"sellerCountry" -> JsString(invoice.sellerCountry),
+				"sellerTaxId" -> JsString(invoice.sellerTaxId),
+				"parts" -> Json.toJson(invoice.invoiceParts.asScala.toList)
 			)
 			
 			JsObject(invoiceSeq)

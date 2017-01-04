@@ -32,5 +32,6 @@ POST   /api/payment-method      controllers.PaymentMethodsController.create
 
 # Invoice Methods API
 GET    /api/invoices/:year/:month controllers.InvoicesController.index(year: Int, month: Int)
+GET    /api/invoice/:id           controllers.InvoicesController.get(id: Int)
 POST   /api/invoice               controllers.InvoicesController.create
 DELETE /api/invoice/:year/last    controllers.InvoicesController.deleteLast(year: Int)
