@@ -18,18 +18,18 @@ const mapDispatchToProps = (dispatch) => {
 				dataType: 'json',
 				success: (data) => dispatch(InvoicesActions.fetch(data))
 			}).fail(
-				() => dispatch(AlertsActions.addDanger('Error loading invoice.'))
+				() => dispatch(AlertsActions.addDanger('Error while loading the invoice.'))
 			).always(
 				() => dispatch(AlertsActions.processingOff())
 			)
 		},
 		
 		onFieldChange(field, value) {
-			dispatch(PaymentMethodsActions.alterPaymentMethodField(field, value))
+			dispatch(InvoicesActions.alterField(field, value))
 		},
 		
 		save(id, data) {
-			const ENDPOINT = '/api/payment-method/' + id
+			const ENDPOINT = '/api/invoice/' + id
 			
 			dispatch(AlertsActions.processingOn())
 			jQuery.ajax({
@@ -39,11 +39,11 @@ const mapDispatchToProps = (dispatch) => {
 				contentType: "application/json; charset=utf-8",
 				data: JSON.stringify(data),
 				success: (data) => {
-					dispatch(AlertsActions.addSuccess('Payment method has been saved.'))
-					dispatch(PaymentMethodsActions.fetch(data))
+					dispatch(AlertsActions.addSuccess('Invoice has been saved.'))
+					dispatch(InvoicesActions.fetch(data))
 				}
 			}).fail(
-				() => dispatch(AlertsActions.addDanger('Error while saving payment method.'))
+				() => dispatch(AlertsActions.addDanger('Error while saving the invoice.'))
 			).always(
 				() => dispatch(AlertsActions.processingOff())
 			)

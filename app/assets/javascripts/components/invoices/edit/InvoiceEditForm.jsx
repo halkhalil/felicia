@@ -26,24 +26,40 @@ class InvoiceEditForm extends React.Component {
 			this.setState({ validationError: true })
 		} else {
 			this.props.save(this.props.params.id, {
-				
+				buyerIsCompany: this.props.invoice.buyerIsCompany,
+				buyerName: this.props.invoice.buyerName,
+				buyerAddress: this.props.invoice.buyerAddress,
+				buyerZip: this.props.invoice.buyerZip,
+				buyerCity: this.props.invoice.buyerCity,
+				buyerCountry: this.props.invoice.buyerCountry,
+				buyerTaxId: this.props.invoice.buyerTaxId,
+				paymentMethod: this.props.invoice.paymentMethod
 			})
 		}
 	}
 	
 	isFormValid() {
-		if (this.props.invoice.name.length === 0) {
-			return false
-		}
-		if (this.props.invoice.symbol.length === 0) {
-			return false
-		}
+		let validateEmpty = ['buyerName', 'buyerAddress', 'buyerZip', 'buyerCity', 'buyerCountry']
+		let validateNonZero = ['paymentMethod']
+		let valid = true
 		
-		return true
+		validateEmpty.forEach((field) => {
+			if (this.props.invoice[field].length === 0) {
+				valid = false
+			}
+		})
+		validateNonZero.forEach((field) => {
+			let intParsed = parseInt(this.props.invoice[field])
+			if (isNaN(intParsed) || intParsed === 0) {
+				valid = false
+			}
+		})
+		
+		return valid
 	}
 	
 	handleChange(field, value) {
-		//this.props.onFieldChange(field, value)
+		this.props.onFieldChange(field, value)
 	}
 	
 	nonEmptyErrorClass(field, otherClasses) {
@@ -226,15 +242,15 @@ class InvoiceEditForm extends React.Component {
 							</tbody>
 						</table>
 						
-						<div className="form-group"> 
-							<div className="col-sm-offset-9 col-sm-3 text-right">
+						<div className="form-group">
+							<div className="col-sm-offset-9 ol-sm-3 text-right">
 								<button type="submit" className={this.submitButtonClasses()}><span className="glyphicon glyphicon-ok"></span> Save</button>
 								<span>&nbsp;</span>
 								<button type="button" className="btn btn-default" onClick={() => this.props.goToInvoices(year, month)}>Cancel</button>
 							</div>
 						</div>
 						<div className="form-group">
-							<div className="col-sm-offset-2 col-sm-10">
+							<div className="col-sm-12">
 								{this.state.validationError && !this.props.saving && <div className="alert alert-danger"><strong>Error: </strong> Please check the errors and fix them.</div>}
 							</div>
 						</div>

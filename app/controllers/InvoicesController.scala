@@ -13,6 +13,7 @@ import services.InvoicesService
 import controllers.input.InvoiceInput
 import play.api.libs.json.JsValue
 import models.User
+import controllers.input.InvoiceUpdateInput
 
 @Singleton
 class InvoicesController @Inject() (authenticationService: AuthenticationService, usersService: UserService, invoicesService: InvoicesService) 
@@ -36,6 +37,27 @@ class InvoicesController @Inject() (authenticationService: AuthenticationService
 		}.getOrElse {
 			notFound("There are no invoices")
 		}
+	}
+	
+	def save(id: Int) = (UserAction andThen AuthorizationCheckAction)(BodyParsers.parse.json) { request =>
+		val invoiceUpdateInputResult = request.body.validate[InvoiceUpdateInput]
+		
+		invoiceUpdateInputResult.fold(
+			errors => {
+				badRequest("JSON parsing error: " + JsError.toJson(errors))
+			},
+			invoiceUpdateInput => {
+				invoicesService.validationErrorOnUpdate(invoiceUpdateInput).map { error =>
+					badRequest(error)
+				}.getOrElse {
+					invoicesService.get(id).map { invoice =>
+						ok(invoicesService.update(invoice, invoiceUpdateInput))
+					}.getOrElse {
+						notFound("Invoice does not exist") 
+					}
+				}
+			}
+		)
 	}
 
 	def create = (UserAction andThen AuthorizationCheckAction)(BodyParsers.parse.json) { request =>

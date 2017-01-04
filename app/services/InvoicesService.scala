@@ -17,6 +17,7 @@ import models.invoice.InvoicePart
 import models.invoice.InvoicePart
 import javax.inject.Inject
 import services.supporting.DatesService
+import controllers.input.InvoiceUpdateInput
 
 @Singleton
 class InvoicesService @Inject() (datesService: DatesService) {
@@ -131,6 +132,32 @@ class InvoicesService @Inject() (datesService: DatesService) {
 		parts.foreach { invoicePart =>
 			invoicePart.save()	
 		}
+		
+		invoice
+	}
+	
+	def validationErrorOnUpdate(invoiceUpdateInput: InvoiceUpdateInput): Option[String] = {
+		if (invoiceUpdateInput.buyerName.trim().length() == 0) return Some("Buyer name cannot be empty")
+		if (invoiceUpdateInput.buyerAddress.trim().length() == 0) return Some("Buyer address cannot be empty")
+		if (invoiceUpdateInput.buyerCity.trim().length() == 0) return Some("Buyer city cannot be empty")
+		if (invoiceUpdateInput.buyerZip.trim().length() == 0) return Some("Buyer zip code cannot be empty")
+		if (invoiceUpdateInput.buyerCountry.trim().length() == 0) return Some("Buyer country cannot be empty")
+		
+		if (invoiceUpdateInput.paymentMethod == null) return Some("Payment method is unknown")
+		
+		None
+	}
+
+	def update(invoice: Invoice, invoiceUpdateInput: InvoiceUpdateInput): Invoice = {
+		invoice.buyerIsCompany = invoiceUpdateInput.buyerIsCompany
+		invoice.buyerName = invoiceUpdateInput.buyerName
+		invoice.buyerAddress = invoiceUpdateInput.buyerAddress
+		invoice.buyerZip = invoiceUpdateInput.buyerZip
+		invoice.buyerCity = invoiceUpdateInput.buyerCity
+		invoice.buyerCountry = invoiceUpdateInput.buyerCountry
+		invoice.buyerTaxId = invoiceUpdateInput.buyerTaxId
+		invoice.paymentMethod = invoiceUpdateInput.paymentMethod
+		invoice.save()
 		
 		invoice
 	}
