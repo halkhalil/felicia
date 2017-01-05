@@ -12,8 +12,8 @@ export function setUser(user) {
 	}
 }
 
-export function clear() {
+export function clearUser() {
 	return {
-		type: 'clear'
+		type: 'clearUser'
 	}
 }

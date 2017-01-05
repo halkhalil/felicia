@@ -19,8 +19,8 @@ export default function configuration(state = defaultState, action) {
 			return createState(state, action.data )
 		case 'setUser':
 			return createState(state, { user: action.user })
-		case 'clear':
-			return {}
+		case 'clearUser':
+			return createState(state, { user: undefined })
 		default:
 			return state
 	}

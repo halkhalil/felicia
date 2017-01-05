@@ -259,7 +259,7 @@ class InvoiceEditForm extends React.Component {
 						</table>
 						
 						<div className="form-group">
-							<div className="col-sm-offset-9 ol-sm-3 text-right">
+							<div className="col-md-12 text-right">
 								<button type="submit" className={this.submitButtonClasses()}><span className="glyphicon glyphicon-ok"></span> Save</button>
 								<span>&nbsp;</span>
 								<button type="button" className="btn btn-default" onClick={() => this.props.goToInvoices(year, month)}>Cancel</button>

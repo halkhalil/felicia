@@ -108,7 +108,7 @@ TopMenuComponent.propTypes = {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		clearConfiguration: () => {
-			dispatch(ConfigurationActions.clear())
+			dispatch(ConfigurationActions.clearUser())
 		}
 	}
 }
