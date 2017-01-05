@@ -5,6 +5,13 @@ export function fetchAll(data) {
 	}
 }
 
+export function fetchRecent(data) {
+	return {
+		type: 'invoices.fetchRecent',
+		invoices: data
+	}
+}
+
 export function fetch(data) {
 	return {
 		type: 'invoices.fetch',

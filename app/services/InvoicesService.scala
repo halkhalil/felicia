@@ -30,6 +30,13 @@ class InvoicesService @Inject() (datesService: DatesService) {
 			.findList().asScala.toList
 	}
 	
+	def getRecent(limit: Int): List[Invoice] = {
+		Invoice.finder
+			.orderBy("id desc")
+			.setMaxRows(limit)
+			.findList().asScala.toList
+	}
+	
 	def get(id: Int): Option[Invoice] = {
 		val invoice: Invoice = Invoice.finder.where().eq("id", id).findUnique()
 		

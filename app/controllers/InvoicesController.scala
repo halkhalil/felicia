@@ -19,8 +19,14 @@ import controllers.input.InvoiceUpdateInput
 class InvoicesController @Inject() (authenticationService: AuthenticationService, usersService: UserService, invoicesService: InvoicesService) 
 	extends BaseController(authenticationService, usersService) {
 	
+	val MAX_RECENT_INVOICES: Int = 5
+	
 	def index(year: Int, month: Int) = (UserAction andThen AuthorizationCheckAction) { request =>
 		ok(invoicesService.getAll(year, month))
+	}
+	
+	def indexRecent = (UserAction andThen AuthorizationCheckAction) { request =>
+		ok(invoicesService.getRecent(MAX_RECENT_INVOICES))
 	}
 	
 	def get(id: Int) = (UserAction andThen AuthorizationCheckAction) { request =>

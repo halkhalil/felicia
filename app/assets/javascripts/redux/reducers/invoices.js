@@ -1,5 +1,6 @@
 const defaultState = {
 	invoices: [],
+	recentInvoices: [],
 	invoice: undefined
 }
 
@@ -11,6 +12,8 @@ export default function invoices(state = defaultState, action) {
 	switch (action.type) {
 		case 'invoices.fetchAll':
 			return update(state, { invoices: action.invoices })
+		case 'invoices.fetchRecent':
+			return update(state, { recentInvoices: action.invoices })
 		case 'invoices.fetch':
 			return update(state, { invoice: action.invoice })
 		case 'invoices.alterField':
