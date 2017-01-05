@@ -57,7 +57,7 @@ class InvoicesRecentTable extends React.Component {
 												{invoice.issueDate}
 											</td>
 											<td className="text-right">
-												{numeral(invoice.total / 100).format('0,0[.]00')} {invoice.currency}
+												{numeral(invoice.total / 100).format('0,0.00')} {invoice.currency}
 											</td>
 											<td>
 												<div className="btn-group text-center">

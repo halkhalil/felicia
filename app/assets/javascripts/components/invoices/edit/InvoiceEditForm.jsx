@@ -228,10 +228,10 @@ class InvoiceEditForm extends React.Component {
 											{part.unit}
 										</td>
 										<td className="text-right">
-											{numeral(part.unitPrice / 100).format('0,0[.]00')} {invoice.currency}
+											{numeral(part.unitPrice / 100).format('0,0.00')} {invoice.currency}
 										</td>
 										<td className="text-right">
-											{numeral(part.total / 100).format('0,0[.]00')} {invoice.currency}
+											{numeral(part.total / 100).format('0,0.00')} {invoice.currency}
 										</td>
 									</tr>
 								)
@@ -243,7 +243,7 @@ class InvoiceEditForm extends React.Component {
 										
 									</td>
 									<td className="text-right">
-										{numeral(invoice.total / 100).format('0,0[.]00')} {invoice.currency}
+										{numeral(invoice.total / 100).format('0,0.00')} {invoice.currency}
 									</td>
 								</tr>
 							}
