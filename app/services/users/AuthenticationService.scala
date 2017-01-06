@@ -8,9 +8,30 @@ import play.api.Configuration
 import java.util.Date
 import models.user.UserSession
 import utils.StringUtils
+import org.apache.commons.codec.binary.Base64
 
 @Singleton
 class AuthenticationService @Inject() (configuration: Configuration) {
+	
+	def authenticateBasic(authorizationHeader: Option[String]): Boolean = {
+		authorizationHeader.map { auth =>
+			val credentials = new String(Base64.decodeBase64(auth.split(" ").drop(1).head.getBytes)).split(":")
+			if (credentials.length < 2) {
+				false
+			} else {
+				if (
+					credentials(0) == configuration.underlying.getString("felicia.api.external.auth.user") &&
+					credentials(1) == configuration.underlying.getString("felicia.api.external.auth.password")
+				) {
+					true
+				} else {
+					false
+				}
+			}
+		}.getOrElse {
+			false
+		}
+	}
 	
 	def authenticate(login: String, password: String):Option[User] = {
 		val user: User = User.finder.where().eq("login", login).findUnique()

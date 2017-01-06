@@ -16,6 +16,7 @@ import models.User
 import play.api.mvc.WrappedRequest
 import play.api.mvc.ActionTransformer
 import play.api.mvc.ActionFilter
+import org.apache.commons.codec.binary.Base64
 
 class BaseController @Inject() (authenticationService: AuthenticationService, usersService: UserService) extends Controller {
 
@@ -52,6 +53,18 @@ class BaseController @Inject() (authenticationService: AuthenticationService, us
 		}
 	}
 	
+	object BasicSecuredAction extends ActionBuilder[Request] {
+		def invokeBlock[A](request: Request[A], block: (Request[A]) => Future[Result]) = {
+			if (authenticationService.authenticateBasic(request.headers.get("Authorization"))) {
+				block(request)
+			} else {
+				Future.successful(
+					Unauthorized.withHeaders("WWW-Authenticate" -> """Basic realm="Secured"""")
+				)
+			}
+		}
+	}
+
 	class UserRequest[A](val user: Option[User], request: Request[A]) extends WrappedRequest[A](request)
 	
 	def ok[Z](obj: Z)(implicit tjs: Writes[Z]):Result = {
