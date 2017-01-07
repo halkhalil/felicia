@@ -8,6 +8,7 @@ import utils.StringUtils
 import controllers.input.UserCreateInput
 import models.user.UserSession
 import models.UserRole
+import scala.util.Random
 
 @Singleton
 class UserService {
@@ -80,5 +81,22 @@ class UserService {
 		user.delete()
 		
 		user
+	}
+	
+	def externalApiUser: User = {
+		val EXTERNAL_API_USER_LOGIN: String = "external.api"
+		val EXTERNAL_API_USER_ROLE: String = "regular"
+		
+		val user: User = User.finder.where().eq("login", EXTERNAL_API_USER_LOGIN).findUnique()
+		
+		if (user == null) {
+			create(
+				new UserCreateInput(
+					EXTERNAL_API_USER_LOGIN, EXTERNAL_API_USER_LOGIN, Random.alphanumeric.take(20).mkString, EXTERNAL_API_USER_ROLE
+				)
+			)
+		} else {
+			user	
+		}
 	}
 }

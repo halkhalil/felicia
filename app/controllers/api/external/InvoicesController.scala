@@ -20,8 +20,21 @@ import controllers.BaseController
 class InvoicesController @Inject() (authenticationService: AuthenticationService, usersService: UserService, invoicesService: InvoicesService) 
 	extends BaseController(authenticationService, usersService) {
 
-	def createExternal = BasicSecuredAction { request =>
-		ok("External")
+	def createExternal = BasicSecuredAction(BodyParsers.parse.json) { request =>
+		val invoiceInputResult = request.body.validate[InvoiceInput]
+		
+		invoiceInputResult.fold(
+			errors => {
+				badRequest("JSON parsing error: " + JsError.toJson(errors))
+			},
+			invoiceInput => {
+				invoicesService.validationErrorOnCreate(invoiceInput).map { error =>
+					badRequest(error)
+				}.getOrElse {
+					ok(invoicesService.create(invoiceInput, usersService.externalApiUser))
+				}
+			}
+		)
 	}
 
 }
