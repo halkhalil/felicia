@@ -84,7 +84,7 @@ create table user_session (
   id                            integer auto_increment not null,
   session_id                    varchar(255) not null,
   ip                            varchar(255) not null,
-  added                         datetime(6) not null,
+  added                         DATETIME not null,
   user_id                       integer,
   constraint pk_user_session primary key (id)
 );

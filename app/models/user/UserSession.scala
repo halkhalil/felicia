@@ -21,6 +21,7 @@ class UserSession extends Model {
 	var ip:String = _
 	
 	@NotNull
+	@Column(columnDefinition = "DATETIME")
 	var added:Date = _
 	
 	@ManyToOne()
