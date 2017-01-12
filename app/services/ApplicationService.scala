@@ -5,9 +5,12 @@ import javax.inject._
 import models.user.UserSession
 import models.invoice.Invoice
 import java.util.Calendar
+import services.currencies.CurrenciesService
 
 @Singleton
-class ApplicationService @Inject() (paymentMethodsService: PaymentMethodsService)  {
+class ApplicationService @Inject() (paymentMethodsService: PaymentMethodsService, currencieService: CurrenciesService)  {
+	
+	currencieService.load
 	
 	def frontEndConfiguration(userSessionId: Option[String]): JsValue = {
 		val data: JsObject = Json.obj(

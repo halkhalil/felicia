@@ -14,6 +14,15 @@ create table configuration_entry (
   constraint pk_configuration_entry primary key (id)
 );
 
+create table currency_rate (
+  id                            integer auto_increment not null,
+  source                        varchar(255) not null,
+  target                        varchar(255) not null,
+  rate                          float not null,
+  day                           date not null,
+  constraint pk_currency_rate primary key (id)
+);
+
 create table invoice (
   id                            integer auto_increment not null,
   public_id                     varchar(255) not null,
@@ -123,6 +132,8 @@ alter table user_session drop foreign key fk_user_session_user_id;
 drop index ix_user_session_user_id on user_session;
 
 drop table if exists configuration_entry;
+
+drop table if exists currency_rate;
 
 drop table if exists invoice;
 
