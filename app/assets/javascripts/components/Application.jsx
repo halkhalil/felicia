@@ -22,6 +22,7 @@ import {ConfigurationEdit} from "components/admin/configuration/ConfigurationEdi
 import {PaymentMethods} from "components/admin/payment-methods/PaymentMethods";
 import {PaymentMethodEdit} from "components/admin/payment-methods/PaymentMethodEdit";
 import {PaymentMethodAdd} from "components/admin/payment-methods/PaymentMethodAdd";
+import CurrencyRates from "components/admin/currencies/CurrencyRates.jsx";
  
 class ApplicationComponent extends React.Component {
 	constructor(props) {
@@ -61,6 +62,7 @@ class ApplicationComponent extends React.Component {
 								<Route path="add" component={PaymentMethodAdd} />
 							</Route>
 							<Route path="payment-method/:id" component={PaymentMethodEdit} />
+							<Route path="currencies" component={CurrencyRates} />
 						</Route>
 						
 						<Route path="*" component={NotFound} />

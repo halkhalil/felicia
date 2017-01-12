@@ -6,9 +6,10 @@ import configuration from './configuration'
 import adminConfiguration from './adminConfiguration'
 import paymentMethods from './paymentMethods'
 import invoices from './invoices'
+import currencies from './currencies'
 
 const mainReducers = combineReducers({
-	users, alerts, configuration, adminConfiguration, paymentMethods, invoices
+	users, alerts, configuration, adminConfiguration, paymentMethods, invoices, currencies
 })
 
 export default mainReducers

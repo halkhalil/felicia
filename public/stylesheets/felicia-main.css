@@ -62,3 +62,7 @@
 .pagination {
 	margin: 5px 0;
 }
+
+.table-nonfluid {
+   width: auto !important;
+}

@@ -38,5 +38,8 @@ PUT    /api/invoice/:id           controllers.InvoicesController.save(id: Int)
 POST   /api/invoice               controllers.InvoicesController.create
 DELETE /api/invoice/:year/last    controllers.InvoicesController.deleteLast(year: Int)
 
+# Currency Methods API
+GET /api/currencies/:year/:month/:day controllers.CurrenciesController.index(year: Int, month: Int, day: Int)
+
 # Basic Authorized endpoints:
 POST   /external/api/invoice      controllers.api.external.InvoicesController.createExternal

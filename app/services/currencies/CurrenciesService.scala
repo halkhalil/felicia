@@ -7,9 +7,18 @@ import services.currencies.suppliers.Supplier
 import scala.concurrent.ExecutionContext
 import models.CurrencyRate
 import play.Logger
+import java.util.Date
+import scala.collection.JavaConverters._
 
 @Singleton
 class CurrenciesService @Inject() (nbpSupplier: NbpSupplier)(implicit context: ExecutionContext) {
+	
+	def getAll(day: Date): List[CurrencyRate] = {
+		CurrencyRate.finder.where()
+			.eq("day", day)
+			.orderBy("source asc")
+			.findList().asScala.toList
+	}
 	
 	def load = {
 		Logger.info("Starting currency rates update")

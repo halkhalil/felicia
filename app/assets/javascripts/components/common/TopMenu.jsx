@@ -77,6 +77,9 @@ class TopMenuComponent extends React.Component {
 										<li className={this.getActiveClass("/admin/payment-methods")}>
 											<Link to="/admin/payment-methods" onClick={this.handleMenuClick}>Payment methods</Link>
 										</li>
+										<li className={this.getActiveClass("/admin/currencies")}>
+											<Link to="/admin/currencies" onClick={this.handleMenuClick}>Currencies</Link>
+										</li>
 									</ul>
 								</li>
 							}

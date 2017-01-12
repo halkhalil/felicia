@@ -7,6 +7,19 @@ import java.util.Calendar
 @Singleton
 class DatesService {
 
+	def date(year: Int, month: Int, day: Int): Date = {
+		val calendar: Calendar = Calendar.getInstance()
+		calendar.set(Calendar.YEAR, year)
+		calendar.set(Calendar.MONTH, month - 1)
+		calendar.set(Calendar.DAY_OF_MONTH, day)
+		calendar.set(Calendar.HOUR_OF_DAY, 0)
+		calendar.set(Calendar.MINUTE, 0)
+		calendar.set(Calendar.SECOND, 0)
+		calendar.set(Calendar.MILLISECOND, 0)
+		
+		calendar.getTime()
+	}
+	
 	def firstDayOfYear(year: Int): Date = {
 		val calendarStart: Calendar = Calendar.getInstance()
 		calendarStart.set(Calendar.YEAR, year)
