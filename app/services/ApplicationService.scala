@@ -52,7 +52,7 @@ class ApplicationService @Inject() (paymentMethodsService: PaymentMethodsService
 		"item", "hour", "month", "year"
 	)
 	
-	val invoices: JsObject = {
+	def invoices: JsObject = {
 		val firstInvoice: Invoice = Invoice.finder.orderBy("issueDate asc").setMaxRows(1).findUnique()
 		val lastInvoice: Invoice = Invoice.finder.orderBy("issueDate desc").setMaxRows(1).findUnique()
 		val calendar: Calendar = Calendar.getInstance()

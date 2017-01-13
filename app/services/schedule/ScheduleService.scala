@@ -16,6 +16,6 @@ case object Tick
 class ScheduleService @Inject() (system: ActorSystem, @Named("currenciesActor") currenciesActor: ActorRef) (implicit ec: ExecutionContext) {
 	
 	// schedule currencies actor:
-	system.scheduler.schedule(0.seconds, 12.hours, currenciesActor, Tick)
+	system.scheduler.schedule(10.seconds, 12.hours, currenciesActor, Tick)
 	
 }
