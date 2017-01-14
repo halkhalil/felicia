@@ -4,13 +4,13 @@
   <conversionRule conversionWord="coloredLevel" converterClass="play.api.libs.logback.ColoredLevel" />
 
   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-    <file>${application.home:-.}/logs/felicia.log</file>
+    <file>${logger.path:-.}/logs/felicia.log</file>
     <encoder>
       <pattern>%date [%level] from %logger in %thread - %message%n%xException</pattern>
     </encoder>
 	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
       <!-- rollover daily -->
-      <fileNamePattern>${application.home:-.}/logs/felicia.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+      <fileNamePattern>${logger.path:-.}/logs/felicia.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
          <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
             <maxFileSize>10MB</maxFileSize>
          </timeBasedFileNamingAndTriggeringPolicy>
