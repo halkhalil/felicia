@@ -14,16 +14,22 @@ import services.currencies.CurrenciesService
 import java.util.Date
 import models.invoice.Invoice
 import models.CurrencyRate
+import play.api.i18n.I18nSupport
+import play.api.i18n.Messages.Implicits._
+import play.api.i18n.MessagesApi
+import play.api.i18n.Lang
+import play.Logger
 
 @Singleton
 class PrintController @Inject() 
-	(invoicesService: InvoicesService, currenciesService: CurrenciesService, authenticationService: AuthenticationService, usersService: UserService)
-	extends BaseController(authenticationService, usersService) {
+	(invoicesService: InvoicesService, currenciesService: CurrenciesService, authenticationService: AuthenticationService, usersService: UserService, val messagesApi: MessagesApi)
+	extends BaseController(authenticationService, usersService) with I18nSupport {
 
 	/**
-	* Renders page at "/".
+	* Renders invoices monthly report.
 	*/
-	def invoicesRaport(year: Int, month: Int, targetCurrency: String, language: String) = (UserAction andThen AuthorizationCheckAction) { request =>
+	def invoicesReport(year: Int, month: Int, targetCurrency: String, language: String) = (UserAction andThen AuthorizationCheckAction) { request =>
+		implicit val lang = Lang(language) // this implicit value is passed to the template and used by Messages objects
 		val invoices: List[Invoice] = invoicesService.getAll(year, month)
 		val locale = new Locale(language, language)
 		val formatter = NumberFormat.getIntegerInstance(locale)
@@ -59,10 +65,14 @@ class PrintController @Inject()
 		
 		def amountConvertedAsString(invoice: Invoice): String = {
 			amountConverted(invoice).map { amount =>
-				formatter.format(amount) + " " + targetCurrency.toUpperCase()
+				formatter.format(amount).concat(" ").concat(targetCurrency.toUpperCase())
 			}.getOrElse {
 				"--"
 			}
+		}
+		
+		def amountAsString(invoice: Invoice): String = {
+			formatter.format(BigDecimal(invoice.total) / BigDecimal(100)).concat(" ").concat(invoice.currency)
 		}
 		
 		def totalReportAmount(invoices: List[Invoice]): String = {
@@ -74,15 +84,14 @@ class PrintController @Inject()
 						BigDecimal(0)
 					}
 				}.sum
-			) + " " + targetCurrency.toUpperCase()
+			).concat(" ").concat(targetCurrency.toUpperCase())
 		}
-		
+
 		Ok(
 			views.html.print.invoices.monthReport(
-				invoices, year, month, formatter, currencyRateAsString, amountConvertedAsString, totalReportAmount(invoices)
-				
+				invoices, year, month, targetCurrency.toUpperCase(), amountAsString, currencyRateAsString, amountConvertedAsString, totalReportAmount(invoices)
 			)
-		)
+		)	
 	}
 
 }

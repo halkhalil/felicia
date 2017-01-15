@@ -1,0 +1,10 @@
+invoices.report.monthly.title=Invoices Monthly Report
+
+invoice.id=Invoice ID
+invoice.buyer=Buyer
+invoice.buyer.address=Buyer Address
+invoice.issue.date=Issue Date
+invoice.order.date=Order Date
+invoice.amount=Amount
+invoice.currency.rate=Currency Rate
+invoice.amount.currency=Amount {0}
