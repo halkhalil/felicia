@@ -43,3 +43,6 @@ GET /api/currencies/:year/:month/:day controllers.CurrenciesController.index(yea
 
 # Basic Authorized endpoints:
 POST   /external/api/invoice      controllers.api.external.InvoicesController.createExternal
+
+# Raports pages
+GET /print/invoices/:year/:month/:targetCurrency/:language controllers.PrintController.invoicesRaport(year: Int, month: Int, targetCurrency: String, language: String)

@@ -20,6 +20,17 @@ class CurrenciesService @Inject() (nbpSupplier: NbpSupplier)(implicit context: E
 			.findList().asScala.toList
 	}
 	
+	def getFromPreviousDay(day: Date, source: String, target: String): Option[CurrencyRate] = {
+		val currencyRate: CurrencyRate = CurrencyRate.finder.where()
+			.lt("day", day)
+			.eq("source", source.toUpperCase())
+			.eq("target", target.toUpperCase())
+			.orderBy("day desc")
+			.setMaxRows(1).findUnique()
+		
+		if (currencyRate != null) Some(currencyRate) else None
+	}
+	
 	def load = {
 		Logger.info("Starting currency rates update")
 		nbpSupplier.get().foreach { future =>

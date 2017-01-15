@@ -28,7 +28,7 @@ class CurrencyRate extends Model {
 	var target: String = _
 	
 	@NotNull
-	var rate: Float = _
+	var rate: Int = _
 	
 	@NotNull
 	@Column(columnDefinition = "DATE")
@@ -38,6 +38,8 @@ class CurrencyRate extends Model {
 
 object CurrencyRate {
 	
+	val MultiplerValue: BigDecimal = BigDecimal(10000)
+	
 	implicit object CurrencyRateFormat extends Format[CurrencyRate] {
 		val format: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd")
 		
@@ -46,7 +48,7 @@ object CurrencyRate {
 				"id" -> JsNumber(currencyRate.id),
 				"source" -> JsString(currencyRate.source),
 				"target" -> JsString(currencyRate.target),
-				"rate" -> JsNumber(currencyRate.rate),
+				"rate" -> JsNumber(BigDecimal(currencyRate.rate) / MultiplerValue),
 				"day" -> JsString(format.format(currencyRate.day))
 			))
 		}
@@ -58,7 +60,7 @@ object CurrencyRate {
 	
 	def finder: Model.Finder[Long, CurrencyRate] = new Model.Finder[Long, CurrencyRate](classOf[CurrencyRate])
 	
-	def apply(source: String, target: String, rate: Float, day: Date): CurrencyRate = {
+	def apply(source: String, target: String, rate: Int, day: Date): CurrencyRate = {
 		val currencyRate: CurrencyRate = new CurrencyRate
 		currencyRate.source = source
 		currencyRate.target = target

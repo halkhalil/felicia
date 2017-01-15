@@ -18,7 +18,7 @@ create table currency_rate (
   id                            integer auto_increment not null,
   source                        varchar(255) not null,
   target                        varchar(255) not null,
-  rate                          float not null,
+  rate                          integer not null,
   day                           date not null,
   constraint pk_currency_rate primary key (id)
 );

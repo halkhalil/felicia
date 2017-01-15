@@ -24,8 +24,9 @@ import play.api.libs.json.JsResult
 import play.api.libs.json.JsSuccess
 
 import play.api.Logger
+import models.CurrencyRate
 
-case class NbpRate(date: Date, rate: Float)
+case class NbpRate(date: Date, rate: Double)
 object NbpRate {
 	implicit object NbpRateFormat extends Format[NbpRate] {
 		def writes(nbpRate: NbpRate): JsValue = {
@@ -35,7 +36,7 @@ object NbpRate {
 		def reads(json: JsValue): JsResult[NbpRate] = {
 			JsSuccess(new NbpRate(
 				(json \ "effectiveDate").as[Date],
-				(json \ "mid").as[Float]
+				(json \ "mid").as[Double]
 			))
 		}
 	}
@@ -71,7 +72,8 @@ class NbpSupplier @Inject() (ws: WSClient)(implicit context: ExecutionContext) e
 			
 			result.map { jsResult =>
 				jsResult.get.map { rate =>
-					new Supplier.CurrencyInput(SourceCurrency, currency, rate.rate, rate.date)
+					val rateValue: Int = (BigDecimal(rate.rate) * CurrencyRate.MultiplerValue).setScale(0, BigDecimal.RoundingMode.HALF_UP).toInt
+					new Supplier.CurrencyInput(SourceCurrency, currency, rateValue, rate.date)
 				}
 			}
 		}

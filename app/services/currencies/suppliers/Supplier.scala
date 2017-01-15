@@ -4,7 +4,7 @@ import scala.concurrent.Future
 import java.util.Date
 
 object Supplier {
-	case class CurrencyInput(source: String, target: String, rate: Float, date: Date)
+	case class CurrencyInput(source: String, target: String, rate: Int, date: Date)
 }
 
 trait Supplier {
