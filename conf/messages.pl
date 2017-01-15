@@ -1,4 +1,5 @@
 invoices.report.monthly.title=Podsumowanie miesięczne faktur
+invoices.report.monthly.amount.total=Kwota całkowita
 
 invoice.id=Numer faktury
 invoice.buyer=Nabywca
