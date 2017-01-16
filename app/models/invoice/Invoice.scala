@@ -107,6 +107,9 @@ class Invoice extends Model {
 }
 
 object Invoice {
+	
+	val Multipler: BigDecimal = BigDecimal(100)
+	
 	implicit object InvoiceFormat extends Format[Invoice] {
 		val format: SimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd")
 		

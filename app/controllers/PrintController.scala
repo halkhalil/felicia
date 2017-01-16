@@ -30,66 +30,60 @@ class PrintController @Inject()
 	*/
 	def invoicesReport(year: Int, month: Int, targetCurrency: String, language: String) = (UserAction andThen AuthorizationCheckAction) { request =>
 		implicit val lang = Lang(language) // this implicit value is passed to the template and used by Messages objects
+		val targetCurrencyUpperCase = targetCurrency.toUpperCase()
 		val invoices: List[Invoice] = invoicesService.getAll(year, month)
 		val locale = new Locale(language, language)
-		val formatter = NumberFormat.getIntegerInstance(locale)
-		formatter.setMinimumFractionDigits(2)
-		formatter.setMaximumFractionDigits(2)
+		val pricesFormatter = NumberFormat.getIntegerInstance(locale)
+		pricesFormatter.setMinimumFractionDigits(2)
+		pricesFormatter.setMaximumFractionDigits(2)
+		val curencyRateFormatter = NumberFormat.getIntegerInstance(locale)
+		curencyRateFormatter.setMinimumFractionDigits(4)
+		curencyRateFormatter.setMaximumFractionDigits(4)
 		
 		def currencyRate(invoice: Invoice): Option[BigDecimal] = {
-			if (targetCurrency.toUpperCase() == invoice.currency.toUpperCase())
+			if (targetCurrencyUpperCase == invoice.currency.toUpperCase())
 				Some(BigDecimal(1))
 			else
 				currenciesService.getFromPreviousDay(invoice.issueDate, targetCurrency, invoice.currency).map { currencyRate => 
 					Option(BigDecimal(currencyRate.rate) / CurrencyRate.MultiplerValue)
-				}.getOrElse {
-					None
-				}
+				}.getOrElse(None)
 		}
 		
 		def currencyRateAsString(invoice: Invoice): String = {
 			currencyRate(invoice).map { rateValue =>
-				rateValue.toString()
-			}.getOrElse {
-				"--"
-			}
+				curencyRateFormatter.format(rateValue)
+			}.getOrElse("--")
 		}
 		
 		def amountConverted(invoice: Invoice): Option[BigDecimal] = {
 			currencyRate(invoice).map { rateValue =>
-				Some(BigDecimal(invoice.total) / BigDecimal(100) * rateValue)
-			}.getOrElse {
-				None
-			}
+				Some(BigDecimal(invoice.total) / Invoice.Multipler * rateValue)
+			}.getOrElse(None)
 		}
 		
 		def amountConvertedAsString(invoice: Invoice): String = {
 			amountConverted(invoice).map { amount =>
-				formatter.format(amount).concat(" ").concat(targetCurrency.toUpperCase())
-			}.getOrElse {
-				"--"
-			}
+				pricesFormatter.format(amount).concat(" ").concat(targetCurrencyUpperCase)
+			}.getOrElse("--")
 		}
 		
 		def amountAsString(invoice: Invoice): String = {
-			formatter.format(BigDecimal(invoice.total) / BigDecimal(100)).concat(" ").concat(invoice.currency)
+			pricesFormatter.format(BigDecimal(invoice.total) / Invoice.Multipler).concat(" ").concat(invoice.currency)
 		}
 		
-		def totalReportAmount(invoices: List[Invoice]): String = {
-			formatter.format(
+		def totalReportAmountAsString(invoices: List[Invoice]): String = {
+			pricesFormatter.format(
 				invoices.map { invoice =>
 					amountConverted(invoice).map { amount =>
 						amount
-					}.getOrElse {
-						BigDecimal(0)
-					}
+					}.getOrElse(BigDecimal(0))
 				}.sum
-			).concat(" ").concat(targetCurrency.toUpperCase())
+			).concat(" ").concat(targetCurrencyUpperCase)
 		}
 
 		Ok(
 			views.html.print.invoices.monthReport(
-				invoices, year, month, targetCurrency.toUpperCase(), amountAsString, currencyRateAsString, amountConvertedAsString, totalReportAmount(invoices)
+				invoices, year, month, targetCurrencyUpperCase, amountAsString, currencyRateAsString, amountConvertedAsString, totalReportAmountAsString(invoices)
 			)
 		)	
 	}

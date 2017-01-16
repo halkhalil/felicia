@@ -20,25 +20,23 @@
 		<table class="table table-striped table-bordered">
 			<thead>
 				<tr>
-					<th width="140" class="text-center">@Messages("invoice.id")</th>
+					<th width="120" class="text-center">@Messages("invoice.id")</th>
 					<th class="text-center">@Messages("invoice.buyer")</th>
-					<th class="text-center">@Messages("invoice.buyer.address")</th>
 					<th width="140" class="text-center">@Messages("invoice.issue.date")</th>
 					<th width="140" class="text-center">@Messages("invoice.order.date")</th>
-					<th width="140" class="text-center">@Messages("invoice.amount")</th>
-					<th width="140" class="text-center">@Messages("invoice.currency.rate")</th>
-					<th width="140" class="text-center">@Messages("invoice.amount.currency", targetCurrency)</th>
+					<th width="120" class="text-center">@Messages("invoice.amount")</th>
+					<th width="120" class="text-center">@Messages("invoice.currency.rate")</th>
+					<th width="120" class="text-center">@Messages("invoice.amount.currency", targetCurrency)</th>
 				</tr>
 			</thead>
 			
 			<tbody>
 				@for(invoice <- invoices) {
-					<tr>
+					<tr class="vert-align">
 						<td class="text-right">@invoice.publicId</td>
 						<td>
 							@invoice.buyerName 
-						</td>
-						<td>
+							<br />
 							@invoice.buyerAddress, @invoice.buyerCity, @invoice.buyerZip, @invoice.buyerCountry
 						</td>
 						<td class="text-center">
@@ -59,7 +57,7 @@
 					</tr>
 				}
 				<tr>
-					<th colspan="7" class="text-right">
+					<th colspan="6" class="text-right">
 						@Messages("invoices.report.monthly.amount.total"):
 					</th>
 					<th class="text-right">
