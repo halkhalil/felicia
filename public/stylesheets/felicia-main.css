@@ -70,3 +70,7 @@
 .table tbody > tr.vert-align > td {
 	vertical-align: middle;
 }
+
+.modal-dialog.large-full {
+    width: 80%;
+}

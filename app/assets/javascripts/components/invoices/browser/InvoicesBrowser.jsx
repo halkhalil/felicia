@@ -3,6 +3,7 @@ import moment from "moment";
 import numeral from "numeral"
 import { Link } from 'react-router'
 import Confirm from "components/common/dialogs/Confirm"
+import InvoicesMonthlyReport from "./InvoicesMonthlyReport"
 
 class InvoicesBrowser extends React.Component {
 	
@@ -19,11 +20,11 @@ class InvoicesBrowser extends React.Component {
 	}
 	
 	getYear() {
-		return this.props.params.year !== undefined ? this.props.params.year : moment().format('Y')
+		return parseInt(this.props.params.year !== undefined ? this.props.params.year : moment().format('Y'))
 	}
 	
 	getMonth() {
-		return this.props.params.month !== undefined ? this.props.params.month : moment().format('M')
+		return parseInt(this.props.params.month !== undefined ? this.props.params.month : moment().format('M'))
 	}
 	
 	render() {
@@ -137,7 +138,10 @@ class InvoicesBrowser extends React.Component {
 				</table>
 				
 				<div className="row">
-					<div className="col-sm-offset-10 col-sm-2 text-right">
+					<div className="col-sm-6">
+						<InvoicesMonthlyReport year={this.getYear()} month={this.getMonth()} />
+					</div>
+					<div className="col-sm-6 text-right">
 						<a className="btn btn-danger" data-toggle="modal" data-target="#deleteInvoiceDialog" href="#">
 							<span className="glyphicon glyphicon-remove"></span> Delete Last
 						</a>
