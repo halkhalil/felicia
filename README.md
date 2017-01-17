@@ -2,7 +2,7 @@
 
 Felicia is an accounting software. The major features include:
 
-  - Invoices
+  - Invoices (creating, editing, printing)
   - Customers
   - Statistics
 
@@ -11,6 +11,7 @@ Felicia is an accounting software. The major features include:
 * [Scala] - backend language
 * [Play Framework] - backend framework
 * [React] - frontend components framework
+* [Redux] - state container for JavaScript apps
 * [Twitter Bootstrap] - styles definitions
 * [node.js] - frontend packages management
 * [jQuery]
@@ -49,6 +50,7 @@ GPL-3.0
    [Scala]: <https://www.scala-lang.org/>
    [Play Framework]: <https://www.playframework.com/>
    [React]: <https://facebook.github.io/react/>
+   [Redux]: <http://redux.js.org/>
    [node.js]: <http://nodejs.org>
    [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
    [jQuery]: <http://jquery.com>
