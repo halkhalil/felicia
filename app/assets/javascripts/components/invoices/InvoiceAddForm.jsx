@@ -261,7 +261,6 @@ export class InvoiceAddForm extends React.Component {
 						</div>
 					</div>
 					
-					Parts:
 					<InvoicePartsForm
 						parts={this.state.parts}
 						units={this.props.units}
@@ -272,14 +271,15 @@ export class InvoiceAddForm extends React.Component {
 					/>
 					
 					<div className="form-group"> 
-						<div className="col-sm-offset-2 col-sm-10">
+						<div className="col-sm-12 text-right">
 							<button type="submit" className={this.submitButtonClasses()}><span className="glyphicon glyphicon-ok"></span> Save</button>
 							<span>&nbsp;</span>
 							<button type="button" className="btn btn-default" onClick={this.props.cancel}>Cancel</button>
 						</div>
 					</div>
+					<br />
 					<div className="form-group">
-						<div className="col-sm-offset-2 col-sm-10">
+						<div className="col-sm-offset-6 col-sm-6">
 							{this.state.validationError && !this.props.saving && <div className="alert alert-danger"><strong>Error: </strong> Please fill all fields.</div>}
 						</div>
 					</div>

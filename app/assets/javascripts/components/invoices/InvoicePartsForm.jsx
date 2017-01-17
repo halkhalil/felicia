@@ -67,72 +67,65 @@ export default class InvoicePartsForm extends React.Component {
 		
 		return (
 			<div>
-				<div className="form-group">
-					<div className="col-sm-5">
-						Name
-					</div>
-					<div className="col-sm-1">
-						Quantity
-					</div>
-					<div className="col-sm-2">
-						Unit
-					</div>
-					<div className="col-sm-2">
-						Unit price
-					</div>
-					<div className="col-sm-1">
-						Total
-					</div>
-					<div className="col-sm-1">
-						
-					</div>
-				</div>
-				{
-					[...new Array(totalParts)].map((element, index) =>
-						<div className="form-group" key={index}>
-							<div className={this.nonEmptyTextValidator(index, 'name', 'col-sm-5')}>
-								<input type="text" className="form-control" onChange={(event) => this.handleChange(index, 'name', event.target.value)} value={this.props.parts[index].name} />
-							</div>
-							<div className={this.positiveFloatValidator(index, 'quantity', 'col-sm-1')}>
-								<input type="text" className="form-control" onChange={(event) => this.handleChange(index, 'quantity', event.target.value)} value={this.props.parts[index].quantity} />
-							</div>
-							<div className={this.nonEmptyTextValidator(index, 'unit', 'col-sm-2')}>
-								<Select
-									clearable={false}
-									searchable={false}
-									value={this.props.parts[index].unit}
-									options={units}
-									onChange={(selection) => this.handleChange(index, 'unit', selection.value)}
-								/>
-							</div>
-							<div className={this.positiveFloatValidator(index, 'unitPrice', 'col-sm-2')}>
-								<input type="text" className="form-control" onChange={(event) => this.handleChange(index, 'unitPrice', event.target.value)} value={this.props.parts[index].unitPrice} />
-							</div>
-							<div className="col-sm-1 form-control-static">
-								{this.props.parts[index].total}
-							</div>
-							<div className="col-sm-1">
-								<a className="btn btn-danger" data-toggle="modal" data-target={`#deletePartDialog${index}`} href="#">
-									<span className="glyphicon glyphicon-remove"></span>
-								</a>
-								<Confirm id={`deletePartDialog${index}`} text="Are you sure you want to delete this part?" onConfirmed={() => this.handleDeletePart(index)} />
-							</div>
-						</div>
-					)
-				}
+				<table className="table table-striped table-bordered">
+					<thead>
+						<tr>
+							<th className="text-center">Name</th>
+							<th width="140" className="text-center">Quantity</th>
+							<th width="140" className="text-center">Unit</th>
+							<th width="140" className="text-center">Unit price</th>
+							<th width="140" className="text-center">Total</th>
+							<th width="30"></th>
+						</tr>
+					</thead>
+					<tbody>
+					{
+						[...new Array(totalParts)].map((element, index) =>
+							<tr key={index} className="vert-align">
+								<td className={this.nonEmptyTextValidator(index, 'name', '')}>
+									<input type="text" className="form-control" onChange={(event) => this.handleChange(index, 'name', event.target.value)} value={this.props.parts[index].name} />
+								</td>
+								<td className={this.positiveFloatValidator(index, 'quantity', '')}>
+									<input type="text" className="form-control" onChange={(event) => this.handleChange(index, 'quantity', event.target.value)} value={this.props.parts[index].quantity} />
+								</td>
+								<td className={this.nonEmptyTextValidator(index, 'unit', '')}>
+									<Select
+										clearable={false}
+										searchable={false}
+										value={this.props.parts[index].unit}
+										options={units}
+										onChange={(selection) => this.handleChange(index, 'unit', selection.value)}
+									/>
+								</td>
+								<td className={this.positiveFloatValidator(index, 'unitPrice', '')}>
+									<input type="text" className="form-control" onChange={(event) => this.handleChange(index, 'unitPrice', event.target.value)} value={this.props.parts[index].unitPrice} />
+								</td>
+								<td className="text-right">
+									{this.props.parts[index].total}
+								</td>
+								<td>
+									<a className="btn btn-danger" data-toggle="modal" data-target={`#deletePartDialog${index}`} href="#">
+										<span className="glyphicon glyphicon-remove"></span>
+									</a>
+									<Confirm id={`deletePartDialog${index}`} text="Are you sure you want to delete this part?" onConfirmed={() => this.handleDeletePart(index)} />
+								</td>
+							</tr>
+						)
+					}
+					{
+						totalParts === 0 &&
+						<tr>
+							<td colSpan="6">
+								<div className="alert alert-warning"><strong>Warning: </strong> Please add invoice parts.</div>
+							</td>
+						</tr>
+					}
+					</tbody>
+				</table>
 				
-				{
-					totalParts === 0 &&
-					<div className="form-group">
-						<div className="col-sm-12">
-							<div className="alert alert-warning"><strong>Warning: </strong> Please add invoice parts.</div>
-						</div>
-					</div>
-				}
-				
-				<div className="form-group"> 
-					<div className="col-sm-offset-11 col-sm-1">
-						<button type="button" className="btn btn-primary" onClick={(event) => this.handleAddPart()}><span className="glyphicon glyphicon-ok"></span> Add Part</button>
+				<div className="row"> 
+					<div className="col-sm-offset-10 col-sm-2">
+						<button type="button" className="btn btn-primary pull-right" onClick={(event) => this.handleAddPart()}><span className="glyphicon glyphicon-plus"></span> Add Part</button>
 					</div>
 				</div>
 			</div>

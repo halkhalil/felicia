@@ -74,20 +74,20 @@ class InvoicesBrowser extends React.Component {
 				<table className="table table-striped table-bordered">
 					<thead>
 						<tr>
-							<th width="120" className="text-center">ID</th>
+							<th width="90" className="text-center">ID</th>
 							<th className="text-center">Buyer</th>
 							<th className="text-center">City</th>
 							<th className="text-center">Country</th>
-							<th className="text-center">Issued</th>
-							<th width="140" className="text-center">Value</th>
-							<th width="150"></th>
+							<th width="120" className="text-center">Issued</th>
+							<th width="120" className="text-center">Value</th>
+							<th width="70"></th>
 						</tr>
 					</thead>
 					<tbody>
 						{
 							this.props.fetching &&
 							<tr className="info">
-								<td colSpan="8">
+								<td colSpan="7">
 									Loading ...
 								</td>
 							</tr>
@@ -129,7 +129,7 @@ class InvoicesBrowser extends React.Component {
 						{
 							this.props.invoices.length === 0 && !this.props.fetching &&
 							<tr className="info">
-								<td colSpan="8">
+								<td colSpan="7">
 									No invoices found
 								</td>
 							</tr>
