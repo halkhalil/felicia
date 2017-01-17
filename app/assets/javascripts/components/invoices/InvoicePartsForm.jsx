@@ -121,13 +121,15 @@ export default class InvoicePartsForm extends React.Component {
 						</tr>
 					}
 					</tbody>
+					
+					<tfoot>
+						<tr>
+							<td colSpan="6">
+								<button type="button" className="btn btn-primary pull-right" onClick={(event) => this.handleAddPart()}><span className="glyphicon glyphicon-plus"></span> Add Part</button>
+							</td>
+						</tr>
+					</tfoot>
 				</table>
-				
-				<div className="row"> 
-					<div className="col-sm-offset-10 col-sm-2">
-						<button type="button" className="btn btn-primary pull-right" onClick={(event) => this.handleAddPart()}><span className="glyphicon glyphicon-plus"></span> Add Part</button>
-					</div>
-				</div>
 			</div>
 		)
 	}

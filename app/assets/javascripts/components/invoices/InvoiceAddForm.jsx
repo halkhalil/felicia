@@ -145,122 +145,124 @@ export class InvoiceAddForm extends React.Component {
 				<h3>Add Invoice</h3>
 				
 				<form className="form-horizontal" onSubmit={(event) => this.handleSubmit(event)}>
-					Buyer:
-					<div className="form-group">
-						<label className="control-label col-sm-2">Is a company:</label>
-						<div className="col-sm-10">
-							<label className="radio-inline">
-								<input type="radio" name="buyerIsCompany" value="0" checked={this.state.buyerIsCompany === false} onChange={(event) => this.handleChange('buyerIsCompany', event.target.value === '1')} /> No
-							</label>
-							<label className="radio-inline">
-								<input type="radio" name="buyerIsCompany" value="1" checked={this.state.buyerIsCompany === true}  onChange={(event) => this.handleChange('buyerIsCompany', event.target.value === '1')} /> Yes
-							</label>
+					<div className="well">
+						<h4>Buyer:</h4>
+						<div className="form-group">
+							<label className="control-label col-sm-2">Is a company:</label>
+							<div className="col-sm-10">
+								<label className="radio-inline">
+									<input type="radio" name="buyerIsCompany" value="0" checked={this.state.buyerIsCompany === false} onChange={(event) => this.handleChange('buyerIsCompany', event.target.value === '1')} /> No
+								</label>
+								<label className="radio-inline">
+									<input type="radio" name="buyerIsCompany" value="1" checked={this.state.buyerIsCompany === true}  onChange={(event) => this.handleChange('buyerIsCompany', event.target.value === '1')} /> Yes
+								</label>
+							</div>
+						</div>
+						<div className={this.nonEmptyErrorClass('buyerName', 'form-group')}>
+							<label className="control-label col-sm-2">Name:</label>
+							<div className="col-sm-10">
+								<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerName', event.target.value)} value={this.state.buyerName} />
+							</div>
+						</div>
+						<div className={this.nonEmptyErrorClass('buyerAddress', 'form-group')}>
+							<label className="control-label col-sm-2">Address:</label>
+							<div className="col-sm-10">
+								<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerAddress', event.target.value)} value={this.state.buyerAddress} />
+							</div>
+						</div>
+						<div className={this.nonEmptyErrorClass('buyerZip', 'form-group')}>
+							<label className="control-label col-sm-2">Zip code:</label>
+							<div className="col-sm-10">
+								<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerZip', event.target.value)} value={this.state.buyerZip} />
+							</div>
+						</div>
+						<div className={this.nonEmptyErrorClass('buyerCity', 'form-group')}>
+							<label className="control-label col-sm-2">City:</label>
+							<div className="col-sm-10">
+								<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerCity', event.target.value)} value={this.state.buyerCity} />
+							</div>
+						</div>
+						<div className={this.nonEmptyErrorClass('buyerCountry', 'form-group')}>
+							<label className="control-label col-sm-2">Country:</label>
+							<div className="col-sm-10">
+								<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerCountry', event.target.value)} value={this.state.buyerCountry} />
+							</div>
+						</div>
+						<div className="form-group">
+							<label className="control-label col-sm-2">Tax ID:</label>
+							<div className="col-sm-10">
+								<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerTaxId', event.target.value)} value={this.state.buyerTaxId} />
+							</div>
+						</div>
+						<div className="form-group">
+							<label className="control-label col-sm-2">E-mail:</label>
+							<div className="col-sm-10">
+								<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerEmail', event.target.value)} value={this.state.buyerEmail} />
+							</div>
+						</div>
+						<div className="form-group">
+							<label className="control-label col-sm-2">Phone:</label>
+							<div className="col-sm-10">
+								<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerPhone', event.target.value)} value={this.state.buyerPhone} />
+							</div>
 						</div>
 					</div>
-					<div className={this.nonEmptyErrorClass('buyerName', 'form-group')}>
-						<label className="control-label col-sm-2">Name:</label>
-						<div className="col-sm-10">
-							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerName', event.target.value)} value={this.state.buyerName} />
+					<div className="well">
+						<h4>Details:</h4>
+						<div className={this.nonEmptyErrorClass('issueDate', 'form-group')}>
+							<label className="control-label col-sm-2">Issue Date:</label>
+							<div className="col-sm-10 form-inline">
+								<Calendar 
+									format="YYYY-MM-DD"
+									closeOnSelect={true}
+									hideOnBlur={true}
+									computableFormat="YYYY-MM-DD"
+									date={this.state.issueDate} onChange={(date) => this.handleChange('issueDate', date)}
+									inputFieldClass="form-control"
+								/>
+							</div>
+						</div>
+						<div className={this.nonEmptyErrorClass('orderDate', 'form-group')}>
+							<label className="control-label col-sm-2">Order Date:</label>
+							<div className="col-sm-10 form-inline">
+								<Calendar
+									format="YYYY-MM-DD"
+									closeOnSelect={true}
+									hideOnBlur={true}
+									computableFormat="YYYY-MM-DD"
+									date={this.state.orderDate} onChange={(date) => this.handleChange('orderDate', date)}
+									inputFieldClass="form-control"
+								/>
+							</div>
+						</div>
+						<div className={this.nonEmptyErrorClass('dueDate', 'form-group')}>
+							<label className="control-label col-sm-2">Due Date:</label>
+							<div className="col-sm-10 form-inline">
+								<Calendar
+									format="YYYY-MM-DD"
+									closeOnSelect={true}
+									hideOnBlur={true}
+									computableFormat="YYYY-MM-DD"
+									date={this.state.dueDate} onChange={(date) => this.handleChange('dueDate', date)}
+									inputFieldClass="form-control"
+								/>
+							</div>
+						</div>
+						<div className={this.nonZeroErrorClass('paymentMethod', 'form-group')}>
+							<label className="control-label col-sm-2">Payment method:</label>
+							<div className="col-sm-4 form-inline">
+								<Select
+									clearable={false}
+									searchable={false}
+									value={this.state.paymentMethod}
+									options={this.props.paymentMethods}
+									labelKey="name"
+									valueKey="id"
+									onChange={(selection) => this.handleChange('paymentMethod', selection.id)}
+								/>
+							</div>
 						</div>
 					</div>
-					<div className={this.nonEmptyErrorClass('buyerAddress', 'form-group')}>
-						<label className="control-label col-sm-2">Address:</label>
-						<div className="col-sm-10">
-							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerAddress', event.target.value)} value={this.state.buyerAddress} />
-						</div>
-					</div>
-					<div className={this.nonEmptyErrorClass('buyerZip', 'form-group')}>
-						<label className="control-label col-sm-2">Zip code:</label>
-						<div className="col-sm-10">
-							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerZip', event.target.value)} value={this.state.buyerZip} />
-						</div>
-					</div>
-					<div className={this.nonEmptyErrorClass('buyerCity', 'form-group')}>
-						<label className="control-label col-sm-2">City:</label>
-						<div className="col-sm-10">
-							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerCity', event.target.value)} value={this.state.buyerCity} />
-						</div>
-					</div>
-					<div className={this.nonEmptyErrorClass('buyerCountry', 'form-group')}>
-						<label className="control-label col-sm-2">Country:</label>
-						<div className="col-sm-10">
-							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerCountry', event.target.value)} value={this.state.buyerCountry} />
-						</div>
-					</div>
-					<div className="form-group">
-						<label className="control-label col-sm-2">Tax ID:</label>
-						<div className="col-sm-10">
-							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerTaxId', event.target.value)} value={this.state.buyerTaxId} />
-						</div>
-					</div>
-					<div className="form-group">
-						<label className="control-label col-sm-2">E-mail:</label>
-						<div className="col-sm-10">
-							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerEmail', event.target.value)} value={this.state.buyerEmail} />
-						</div>
-					</div>
-					<div className="form-group">
-						<label className="control-label col-sm-2">Phone:</label>
-						<div className="col-sm-10">
-							<input type="text" className="form-control" onChange={(event) => this.handleChange('buyerPhone', event.target.value)} value={this.state.buyerPhone} />
-						</div>
-					</div>
-					
-					Other details:
-					<div className={this.nonEmptyErrorClass('issueDate', 'form-group')}>
-						<label className="control-label col-sm-2">Issue Date:</label>
-						<div className="col-sm-10 form-inline">
-							<Calendar 
-								format="YYYY-MM-DD"
-								closeOnSelect={true}
-								hideOnBlur={true}
-								computableFormat="YYYY-MM-DD"
-								date={this.state.issueDate} onChange={(date) => this.handleChange('issueDate', date)}
-								inputFieldClass="form-control"
-							/>
-						</div>
-					</div>
-					<div className={this.nonEmptyErrorClass('orderDate', 'form-group')}>
-						<label className="control-label col-sm-2">Order Date:</label>
-						<div className="col-sm-10 form-inline">
-							<Calendar
-								format="YYYY-MM-DD"
-								closeOnSelect={true}
-								hideOnBlur={true}
-								computableFormat="YYYY-MM-DD"
-								date={this.state.orderDate} onChange={(date) => this.handleChange('orderDate', date)}
-								inputFieldClass="form-control"
-							/>
-						</div>
-					</div>
-					<div className={this.nonEmptyErrorClass('dueDate', 'form-group')}>
-						<label className="control-label col-sm-2">Due Date:</label>
-						<div className="col-sm-10 form-inline">
-							<Calendar
-								format="YYYY-MM-DD"
-								closeOnSelect={true}
-								hideOnBlur={true}
-								computableFormat="YYYY-MM-DD"
-								date={this.state.dueDate} onChange={(date) => this.handleChange('dueDate', date)}
-								inputFieldClass="form-control"
-							/>
-						</div>
-					</div>
-					<div className={this.nonZeroErrorClass('paymentMethod', 'form-group')}>
-						<label className="control-label col-sm-2">Payment method:</label>
-						<div className="col-sm-4 form-inline">
-							<Select
-								clearable={false}
-								searchable={false}
-								value={this.state.paymentMethod}
-								options={this.props.paymentMethods}
-								labelKey="name"
-								valueKey="id"
-								onChange={(selection) => this.handleChange('paymentMethod', selection.id)}
-							/>
-						</div>
-					</div>
-					
 					<InvoicePartsForm
 						parts={this.state.parts}
 						units={this.props.units}
@@ -270,7 +272,7 @@ export class InvoiceAddForm extends React.Component {
 						onPartChange={(partIndex, part) => this.handlePartChange(partIndex, part)}
 					/>
 					
-					<div className="form-group"> 
+					<div className="form-group">
 						<div className="col-sm-12 text-right">
 							<button type="submit" className={this.submitButtonClasses()}><span className="glyphicon glyphicon-ok"></span> Save</button>
 							<span>&nbsp;</span>

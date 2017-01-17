@@ -86,6 +86,10 @@ class InvoicesRecentTable extends React.Component {
 							<Link to="/invoices" className="btn btn-primary pull-right">
 								<span className="glyphicon glyphicon-chevron-right"></span> See All
 							</Link>
+							<span className="pull-right">&nbsp;</span>
+							<Link to="/invoices/add" className="btn btn-primary pull-right">
+								<span className="glyphicon glyphicon-plus"></span> Add Invoice
+							</Link>
 						</div>
 					</div>
 				</div>
