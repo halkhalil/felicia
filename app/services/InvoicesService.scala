@@ -119,9 +119,7 @@ class InvoicesService @Inject() (datesService: DatesService) {
 		invoice.dueDate = invoiceInput.dueDate
 		invoice.paymentMethod = invoiceInput.paymentMethod
 		
-		var totalInvoice: Int = 0
-		val parts: ListBuffer[InvoicePart] = new ListBuffer[InvoicePart]()
-		invoiceInput.parts.foreach { invoicePartInput => 
+		val parts: List[InvoicePart] = invoiceInput.parts.map { invoicePartInput => 
 			val invoicePart: InvoicePart = new InvoicePart()
 			invoicePart.name = invoicePartInput.name
 			invoicePart.quantity = invoicePartInput.quantity
@@ -130,9 +128,13 @@ class InvoicesService @Inject() (datesService: DatesService) {
 			invoicePart.unitPrice = invoicePartInput.unitPrice
 			invoicePart.invoice = invoice
 			
-			parts += invoicePart
-			totalInvoice += invoicePartInput.total
+			invoicePart
 		}
+		
+		val totalInvoice: Int = parts.map { invoicePart =>
+			(BigDecimal(invoicePart.unitPrice) * BigDecimal(invoicePart.quantity) / InvoicePart.Multipler).setScale(0, BigDecimal.RoundingMode.HALF_UP).toInt
+		}.sum
+		
 		invoice.total = totalInvoice
 		invoice.creator = creator
 		invoice.save()

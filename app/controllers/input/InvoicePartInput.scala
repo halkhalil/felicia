@@ -8,7 +8,7 @@ import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import play.api.libs.json.JsNumber
 
-case class InvoicePartInput(name: String, unit: String, quantity: Float, unitPrice: Int, total: Int)
+case class InvoicePartInput(name: String, unit: String, quantity: Int, unitPrice: Int, total: Int)
 
 object InvoicePartInput {
 	implicit object InvoicePartInputFormat extends Format[InvoicePartInput] {
@@ -26,7 +26,7 @@ object InvoicePartInput {
 			JsSuccess(new InvoicePartInput(
 				(json \ "name").as[String],
 				(json \ "unit").as[String],
-				(json \ "quantity").as[Float],
+				(json \ "quantity").as[Int],
 				(json \ "unitPrice").as[Int],
 				(json \ "total").as[Int]
 			))

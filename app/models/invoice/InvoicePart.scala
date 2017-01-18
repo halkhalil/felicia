@@ -25,7 +25,7 @@ class InvoicePart extends Model {
 	var unit: String = _
 	
 	@NotNull
-	var quantity: Float = _
+	var quantity: Int = _
 	
 	@NotNull
 	var unitPrice: Int = _
@@ -38,6 +38,8 @@ class InvoicePart extends Model {
 }
 
 object InvoicePart {
+	
+	val Multipler: BigDecimal = BigDecimal(100)
 	
 	implicit object InvoicePartFormat extends Format[InvoicePart] {
 		def writes(invoicePart: InvoicePart): JsValue = {

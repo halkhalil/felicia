@@ -222,7 +222,7 @@ class InvoiceEditForm extends React.Component {
 											{part.name}
 										</td>
 										<td className="text-center">
-											{(part.quantity).toFixed(2)}
+											{(part.quantity / 100).toFixed(2)}
 										</td>
 										<td className="text-center">
 											{part.unit}
