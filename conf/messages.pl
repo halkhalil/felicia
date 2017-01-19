@@ -1,11 +1,31 @@
 invoices.report.monthly.title=Podsumowanie miesięczne faktur
 invoices.report.monthly.amount.total=Kwota całkowita
 
+invoice=Faktura
 invoice.id=Numer faktury
 invoice.buyer=Nabywca
 invoice.buyer.address=Adres nabywcy
 invoice.issue.date=Data wystawienia
 invoice.order.date=Data sprzedaży
+invoice.due.date=Data płatności
 invoice.amount=Kwota
 invoice.currency.rate=Kurs waluty
 invoice.amount.currency=Kwota {0}
+invoice.sold.by=Sprzedawca
+invoice.tax.id=NIP
+invoice.place.of.issue=Miejsce wystawienia
+invoice.payment.method=Metoda płatności
+invoice.parts.no=Lp.
+invoice.parts.name=Nazwa
+invoice.parts.unit=Jednostka
+invoice.parts.quantity=Ilość
+invoice.parts.price=Cena
+invoice.parts.total=Razem
+invoice.parts.unit.item=sztuka
+invoice.parts.unit.hour=godzina
+invoice.parts.unit.month=miesiąc
+invoice.parts.unit.year=rok
+
+invoice.summary.total.amount=Całkowita wartość faktury
+invoice.summary.total.exchange.rate=Średni kurs NBP waluty {0} z dnia {1}
+invoice.summary.total.amount.target.currency=Całkowita wartość faktury w {0}

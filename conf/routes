@@ -46,3 +46,4 @@ POST   /external/api/invoice      controllers.api.external.InvoicesController.cr
 
 # Raports pages
 GET /print/invoices/:year/:month/:currency/:language controllers.PrintController.invoicesReport(year: Int, month: Int, currency: String, language: String)
+GET /print/invoice/:id/:currency/:language controllers.PrintController.invoice(id: Int, currency: String, language: String)

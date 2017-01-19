@@ -1,11 +1,31 @@
 invoices.report.monthly.title=Invoices Monthly Report
 invoices.report.monthly.amount.total=Total Amount
 
+invoice=Invoice
 invoice.id=Invoice ID
 invoice.buyer=Buyer
 invoice.buyer.address=Buyer Address
 invoice.issue.date=Issue Date
 invoice.order.date=Order Date
+invoice.due.date=Due Date
 invoice.amount=Amount
 invoice.currency.rate=Currency Rate
 invoice.amount.currency=Amount {0}
+invoice.sold.by=Sold by
+invoice.tax.id=Tax ID
+invoice.place.of.issue=Place of issue
+invoice.payment.method=Payment method
+invoice.parts.no=No.
+invoice.parts.name=Name
+invoice.parts.unit=Unit
+invoice.parts.quantity=Quantity
+invoice.parts.price=Price
+invoice.parts.total=Total
+invoice.parts.unit.item=item
+invoice.parts.unit.hour=hour
+invoice.parts.unit.month=month
+invoice.parts.unit.year=year
+
+invoice.summary.total.amount=Total invoice amount
+invoice.summary.total.exchange.rate=Exchange rate of {0} quoted on {1}
+invoice.summary.total.amount.target.currency=Total invoice amount in {0}

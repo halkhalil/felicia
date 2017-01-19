@@ -1,0 +1,148 @@
+@import models.invoice.Invoice, models.invoice.InvoicePart,java.text.NumberFormat,java.util.Date,services.currencies.CurrenciesService
+@(invoice: Invoice, targetCurrency: String, quantity: InvoicePart => String, unitPrice: InvoicePart => String, total: InvoicePart => String, invoiceTotal: String, invoiceTotalConverted: Option[String], currencyRate: Option[String], currencyRateDate: Option[Date], paymentSupplementary: Option[String])(implicit messages: Messages, lang: Lang)
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>@Messages("invoice") @invoice.publicId</title>
+		
+		<link rel="stylesheet" href='@routes.Assets.versioned("lib/bootstrap/css/bootstrap.css")' />
+		<link rel="stylesheet" href='@routes.Assets.versioned("lib/bootstrap/css/bootstrap-theme.css")' />
+		<link rel="stylesheet" href='@routes.Assets.versioned("stylesheets/felicia-main.css")' />
+		
+		<!--[if IE]>
+			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-4">
+					<address>
+						<strong>@Messages("invoice.sold.by"):</strong><br />
+						@invoice.sellerName<br />
+						@invoice.sellerAddress<br />
+						@invoice.sellerZip @invoice.sellerCity<br />
+						@invoice.sellerCountry <br />
+						@Messages("invoice.tax.id"): @invoice.sellerTaxId <br />
+					</address>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-4">
+					<address>
+						<strong>@Messages("invoice.buyer"):</strong><br />
+						@invoice.buyerName<br />
+						@invoice.buyerAddress<br />
+						@invoice.buyerZip @invoice.buyerCity<br />
+						@invoice.buyerCountry
+						@if(invoice.buyerTaxId.length > 0) {
+							<br />
+							@Messages("invoice.tax.id"): @invoice.buyerTaxId
+						}
+					</address>
+				</div>
+			</div>
+			<hr />
+			<div class="row">
+				<div class="col-sm-4 text-left">
+					@Messages("invoice.place.of.issue"): <strong>@invoice.placeOfIssue</strong>
+				</div>
+				<div class="col-sm-4 text-center">
+					@Messages("invoice.issue.date"): <strong>@invoice.issueDate.format("yyyy-MM-dd")</strong>
+				</div>
+				<div class="col-sm-4 text-right">
+					@Messages("invoice.order.date"): <strong>@invoice.orderDate.format("yyyy-MM-dd")</strong> 
+				</div>
+			</div>
+			<div class="form-group">
+			    &nbsp;
+			</div>
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<h2>@Messages("invoice") @invoice.publicId</h2>
+				</div>
+			</div>
+			
+			<div class="form-group">
+				&nbsp;
+			</div>
+			<hr />
+			
+			<div class="row">
+				<div class="col-sm-6">
+					@Messages("invoice.payment.method"): <strong>@invoice.paymentMethod.name</strong><br />
+					@Messages("invoice.due.date"): <strong>@invoice.dueDate.format("yyyy-MM-dd")</strong>
+				</div>
+				<div class="col-sm-6">
+					@paymentSupplementary.getOrElse("")
+				</div>
+			</div>
+			<div class="form-group">
+				&nbsp;
+			</div>
+			<table class="table table-striped table-bordered">
+				<thead>
+					<tr>
+						<th width="20" class="text-center">@Messages("invoice.parts.no")</th>
+						<th class="text-center">@Messages("invoice.parts.name")</th>
+						<th width="140" class="text-center">@Messages("invoice.parts.unit")</th>
+						<th width="90" class="text-center">@Messages("invoice.parts.quantity")</th>
+						<th width="120" class="text-center">@Messages("invoice.parts.price")</th>
+						<th width="120" class="text-center">@Messages("invoice.parts.total")</th>
+					</tr>
+				</thead>
+				
+				<tbody>
+					@for((part, index) <- invoice.invoiceParts.zipWithIndex) {
+						<tr class="vert-align">
+							<td class="text-right">
+								@(index + 1)
+							</td>
+							<td>
+								@part.name
+							</td>
+							<td class="text-center">
+								@Messages("invoice.parts.unit." + part.unit)
+							</td>
+							<td class="text-center">
+								@quantity(part)
+							</td>
+							<td class="text-right">
+								@unitPrice(part)
+							</td>
+							<td class="text-right">
+								@total(part)
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+			<div class="form-group">
+				&nbsp;
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					@Messages("invoice.summary.total.amount"): <strong>@invoiceTotal</strong>
+					@if(targetCurrency != invoice.currency) {
+						@currencyRate.map { value =>
+							<br />
+							@Messages("invoice.summary.total.exchange.rate", invoice.currency, currencyRateDate.get.format("yyyy-MM-dd")): <strong>@value</strong>
+						}
+						@invoiceTotalConverted.map { value =>
+							<br />
+							@Messages("invoice.summary.total.amount.target.currency", targetCurrency): <strong>@value</strong>
+						}.getOrElse {
+							<br />
+							@Messages("invoice.summary.total.amount.target.currency", targetCurrency): --
+						}
+					}
+				</div>
+			</div>
+			
+			
+		</div>
+		
+	</body>
+</html>
