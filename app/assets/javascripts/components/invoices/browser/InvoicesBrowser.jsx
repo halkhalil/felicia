@@ -4,6 +4,7 @@ import numeral from "numeral"
 import { Link } from 'react-router'
 import Confirm from "components/common/dialogs/Confirm"
 import InvoicesMonthlyReport from "./InvoicesMonthlyReport"
+import InvoiceView from "components/invoices/view/InvoiceView"
 
 class InvoicesBrowser extends React.Component {
 	
@@ -80,7 +81,7 @@ class InvoicesBrowser extends React.Component {
 							<th className="text-center">Country</th>
 							<th width="120" className="text-center">Issued</th>
 							<th width="120" className="text-center">Value</th>
-							<th width="70"></th>
+							<th width="130"></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -114,13 +115,12 @@ class InvoicesBrowser extends React.Component {
 										<td className="text-right">
 											{numeral(invoice.total / 100).format('0,0.00')} {invoice.currency}
 										</td>
-										<td>
-											<div className="btn-group">
-												<Link to={'/invoice/' + invoice.id} className="btn btn-primary btn-xs">
-													<span className="glyphicon glyphicon-pencil"></span> Edit
-												</Link>
-												
-											</div>
+										<td className="text-center">
+											<InvoiceView id={invoice.id} />
+											<span>&nbsp;</span>
+											<Link to={'/invoice/' + invoice.id} className="btn btn-primary btn-xs">
+												<span className="glyphicon glyphicon-pencil"></span> Edit
+											</Link>
 										</td>
 									</tr>
 								)

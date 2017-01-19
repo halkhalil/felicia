@@ -3,6 +3,7 @@ import moment from "moment";
 import numeral from "numeral"
 import { Link } from 'react-router'
 import Confirm from "components/common/dialogs/Confirm"
+import InvoiceView from "components/invoices/view/InvoiceView"
 
 class InvoicesRecentTable extends React.Component {
 	
@@ -25,7 +26,7 @@ class InvoicesRecentTable extends React.Component {
 								<th className="text-center">Country</th>
 								<th width="120" className="text-center">Issued</th>
 								<th width="120" className="text-center">Value</th>
-								<th width="70"></th>
+								<th width="130"></th>
 							</tr>
 						</thead>
 						<tbody>
@@ -59,12 +60,12 @@ class InvoicesRecentTable extends React.Component {
 											<td className="text-right">
 												{numeral(invoice.total / 100).format('0,0.00')} {invoice.currency}
 											</td>
-											<td>
-												<div className="btn-group text-center">
-													<Link to={'/invoice/' + invoice.id} className="btn btn-primary btn-xs">
-														<span className="glyphicon glyphicon-pencil"></span> Edit
-													</Link>
-												</div>
+											<td className="text-center">
+												<InvoiceView id={invoice.id} />
+												<span>&nbsp;</span>
+												<Link to={'/invoice/' + invoice.id} className="btn btn-primary btn-xs">
+													<span className="glyphicon glyphicon-pencil"></span> Edit
+												</Link>
 											</td>
 										</tr>
 									)
