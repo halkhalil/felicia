@@ -74,3 +74,19 @@
 .modal-dialog.large-full {
     width: 80%;
 }
+
+.modal-dialog.large-medium {
+    width: 60%;
+}
+
+@media print {
+    body {
+        zoom: .8
+    }
+}
+
+@media (max-width:750px) {
+	.modal-dialog.large-full, .modal-dialog.large-medium {
+		width: auto;
+	}
+}

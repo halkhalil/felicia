@@ -55,14 +55,15 @@ class InvoiceView extends React.Component {
 			<span>
 				<Button bsStyle="info" bsSize="xsmall" onClick={this.handleOpen}><span className="glyphicon glyphicon-list-alt"></span> View</Button>
 
-				<Modal show={this.state.open} onHide={this.handleClose} dialogClassName="large-full">
+				<Modal show={this.state.open} onHide={this.handleClose} dialogClassName="large-medium">
 					<Modal.Header closeButton>
 						<Modal.Title>Invoice View</Modal.Title>
 					</Modal.Header>
 					<Modal.Body>
+					
 						<div className="row">
-							<label className="form-control-static col-sm-1 text-right">Currency: </label>
-							<div className="col-sm-1 form-inline">
+							<label className="form-control-static col-sm-2 text-right">Currency: </label>
+							<div className="col-sm-2 form-inline">
 								<Select
 									clearable={false}
 									searchable={false}
@@ -71,8 +72,8 @@ class InvoiceView extends React.Component {
 									onChange={(selection) => this.setState({ currency: selection.value })}
 								/>
 							</div>
-							<label className="form-control-static col-sm-1 text-right">Language: </label>
-							<div className="col-sm-1 form-inline">
+							<label className="form-control-static col-sm-2 text-right">Language: </label>
+							<div className="col-sm-2 form-inline">
 								<Select
 									clearable={false}
 									searchable={false}
