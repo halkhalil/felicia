@@ -1,10 +1,10 @@
-@import models.invoice.Invoice, models.invoice.InvoicePart,java.text.NumberFormat,java.util.Date,services.currencies.CurrenciesService
-@(invoice: Invoice, targetCurrency: String, quantity: InvoicePart => String, unitPrice: InvoicePart => String, total: InvoicePart => String, invoiceTotal: String, invoiceTotalConverted: Option[String], currencyRate: Option[String], currencyRateDate: Option[Date], paymentSupplementary: Option[String])(implicit messages: Messages, lang: Lang)
+@import models.invoice.Invoice, models.invoice.InvoicePart,java.text.NumberFormat,java.util.Date,services.currencies.CurrenciesService,controllers.viewinput.InvoiceViewInput
+@(viewInput: InvoiceViewInput)(implicit messages: Messages, lang: Lang)
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>@Messages("invoice") @invoice.publicId</title>
+		<title>@Messages("invoice") @viewInput.invoice.publicId</title>
 		
 		<link rel="stylesheet" href='@routes.Assets.versioned("lib/bootstrap/css/bootstrap.css")' />
 		<link rel="stylesheet" href='@routes.Assets.versioned("lib/bootstrap/css/bootstrap-theme.css")' />
@@ -20,11 +20,11 @@
 				<div class="col-sm-4">
 					<address>
 						<strong>@Messages("invoice.sold.by"):</strong><br />
-						@invoice.sellerName<br />
-						@invoice.sellerAddress<br />
-						@invoice.sellerZip @invoice.sellerCity<br />
-						@invoice.sellerCountry <br />
-						@Messages("invoice.tax.id"): @invoice.sellerTaxId <br />
+						@viewInput.invoice.sellerName<br />
+						@viewInput.invoice.sellerAddress<br />
+						@viewInput.invoice.sellerZip @viewInput.invoice.sellerCity<br />
+						@viewInput.invoice.sellerCountry <br />
+						@Messages("invoice.tax.id"): @viewInput.invoice.sellerTaxId <br />
 					</address>
 				</div>
 			</div>
@@ -33,13 +33,13 @@
 				<div class="col-sm-4">
 					<address>
 						<strong>@Messages("invoice.buyer"):</strong><br />
-						@invoice.buyerName<br />
-						@invoice.buyerAddress<br />
-						@invoice.buyerZip @invoice.buyerCity<br />
-						@invoice.buyerCountry
-						@if(invoice.buyerTaxId.length > 0) {
+						@viewInput.invoice.buyerName<br />
+						@viewInput.invoice.buyerAddress<br />
+						@viewInput.invoice.buyerZip @viewInput.invoice.buyerCity<br />
+						@viewInput.invoice.buyerCountry
+						@if(viewInput.invoice.buyerTaxId.length > 0) {
 							<br />
-							@Messages("invoice.tax.id"): @invoice.buyerTaxId
+							@Messages("invoice.tax.id"): @viewInput.invoice.buyerTaxId
 						}
 					</address>
 				</div>
@@ -47,13 +47,13 @@
 			<hr />
 			<div class="row">
 				<div class="col-xs-4 text-left">
-					@Messages("invoice.place.of.issue"): <strong>@invoice.placeOfIssue</strong>
+					@Messages("invoice.place.of.issue"): <strong>@viewInput.invoice.placeOfIssue</strong>
 				</div>
 				<div class="col-xs-4 text-center">
-					@Messages("invoice.issue.date"): <strong>@invoice.issueDate.format("yyyy-MM-dd")</strong>
+					@Messages("invoice.issue.date"): <strong>@viewInput.invoice.issueDate.format("yyyy-MM-dd")</strong>
 				</div>
 				<div class="col-xs-4 text-right">
-					@Messages("invoice.order.date"): <strong>@invoice.orderDate.format("yyyy-MM-dd")</strong> 
+					@Messages("invoice.order.date"): <strong>@viewInput.invoice.orderDate.format("yyyy-MM-dd")</strong> 
 				</div>
 			</div>
 			<div class="form-group">
@@ -61,7 +61,7 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-12 text-center">
-					<h2>@Messages("invoice") @invoice.publicId</h2>
+					<h2>@Messages("invoice") @viewInput.invoice.publicId</h2>
 				</div>
 			</div>
 			
@@ -72,11 +72,11 @@
 			
 			<div class="row">
 				<div class="col-xs-6">
-					@Messages("invoice.payment.method"): <strong>@invoice.paymentMethod.name</strong><br />
-					@Messages("invoice.due.date"): <strong>@invoice.dueDate.format("yyyy-MM-dd")</strong>
+					@Messages("invoice.payment.method"): <strong>@viewInput.paymentName</strong><br />
+					@Messages("invoice.due.date"): <strong>@viewInput.invoice.dueDate.format("yyyy-MM-dd")</strong>
 				</div>
 				<div class="col-xs-6">
-					@paymentSupplementary.getOrElse("")
+					@viewInput.paymentDescription
 				</div>
 			</div>
 			<div class="form-group">
@@ -95,7 +95,7 @@
 				</thead>
 				
 				<tbody>
-					@for((part, index) <- invoice.invoiceParts.zipWithIndex) {
+					@for((part, index) <- viewInput.invoice.invoiceParts.zipWithIndex) {
 						<tr class="vert-align">
 							<td class="text-right">
 								@(index + 1)
@@ -107,13 +107,13 @@
 								@Messages("invoice.parts.unit." + part.unit)
 							</td>
 							<td class="text-center">
-								@quantity(part)
+								@viewInput.quantity(part)
 							</td>
 							<td class="text-right">
-								@unitPrice(part)
+								@viewInput.unitPrice(part)
 							</td>
 							<td class="text-right">
-								@total(part)
+								@viewInput.total(part)
 							</td>
 						</tr>
 					}
@@ -124,25 +124,22 @@
 			</div>
 			<div class="row">
 				<div class="col-sm-6">
-					@Messages("invoice.summary.total.amount"): <strong>@invoiceTotal</strong>
-					@if(targetCurrency != invoice.currency) {
-						@currencyRate.map { value =>
+					@Messages("invoice.summary.total.amount"): <strong>@viewInput.invoiceTotal</strong>
+					@if(viewInput.targetCurrencyUpperCase != viewInput.invoice.currency) {
+						@viewInput.currencyRate.map { currencyRate =>
 							<br />
-							@Messages("invoice.summary.total.exchange.rate", invoice.currency, currencyRateDate.get.format("yyyy-MM-dd")): <strong>@value</strong>
+							@Messages("invoice.summary.total.exchange.rate", viewInput.invoice.currency, currencyRate.day.format("yyyy-MM-dd")): <strong>@viewInput.currencyRateFormatted</strong>
 						}
-						@invoiceTotalConverted.map { value =>
+						@viewInput.invoiceTotalConverted.map { value =>
 							<br />
-							@Messages("invoice.summary.total.amount.target.currency", targetCurrency): <strong>@value</strong>
+							@Messages("invoice.summary.total.amount.target.currency", viewInput.targetCurrencyUpperCase): <strong>@value</strong>
 						}.getOrElse {
 							<br />
-							@Messages("invoice.summary.total.amount.target.currency", targetCurrency): --
+							@Messages("invoice.summary.total.amount.target.currency", viewInput.targetCurrencyUpperCase): --
 						}
 					}
 				</div>
 			</div>
-			
-			
 		</div>
-		
 	</body>
 </html>
