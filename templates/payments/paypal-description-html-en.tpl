@@ -1,1 +1,1 @@
-Sample PayPal details.
+Sample <strong>PayPal</strong><br /> details.
