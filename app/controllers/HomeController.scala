@@ -23,5 +23,7 @@ class HomeController @Inject() (application: ApplicationService, authenticationS
 			)
 		)
 	}
+	
+	def default(path: String) = index
 
 }

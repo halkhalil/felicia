@@ -103,8 +103,7 @@ class InvoiceView extends React.Component {
 
 // property validators:
 InvoiceView.propTypes = {
-	year: React.PropTypes.number.isRequired,
-	month: React.PropTypes.number.isRequired
+	id: React.PropTypes.number.isRequired
 };
 
 export default InvoiceView
