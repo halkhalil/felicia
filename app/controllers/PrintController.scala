@@ -31,74 +31,58 @@ import akka.stream.scaladsl.Source
 import akka.util.ByteString
 import play.api.i18n.Messages
 import java.util.Calendar
+import controllers.viewinput.InvoicesMonthlyViewInput
 
 @Singleton
 class PrintController @Inject() (
-		invoicesService: InvoicesService, currenciesService: CurrenciesService, authenticationService: AuthenticationService, 
-		usersService: UserService, val messagesApi: MessagesApi, externalTemplatesService: ExternalTemplatesService
-	)
-	extends BaseController(authenticationService, usersService) with I18nSupport {
+		implicit val invoicesService: InvoicesService,
+		implicit val currenciesService: CurrenciesService,
+		authenticationService: AuthenticationService, 
+		usersService: UserService,
+		val messagesApi: MessagesApi,
+		externalTemplatesService: ExternalTemplatesService
+	) extends BaseController(authenticationService, usersService) with I18nSupport {
 
 	/**
 	* Renders invoices monthly report.
 	*/
 	def invoicesReport(year: Int, month: Int, targetCurrency: String, language: String) = (UserAction andThen AuthorizationCheckAction) { request =>
 		implicit val lang = Lang(language) // this implicit value is passed to the template and used by Messages objects
-		val targetCurrencyUpperCase = targetCurrency.toUpperCase()
-		val invoices: List[Invoice] = invoicesService.getAll(year, month)
-		val locale = new Locale(language, language)
-		val pricesFormatter = NumberFormat.getIntegerInstance(locale)
-		pricesFormatter.setMinimumFractionDigits(2)
-		pricesFormatter.setMaximumFractionDigits(2)
-		val curencyRateFormatter = NumberFormat.getIntegerInstance(locale)
-		curencyRateFormatter.setMinimumFractionDigits(4)
-		curencyRateFormatter.setMaximumFractionDigits(4)
 		
-		def currencyRate(invoice: Invoice): Option[BigDecimal] = {
-			if (targetCurrencyUpperCase == invoice.currency.toUpperCase())
-				Some(BigDecimal(1))
-			else
-				currenciesService.getFromPreviousDay(invoice.issueDate, targetCurrency, invoice.currency).map { currencyRate => 
-					Option(BigDecimal(currencyRate.rate) / CurrencyRate.MultiplerValue)
-				}.getOrElse(None)
-		}
-		
-		def currencyRateAsString(invoice: Invoice): String = {
-			currencyRate(invoice).map { rateValue =>
-				curencyRateFormatter.format(rateValue)
-			}.getOrElse("--")
-		}
-		
-		def amountConverted(invoice: Invoice): Option[BigDecimal] = {
-			currencyRate(invoice).map { rateValue =>
-				Some(BigDecimal(invoice.total) / Invoice.Multipler * rateValue)
-			}.getOrElse(None)
-		}
-		
-		def amountConvertedAsString(invoice: Invoice): String = {
-			amountConverted(invoice).map { amount =>
-				pricesFormatter.format(amount).concat(" ").concat(targetCurrencyUpperCase)
-			}.getOrElse("--")
-		}
-		
-		def amountAsString(invoice: Invoice): String = {
-			pricesFormatter.format(BigDecimal(invoice.total) / Invoice.Multipler).concat(" ").concat(invoice.currency)
-		}
-		
-		def totalReportAmountAsString(invoices: List[Invoice]): String = {
-			pricesFormatter.format(
-				invoices.map { invoice =>
-					amountConverted(invoice).map { amount =>
-						amount
-					}.getOrElse(BigDecimal(0))
-				}.sum
-			).concat(" ").concat(targetCurrencyUpperCase)
-		}
-
 		Ok(
-			views.html.print.invoices.monthReport(
-				invoices, year, month, targetCurrencyUpperCase, amountAsString, currencyRateAsString, amountConvertedAsString, totalReportAmountAsString(invoices)
+			views.html.print.invoices.monthReport(	
+				InvoicesMonthlyViewInput(baseUrl(request), year, month, targetCurrency, language)
 			)
+		)
+	}
+	
+	/**
+	* Returns PDF invoices monthly report as an attachment.
+	*/
+	def invoicesReportPdf(year: Int, month: Int, targetCurrency: String, language: String) = (UserAction andThen AuthorizationCheckAction) { request =>
+		implicit val lang = Lang(language) // this implicit value is passed to the template and used by Messages objects
+		
+		val pdf: Pdf = Pdf(new PdfConfig {
+			orientation := Landscape
+			pageSize := "A4"
+			marginTop := "2cm"
+			marginBottom := "2cm"
+			marginLeft := "2cm"
+			marginRight := "2cm"
+		})
+		
+		val page: String = views.html.print.invoices.monthReport(
+			InvoicesMonthlyViewInput(baseUrl(request), year, month, targetCurrency, language)
+		).toString()
+		
+		val outputStream: ByteArrayOutputStream = new ByteArrayOutputStream
+		pdf.run(page, outputStream)
+		
+		Result(
+			header = ResponseHeader(200, Map.empty),
+			body = HttpEntity.Strict(ByteString.fromArray(outputStream.toByteArray()), Some("application/pdf"))
+		).withHeaders(
+			"Content-disposition" -> "attachment; filename=".concat(invoicesReportPdfFileName(year, month))
 		)
 	}
 	
@@ -118,7 +102,7 @@ class PrintController @Inject() (
 	}
 	
 	/**
-	* Return PDF invoice file as an attachment.
+	* Returns PDF invoice file as an attachment.
 	*/
 	def invoicePdf(id: Int, targetCurrency: String, language: String) = (UserAction andThen AuthorizationCheckAction) { request =>
 		implicit val lang = Lang(language) // this implicit value is passed to the template and used by Messages objects
@@ -155,6 +139,16 @@ class PrintController @Inject() (
 		Messages("invoice")
 			.concat("-")
 			.concat(invoice.publicId.replace('/', '-'))
+			.concat(".pdf")
+	}
+	
+	private def invoicesReportPdfFileName(year: Int, month: Int)(implicit lang: Lang): String = {
+		Messages("invoices.report.monthly.filename.pdf")
+			.concat("-")
+			.concat(year.toString())
+			.concat("-")
+			.concat(if (month < 10) "0" else "")
+			.concat(month.toString())
 			.concat(".pdf")
 	}
 	

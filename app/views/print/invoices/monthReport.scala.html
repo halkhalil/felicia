@@ -1,10 +1,12 @@
-@import models.invoice.Invoice,java.text.NumberFormat,java.util.Date,services.currencies.CurrenciesService
-@(invoices: List[Invoice], year: Int, month: Int, targetCurrency: String, amount: (Invoice) => String, currencyRate: (Invoice) => String, amountConverted: (Invoice) => String, totalReportAmount: String)(implicit messages: Messages, lang: Lang)
+@import models.invoice.Invoice,java.text.NumberFormat,java.util.Date,services.currencies.CurrenciesService,controllers.viewinput.InvoicesMonthlyViewInput
+@(viewInput: InvoicesMonthlyViewInput)(implicit messages: Messages, lang: Lang)
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>@Messages("invoices.report.monthly.title"): @year-@("%02d".format(month))</title>
+		<title>@Messages("invoices.report.monthly.title"): @viewInput.year-@("%02d".format(viewInput.month))</title>
+		
+		<base href="@viewInput.baseUrl" />
 		
 		<link rel="stylesheet" href='@routes.Assets.versioned("lib/bootstrap/css/bootstrap.css")' />
 		<link rel="stylesheet" href='@routes.Assets.versioned("lib/bootstrap/css/bootstrap-theme.css")' />
@@ -15,7 +17,7 @@
 		<![endif]-->
 	</head>
 	<body>
-		<h4>@Messages("invoices.report.monthly.title"): @year-@("%02d".format(month))</h4>
+		<h4>@Messages("invoices.report.monthly.title"): @viewInput.year-@("%02d".format(viewInput.month))</h4>
 		
 		<table class="table table-striped table-bordered">
 			<thead>
@@ -26,12 +28,12 @@
 					<th width="140" class="text-center">@Messages("invoice.order.date")</th>
 					<th width="120" class="text-center">@Messages("invoice.amount")</th>
 					<th width="120" class="text-center">@Messages("invoice.currency.rate")</th>
-					<th width="120" class="text-center">@Messages("invoice.amount.currency", targetCurrency)</th>
+					<th width="120" class="text-center">@Messages("invoice.amount.currency", viewInput.targetCurrencyUpperCase)</th>
 				</tr>
 			</thead>
 			
 			<tbody>
-				@for(invoice <- invoices) {
+				@for(invoice <- viewInput.invoices) {
 					<tr class="vert-align">
 						<td class="text-right">@invoice.publicId</td>
 						<td>
@@ -46,13 +48,13 @@
 							@invoice.orderDate.format("yyyy-MM-dd")
 						</td>
 						<td class="text-right">
-							@amount(invoice)
+							@viewInput.amount(invoice)
 						</td>
 						<td class="text-right">
-							@currencyRate(invoice)
+							@viewInput.currencyRate(invoice)
 						</td>
 						<td class="text-right">
-							@amountConverted(invoice)
+							@viewInput.amountConverted(invoice)
 						</td>
 					</tr>
 				}
@@ -61,7 +63,7 @@
 						@Messages("invoices.report.monthly.amount.total"):
 					</th>
 					<th class="text-right">
-						@totalReportAmount
+						@viewInput.totalReportAmount
 					</th>
 				</tr>
 				

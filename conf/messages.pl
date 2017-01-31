@@ -1,4 +1,5 @@
 invoices.report.monthly.title=Podsumowanie miesięczne faktur
+invoices.report.monthly.filename.pdf=Podsumowanie-miesieczne-faktur
 invoices.report.monthly.amount.total=Kwota całkowita
 
 invoice=Faktura
