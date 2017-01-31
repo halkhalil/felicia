@@ -20,6 +20,7 @@ class InvoiceView extends React.Component {
 		this.handleClose = this.handleClose.bind(this)
 		this.handlePrint = this.handlePrint.bind(this)
 		this.printUrl = this.printUrl.bind(this)
+		this.printPdfUrl = this.printPdfUrl.bind(this)
 	}
 	
 	handleOpen() {
@@ -38,6 +39,10 @@ class InvoiceView extends React.Component {
 	
 	printUrl() {
 		return `/print/invoice/${this.props.id}/${this.state.currency}/${this.state.language}`
+	}
+	
+	printPdfUrl() {
+		return `/pdf/invoice/${this.props.id}/${this.state.currency}/${this.state.language}`
 	}
 	
 	render() {
@@ -92,6 +97,7 @@ class InvoiceView extends React.Component {
 						</div>
 					</Modal.Body>
 					<Modal.Footer>
+						<Button bsStyle="primary" href={this.printPdfUrl()}><span className="glyphicon glyphicon-download-alt"></span> Save as PDF</Button>
 						<Button bsStyle="primary" onClick={this.handlePrint}><span className="glyphicon glyphicon-print"></span> Print</Button>
 						<Button onClick={this.handleClose}>Close</Button>
 					</Modal.Footer>

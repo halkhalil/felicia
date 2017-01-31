@@ -40,6 +40,10 @@ class InvoicesMonthlyReport extends React.Component {
 		return `/print/invoices/${this.props.year}/${this.props.month}/${this.state.currency}/${this.state.language}`
 	}
 	
+	printPdfUrl() {
+		return `/pdf/invoices/${this.props.year}/${this.props.month}/${this.state.currency}/${this.state.language}`
+	}
+	
 	render() {
 		let currencies = [
 			{ value: 'usd', label: 'USD' },
@@ -91,6 +95,7 @@ class InvoicesMonthlyReport extends React.Component {
 						</div>
 					</Modal.Body>
 					<Modal.Footer>
+						<Button bsStyle="primary" href={this.printPdfUrl()}><span className="glyphicon glyphicon-download-alt"></span> Save as PDF</Button>
 						<Button bsStyle="primary" onClick={this.handlePrint}><span className="glyphicon glyphicon-print"></span> Print</Button>
 						<Button onClick={this.handleClose}>Close</Button>
 					</Modal.Footer>
