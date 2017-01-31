@@ -22,6 +22,15 @@ import play.Logger
 import models.invoice.InvoicePart
 import services.templates.ExternalTemplatesService
 import controllers.viewinput.InvoiceViewInput
+import io.github.cloudify.scala.spdf._
+import java.io._
+import java.net._
+import play.api.http.HttpEntity
+import akka.stream.scaladsl.FileIO
+import akka.stream.scaladsl.Source
+import akka.util.ByteString
+import play.api.i18n.Messages
+import java.util.Calendar
 
 @Singleton
 class PrintController @Inject() (
@@ -102,10 +111,51 @@ class PrintController @Inject() (
 		invoicesService.get(id).map { invoice =>
 			Ok(
 				views.html.print.invoices.invoice(
-					new InvoiceViewInput(externalTemplatesService, currenciesService, invoice, targetCurrency, language)
+					new InvoiceViewInput(baseUrl(request), externalTemplatesService, currenciesService, invoice, targetCurrency, language)
 				)
 			)
 		}.getOrElse(notFound("Invoice does not exist"))
 	}
+	
+	/**
+	* Return PDF invoice file as an attachment.
+	*/
+	def invoicePdf(id: Int, targetCurrency: String, language: String) = (UserAction andThen AuthorizationCheckAction) { request =>
+		implicit val lang = Lang(language) // this implicit value is passed to the template and used by Messages objects
+		
+		invoicesService.get(id).map { invoice =>
+			val pdf: Pdf = Pdf(new PdfConfig {
+				orientation := Portrait
+				pageSize := "A4"
+				marginTop := "2cm"
+				marginBottom := "2cm"
+				marginLeft := "2cm"
+				marginRight := "2cm"
+			})
+			
+			val page: String = views.html.print.invoices.invoice(
+				new InvoiceViewInput(baseUrl(request), externalTemplatesService, currenciesService, invoice, targetCurrency, language)
+			).toString()
 
+			val outputStream: ByteArrayOutputStream = new ByteArrayOutputStream
+			pdf.run(page, outputStream)
+			
+			Result(
+				header = ResponseHeader(200, Map.empty),
+				body = HttpEntity.Strict(ByteString.fromArray(outputStream.toByteArray()), Some("application/pdf"))
+			).withHeaders(
+				"Content-disposition" -> "attachment; filename=".concat(pdfFileName(invoice))
+			)
+		}.getOrElse(notFound("Invoice does not exist"))
+	}
+
+	private def baseUrl(request: Request[AnyContent]): String = "http".concat(if (request.secure) "s" else "").concat("://").concat(request.host)
+	
+	private def pdfFileName(invoice: Invoice)(implicit lang: Lang): String = {
+		Messages("invoice")
+			.concat("-")
+			.concat(invoice.publicId.replace('/', '-'))
+			.concat(".pdf")
+	}
+	
 }

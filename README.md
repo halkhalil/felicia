@@ -10,6 +10,7 @@ Felicia is an accounting software. The major features include:
    
 * [Scala] - backend language
 * [Play Framework] - backend framework
+* [wkhtmltopdf] - PDF documents rendering
 * [React] - frontend components framework
 * [Redux] - state container for JavaScript apps
 * [Twitter Bootstrap] - styles definitions
@@ -18,6 +19,8 @@ Felicia is an accounting software. The major features include:
 
 
 ### Installation - development version
+
+Install wkhtmltopdf tool in your system and check if `wkhtmltopdf` command is available in system shell. 
 
 Clone repository:
 
@@ -54,3 +57,4 @@ GPL-3.0
    [node.js]: <http://nodejs.org>
    [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>
    [jQuery]: <http://jquery.com>
+   [wkhtmltopdf]: <http://wkhtmltopdf.org/>

@@ -13,5 +13,6 @@ libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "1.5.1
 libraryDependencies += "org.webjars" % "jquery" % "3.1.1"
 libraryDependencies += "org.webjars" % "bootstrap" % "3.3.7-1"
 libraryDependencies += "mysql" % "mysql-connector-java" % "6.0.5"
+libraryDependencies += "io.github.cloudify" %% "spdf" % "1.4.0"
 
 excludeFilter in (Assets, JshintKeys.jshint) := "*.js"

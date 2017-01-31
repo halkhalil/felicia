@@ -23,7 +23,7 @@ import models.invoice.InvoicePart
 import services.templates.ExternalTemplatesService
 
 class InvoiceViewInput(
-		externalTemplatesService: ExternalTemplatesService, currenciesService: CurrenciesService, val invoice: Invoice, val targetCurrency: String, language: String
+		val baseUrl: String, externalTemplatesService: ExternalTemplatesService, currenciesService: CurrenciesService, val invoice: Invoice, val targetCurrency: String, language: String
 	) {
 	val targetCurrencyUpperCase = targetCurrency.toUpperCase()
 	private val locale = new Locale(language, language)
