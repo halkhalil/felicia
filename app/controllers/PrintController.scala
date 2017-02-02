@@ -140,6 +140,7 @@ class PrintController @Inject() (
 	private def pdfFileName(invoice: Invoice)(implicit lang: Lang): String = {
 		Messages("invoice")
 			.concat("-")
+			.concat(if (invoice.publicIdNumber < 10) "00" else if (invoice.publicIdNumber < 100) "0" else "")
 			.concat(invoice.publicId.replace('/', '-'))
 			.concat(".pdf")
 	}
