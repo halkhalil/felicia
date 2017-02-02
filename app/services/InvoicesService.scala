@@ -18,9 +18,10 @@ import models.invoice.InvoicePart
 import javax.inject.Inject
 import services.supporting.DatesService
 import controllers.input.InvoiceUpdateInput
+import services.translations.TranslationService
 
 @Singleton
-class InvoicesService @Inject() (datesService: DatesService) {
+class InvoicesService @Inject() (datesService: DatesService, translationService: TranslationService) {
 	
 	def getAll(year: Int, month: Int): List[Invoice] = {
 		Invoice.finder.where()
@@ -58,7 +59,10 @@ class InvoicesService @Inject() (datesService: DatesService) {
 	}
 	
 	def delete(invoice: Invoice): Invoice = {
-		getParts(invoice).foreach { invoicePart => invoicePart.delete() }
+		getParts(invoice).foreach { invoicePart =>
+			invoicePart.delete()
+			translationService.delete("InvoicePart", invoicePart.id)
+		}
 		
 		invoice.delete()
 		
@@ -121,7 +125,12 @@ class InvoicesService @Inject() (datesService: DatesService) {
 		
 		val parts: List[InvoicePart] = invoiceInput.parts.map { invoicePartInput => 
 			val invoicePart: InvoicePart = new InvoicePart()
-			invoicePart.name = invoicePartInput.name
+			invoicePart.name = invoicePartInput.name.find { translationInput =>
+				translationInput.language.toLowerCase() == InvoicePart.LeadLanguage
+			}.flatMap { translationInput =>
+				Some(translationInput.value)
+			}.getOrElse("--")
+			
 			invoicePart.quantity = invoicePartInput.quantity
 			invoicePart.unit = invoicePartInput.unit
 			invoicePart.total = invoicePartInput.total
@@ -141,8 +150,16 @@ class InvoicesService @Inject() (datesService: DatesService) {
 		
 		// save invoice parts:
 		parts.foreach { invoicePart =>
-			invoicePart.save()	
+			invoicePart.save()
 		}
+		
+		// save translations of the invoice parts:
+		(invoiceInput.parts, parts).zipped.foreach { (invoicePartInput, invoicePart) => 
+			invoicePartInput.name.foreach { translationInput =>
+				translationService.save("InvoicePart", invoicePart.id, "name", translationInput.language, translationInput.value)
+			}
+		}
+		
 		
 		invoice
 	}

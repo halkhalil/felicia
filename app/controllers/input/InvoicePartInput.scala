@@ -7,14 +7,14 @@ import play.api.libs.json.JsSuccess
 import play.api.libs.json.JsObject
 import play.api.libs.json.JsString
 import play.api.libs.json.JsNumber
+import play.api.libs.json.JsArray
 
-case class InvoicePartInput(name: String, unit: String, quantity: Int, unitPrice: Int, total: Int)
+case class InvoicePartInput(name: List[TranslationInput], unit: String, quantity: Int, unitPrice: Int, total: Int)
 
 object InvoicePartInput {
 	implicit object InvoicePartInputFormat extends Format[InvoicePartInput] {
 		def writes(invoicePartInput: InvoicePartInput): JsValue = {
 			JsObject(Seq(
-				"name" -> JsString(invoicePartInput.name),
 				"unit" -> JsString(invoicePartInput.unit),
 				"quantity" -> JsNumber(invoicePartInput.quantity),
 				"unitPrice" -> JsNumber(invoicePartInput.unitPrice),
@@ -24,12 +24,12 @@ object InvoicePartInput {
 
 		def reads(json: JsValue): JsResult[InvoicePartInput] = {
 			JsSuccess(new InvoicePartInput(
-				(json \ "name").as[String],
+				(json \ "name").as[List[TranslationInput]],
 				(json \ "unit").as[String],
 				(json \ "quantity").as[Int],
 				(json \ "unitPrice").as[Int],
 				(json \ "total").as[Int]
 			))
 		}
-    }
+	}
 }

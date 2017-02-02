@@ -4,10 +4,23 @@ import 'react-select/dist/react-select.css';
 import Confirm from "components/common/dialogs/Confirm";
 
 export default class InvoicePartsForm extends React.Component {
+
+	languages() {
+		return [
+			{ value: 'en', label: 'EN' },
+			{ value: 'pl', label: 'PL' }
+		]
+	}
 	
 	handleAddPart() {
+		let names = Object.assign(
+			{}, ...this.languages().map((language) => {
+				return { [language.value]: "" }
+			})
+		)
+		
 		let sourcePart = {
-			name: '',
+			name: names,
 			unit: '',
 			quantity: '1',
 			unitPrice: '0',
@@ -30,12 +43,30 @@ export default class InvoicePartsForm extends React.Component {
 		this.props.onPartChange(partIndex, part)
 	}
 	
+	handleNameChange(partIndex, language, value) {
+		let names = Object.assign({}, this.props.parts[partIndex].name, {
+			[language]: value
+		})
+		
+		let part = Object.assign({}, this.props.parts[partIndex], {
+			name: names
+		})
+		this.props.onPartChange(partIndex, part)
+	}
+	
 	parseFloatFromText(text) {
 		return parseFloat(text.replace(/,/, '.'))
 	}
 	
 	nonEmptyTextValidator(partIndex, field, otherClasses) {
 		let value = this.props.parts[partIndex][field]
+		let hasError = this.props.showValidationErrors && (typeof value !== 'string' || value.length === 0)
+		
+		return (hasError ? 'has-error ' : '') + otherClasses
+	}
+	
+	nonEmptyNameValidator(partIndex, language, otherClasses) {
+		let value = this.props.parts[partIndex].name[language]
 		let hasError = this.props.showValidationErrors && (typeof value !== 'string' || value.length === 0)
 		
 		return (hasError ? 'has-error ' : '') + otherClasses
@@ -82,8 +113,20 @@ export default class InvoicePartsForm extends React.Component {
 					{
 						[...new Array(totalParts)].map((element, index) =>
 							<tr key={index} className="vert-align">
-								<td className={this.nonEmptyTextValidator(index, 'name', '')}>
-									<input type="text" className="form-control" onChange={(event) => this.handleChange(index, 'name', event.target.value)} value={this.props.parts[index].name} />
+								<td>
+									{
+										this.languages().map((language, subIndex) =>
+											<div key={subIndex} className={this.nonEmptyNameValidator(index, language.value, 'input-group')} style={{ width: '100%' }}>
+												<span className="input-group-addon" style={{ width: '46px' }}>{language.label}</span>
+												<input 
+													type="text"
+													className="form-control" 
+													onChange={(event) => this.handleNameChange(index, language.value, event.target.value)}
+													value={this.props.parts[index].name[language.value]}
+												/>
+											</div>
+										)
+									}
 								</td>
 								<td className={this.positiveFloatValidator(index, 'quantity', '')}>
 									<input type="text" className="form-control" onChange={(event) => this.handleChange(index, 'quantity', event.target.value)} value={this.props.parts[index].quantity} />

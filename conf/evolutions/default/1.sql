@@ -73,6 +73,22 @@ create table payment_method (
   constraint pk_payment_method primary key (id)
 );
 
+create table translation_object (
+  id                            integer auto_increment not null,
+  name                          varchar(255) not null,
+  constraint pk_translation_object primary key (id)
+);
+
+create table translation_value (
+  id                            integer auto_increment not null,
+  object_id                     integer not null,
+  field                         varchar(255) not null,
+  language                      varchar(255) not null,
+  value                         TEXT,
+  object_type_id                integer,
+  constraint pk_translation_value primary key (id)
+);
+
 create table user (
   id                            integer auto_increment not null,
   login                         varchar(255) not null,
@@ -107,6 +123,9 @@ create index ix_invoice_creator_id on invoice (creator_id);
 alter table invoice_part add constraint fk_invoice_part_invoice_id foreign key (invoice_id) references invoice (id) on delete restrict on update restrict;
 create index ix_invoice_part_invoice_id on invoice_part (invoice_id);
 
+alter table translation_value add constraint fk_translation_value_object_type_id foreign key (object_type_id) references translation_object (id) on delete restrict on update restrict;
+create index ix_translation_value_object_type_id on translation_value (object_type_id);
+
 alter table user add constraint fk_user_role_id foreign key (role_id) references user_role (id) on delete restrict on update restrict;
 create index ix_user_role_id on user (role_id);
 
@@ -125,6 +144,9 @@ drop index ix_invoice_creator_id on invoice;
 alter table invoice_part drop foreign key fk_invoice_part_invoice_id;
 drop index ix_invoice_part_invoice_id on invoice_part;
 
+alter table translation_value drop foreign key fk_translation_value_object_type_id;
+drop index ix_translation_value_object_type_id on translation_value;
+
 alter table user drop foreign key fk_user_role_id;
 drop index ix_user_role_id on user;
 
@@ -140,6 +162,10 @@ drop table if exists invoice;
 drop table if exists invoice_part;
 
 drop table if exists payment_method;
+
+drop table if exists translation_object;
+
+drop table if exists translation_value;
 
 drop table if exists user;
 

@@ -36,7 +36,16 @@ export class InvoiceAddForm extends React.Component {
 			this.setState({ validationError: true })
 		} else {
 			let partsTransformed = this.state.parts.map((part) => {
+				let names = []
+				for (let language in part.name) {
+					names.push({
+						language: language,
+						value: part.name[language]
+					})
+				}
+				
 				let partTransformed =  Object.assign({}, part, {
+					name: names,
 					quantity: Math.round(parseFloat(part.quantity.replace(/,/, '.')) * 100),
 					unitPrice: Math.round(parseFloat(part.unitPrice.replace(/,/, '.')) * 100),
 					total: Math.round(parseFloat(part.total) * 100)

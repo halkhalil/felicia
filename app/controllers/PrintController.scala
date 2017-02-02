@@ -32,6 +32,7 @@ import akka.util.ByteString
 import play.api.i18n.Messages
 import java.util.Calendar
 import controllers.viewinput.InvoicesMonthlyViewInput
+import services.translations.TranslationService
 
 @Singleton
 class PrintController @Inject() (
@@ -39,6 +40,7 @@ class PrintController @Inject() (
 		implicit val currenciesService: CurrenciesService,
 		authenticationService: AuthenticationService, 
 		usersService: UserService,
+		translationService: TranslationService,
 		val messagesApi: MessagesApi,
 		externalTemplatesService: ExternalTemplatesService
 	) extends BaseController(authenticationService, usersService) with I18nSupport {
@@ -95,7 +97,7 @@ class PrintController @Inject() (
 		invoicesService.get(id).map { invoice =>
 			Ok(
 				views.html.print.invoices.invoice(
-					new InvoiceViewInput(baseUrl(request), externalTemplatesService, currenciesService, invoice, targetCurrency, language)
+					new InvoiceViewInput(baseUrl(request), externalTemplatesService, currenciesService, translationService, invoice, targetCurrency, language)
 				)
 			)
 		}.getOrElse(notFound("Invoice does not exist"))
@@ -118,7 +120,7 @@ class PrintController @Inject() (
 			})
 			
 			val page: String = views.html.print.invoices.invoice(
-				new InvoiceViewInput(baseUrl(request), externalTemplatesService, currenciesService, invoice, targetCurrency, language)
+				new InvoiceViewInput(baseUrl(request), externalTemplatesService, currenciesService, translationService, invoice, targetCurrency, language)
 			).toString()
 
 			val outputStream: ByteArrayOutputStream = new ByteArrayOutputStream

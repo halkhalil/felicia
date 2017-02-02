@@ -218,8 +218,14 @@ class InvoiceEditForm extends React.Component {
 							{
 								invoice.parts.map((part, index) =>
 									<tr key={index}>
-										<td className="text-center">
-											{part.name}
+										<td className="text-left">
+											{
+												part.name.map((name, index) =>
+													<div key={index}>
+														<span className="label label-default" style={{ width: '30px', display: 'inline-block' }}>{name.language}:</span> {name.value}
+													</div>
+												)
+											}
 										</td>
 										<td className="text-center">
 											{(part.quantity / 100).toFixed(2)}

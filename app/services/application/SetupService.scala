@@ -4,6 +4,7 @@ import models._
 import javax.inject.Singleton
 import scala.collection.JavaConversions._
 import utils.StringUtils
+import models.translations.TranslationObject
 
 @Singleton
 class SetupService {
@@ -18,6 +19,7 @@ class SetupService {
 	dataInitialize()
 	initConfiguration()
 	initPaymentMethods()
+	initTranslationObjects()
 	
 	def dataInitialize() = {
 		val roles:java.util.List[UserRole] = UserRole.finder.all()
@@ -97,4 +99,19 @@ class SetupService {
 			
 		}
 	}
+	
+	def initTranslationObjects() = {
+		val objects: List[String] = List(
+			"InvoicePart"
+		)
+		
+		objects.filter { entry =>
+			TranslationObject.finder.where().eq("name", entry).findUnique() == null
+		}.foreach { entry =>
+			val translationObject = new TranslationObject()
+			translationObject.name = entry
+			translationObject.save()
+		}
+	}
+	
 }

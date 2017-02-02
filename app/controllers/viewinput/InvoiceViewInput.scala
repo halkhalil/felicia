@@ -21,9 +21,16 @@ import play.api.i18n.Lang
 import play.Logger
 import models.invoice.InvoicePart
 import services.templates.ExternalTemplatesService
+import services.translations.TranslationService
 
 class InvoiceViewInput(
-		val baseUrl: String, externalTemplatesService: ExternalTemplatesService, currenciesService: CurrenciesService, val invoice: Invoice, val targetCurrency: String, language: String
+		val baseUrl: String,
+		externalTemplatesService: ExternalTemplatesService,
+		currenciesService: CurrenciesService,
+		translationService: TranslationService,
+		val invoice: Invoice,
+		val targetCurrency: String,
+		language: String
 	) {
 	val targetCurrencyUpperCase = targetCurrency.toUpperCase()
 	private val locale = new Locale(language, language)
@@ -91,6 +98,12 @@ class InvoiceViewInput(
 		invoiceTotalConvertedValue.map { amount =>
 			Some(pricesFormatter.format(amount).concat(" ").concat(targetCurrencyUpperCase))
 		}.getOrElse(None)
+	}
+	
+	def translation(invoicePart: InvoicePart, field: String): String = {
+		translationService.get("InvoicePart", invoicePart.id, field, language).map { translationValue =>
+			translationValue.value
+		}.getOrElse("")
 	}
 	
 }
