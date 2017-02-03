@@ -37,3 +37,4 @@ dist
 # Project files:
 public/javascripts/felicia.js
 public/stylesheets/felicia-frontend.css
+backup/invoices

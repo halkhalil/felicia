@@ -33,6 +33,7 @@ import play.api.i18n.Messages
 import java.util.Calendar
 import controllers.viewinput.InvoicesMonthlyViewInput
 import services.translations.TranslationService
+import services.invoices.PdfService
 
 @Singleton
 class PrintController @Inject() (
@@ -42,7 +43,8 @@ class PrintController @Inject() (
 		usersService: UserService,
 		translationService: TranslationService,
 		val messagesApi: MessagesApi,
-		externalTemplatesService: ExternalTemplatesService
+		externalTemplatesService: ExternalTemplatesService,
+		pdfService: PdfService
 	) extends BaseController(authenticationService, usersService) with I18nSupport {
 
 	/**
@@ -62,29 +64,14 @@ class PrintController @Inject() (
 	* Returns PDF invoices monthly report as an attachment.
 	*/
 	def invoicesReportPdf(year: Int, month: Int, targetCurrency: String, language: String) = (UserAction andThen AuthorizationCheckAction) { request =>
-		implicit val lang = Lang(language) // this implicit value is passed to the template and used by Messages objects
-		
-		val pdf: Pdf = Pdf(new PdfConfig {
-			orientation := Landscape
-			pageSize := "A4"
-			marginTop := "2cm"
-			marginBottom := "2cm"
-			marginLeft := "2cm"
-			marginRight := "2cm"
-		})
-		
-		val page: String = views.html.print.invoices.monthReport(
-			InvoicesMonthlyViewInput(baseUrl(request), year, month, targetCurrency, language)
-		).toString()
-		
-		val outputStream: ByteArrayOutputStream = new ByteArrayOutputStream
-		pdf.run(page, outputStream)
+		val outputStream: ByteArrayOutputStream = pdfService.getInvoicesReportAsPdf(year, month, targetCurrency, language)
+		val fileName: String = pdfService.getInvoicesReportPdfFileName(year, month, language)
 		
 		Result(
 			header = ResponseHeader(200, Map.empty),
 			body = HttpEntity.Strict(ByteString.fromArray(outputStream.toByteArray()), Some("application/pdf"))
 		).withHeaders(
-			"Content-disposition" -> "attachment; filename=".concat(invoicesReportPdfFileName(year, month))
+			"Content-disposition" -> "attachment; filename=".concat(fileName)
 		)
 	}
 	
@@ -107,52 +94,19 @@ class PrintController @Inject() (
 	* Returns PDF invoice file as an attachment.
 	*/
 	def invoicePdf(id: Int, targetCurrency: String, language: String) = (UserAction andThen AuthorizationCheckAction) { request =>
-		implicit val lang = Lang(language) // this implicit value is passed to the template and used by Messages objects
-		
 		invoicesService.get(id).map { invoice =>
-			val pdf: Pdf = Pdf(new PdfConfig {
-				orientation := Portrait
-				pageSize := "A4"
-				marginTop := "2cm"
-				marginBottom := "2cm"
-				marginLeft := "2cm"
-				marginRight := "2cm"
-			})
-			
-			val page: String = views.html.print.invoices.invoice(
-				new InvoiceViewInput(baseUrl(request), externalTemplatesService, currenciesService, translationService, invoice, targetCurrency, language)
-			).toString()
-
-			val outputStream: ByteArrayOutputStream = new ByteArrayOutputStream
-			pdf.run(page, outputStream)
+			val outputStream: ByteArrayOutputStream = pdfService.getInvoiceAsPdf(invoice, targetCurrency, language)
+			val fileName: String = pdfService.getInvoicePdfFileName(invoice, language)
 			
 			Result(
 				header = ResponseHeader(200, Map.empty),
 				body = HttpEntity.Strict(ByteString.fromArray(outputStream.toByteArray()), Some("application/pdf"))
 			).withHeaders(
-				"Content-disposition" -> "attachment; filename=".concat(pdfFileName(invoice))
+				"Content-disposition" -> "attachment; filename=".concat(fileName)
 			)
 		}.getOrElse(notFound("Invoice does not exist"))
 	}
 
 	private def baseUrl(request: Request[AnyContent]): String = "http".concat(if (request.secure) "s" else "").concat("://").concat(request.host)
-	
-	private def pdfFileName(invoice: Invoice)(implicit lang: Lang): String = {
-		Messages("invoice")
-			.concat("-")
-			.concat(if (invoice.publicIdNumber < 10) "00" else if (invoice.publicIdNumber < 100) "0" else "")
-			.concat(invoice.publicId.replace('/', '-'))
-			.concat(".pdf")
-	}
-	
-	private def invoicesReportPdfFileName(year: Int, month: Int)(implicit lang: Lang): String = {
-		Messages("invoices.report.monthly.filename.pdf")
-			.concat("-")
-			.concat(year.toString())
-			.concat("-")
-			.concat(if (month < 10) "0" else "")
-			.concat(month.toString())
-			.concat(".pdf")
-	}
 	
 }

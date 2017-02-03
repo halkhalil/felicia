@@ -6,6 +6,7 @@ import services.application.SetupService
 import services.schedule.ScheduleService
 import play.api.libs.concurrent.AkkaGuiceSupport
 import services.schedule.actors.CurrenciesActor
+import services.schedule.actors.InvoicesBackupActor
 
 /**
  * This class is a Guice module that tells Guice how to bind several
@@ -26,6 +27,7 @@ class Module extends AbstractModule with AkkaGuiceSupport {
 		
 		// actors:
 		bindActor[CurrenciesActor]("currenciesActor")
+		bindActor[InvoicesBackupActor]("invoicesBackupActor")
 	}
 
 }

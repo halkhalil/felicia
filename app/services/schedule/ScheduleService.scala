@@ -13,9 +13,15 @@ import javax.inject.Named
 case object Tick
 
 @Singleton
-class ScheduleService @Inject() (system: ActorSystem, @Named("currenciesActor") currenciesActor: ActorRef) (implicit ec: ExecutionContext) {
+class ScheduleService @Inject() (
+	system: ActorSystem,
+	@Named("currenciesActor") currenciesActor: ActorRef,
+	@Named("invoicesBackupActor") invoicesBackupActor: ActorRef
+) (implicit ec: ExecutionContext) {
 	
 	// schedule currencies actor:
 	system.scheduler.schedule(10.seconds, 12.hours, currenciesActor, Tick)
 	
+	// schedule invoices backup actor:
+	system.scheduler.schedule(300.seconds, 24.hours, invoicesBackupActor, Tick)
 }
